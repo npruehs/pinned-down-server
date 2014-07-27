@@ -19,3 +19,8 @@
 *.exe
 *.out
 *.app
+Source/PinnedDownServer/PinnedDownServer/Debug/
+Bin/
+Source/PinnedDownServer/PinnedDownServer.opensdf
+Source/PinnedDownServer/PinnedDownServer.sdf
+Source/PinnedDownServer/PinnedDownServer.v11.suo
