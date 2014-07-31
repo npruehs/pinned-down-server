@@ -125,9 +125,35 @@ int main()
 		return 1;
 	}
 
+	char sendbuf[DEFAULT_BUFLEN];
 	char recvbuf[DEFAULT_BUFLEN];
 	int sendResult;
 	int recvbuflen = DEFAULT_BUFLEN;
+
+	// Send three packets.
+	for (int i = 0; i < 3; i++)
+	{
+		PinnedDownPacket packet = PinnedDownPacket();
+		packet.packetType = PinnedDownPacketType::LoginSuccess;
+		packet.dataSize = 42;
+		//memcpy(&sendbuf, &packet.packetType, sizeof(PinnedDownPacketType));
+		memcpy(&sendbuf, &packet.dataSize, sizeof(unsigned int));
+
+		sendResult = send(clientSocket, sendbuf, sizeof(unsigned int), 0);
+
+		if (sendResult == SOCKET_ERROR)
+		{
+			printf("send failed: %d\n", WSAGetLastError());
+			closesocket(clientSocket);
+			WSACleanup();
+
+			int i;
+			cin >> i;
+			return 1;
+		}
+	}
+
+
 
 	// Receive until the peer shuts down the connection.
 	do
