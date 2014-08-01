@@ -11,6 +11,7 @@ using namespace std;
 
 #define PINNED_DOWN_SERVER_PORT "27015"
 #define DEFAULT_BUFLEN 512
+#define MAX_CLIENTS 32
 
 void pause()
 {
@@ -116,87 +117,127 @@ int main()
 		printf("Listening for %d connections.\n", SOMAXCONN);
 	}
 
-	// Accept a single client socket.
-	struct sockaddr_in sockaddr;
-	int sockaddrLen = sizeof(sockaddr);
+	// Accept client sockets.
+	FD_SET fdSet;
+	SOCKET clients[MAX_CLIENTS];
 
-	SOCKET clientSocket = accept(listenSocket, (struct sockaddr*)&sockaddr, &sockaddrLen);
-
-	if (clientSocket == INVALID_SOCKET)
+	for(int i = 0; i < MAX_CLIENTS; i++) 
 	{
-		printf("Failed to accept client socket: %d\n", WSAGetLastError());
-		closesocket(listenSocket);
-		WSACleanup();
-
-		pause();
-		return 1;
-	}
-	else
-	{
-		printf("Client connected: %s\n", inet_ntoa(sockaddr.sin_addr));
+		clients[i] = INVALID_SOCKET;
 	}
 
-	// Send login ACK.
-	char sendbuf[DEFAULT_BUFLEN];
-	char recvbuf[DEFAULT_BUFLEN];
-
-	ServerEvent packet = ServerEvent(ServerEventType::LoginSuccess);
-	memcpy(&sendbuf, &packet.eventType, sizeof(ServerEventType));
-
-	result = send(clientSocket, sendbuf, sizeof(ServerEventType), 0);
-
-	if (result == SOCKET_ERROR)
+	while (true)
 	{
-		printf("Failed to send packet: %d\n", WSAGetLastError());
-		closesocket(clientSocket);
-		WSACleanup();
+		// Clear socket set and add Accept socket.
+		FD_ZERO(&fdSet);
+		FD_SET(listenSocket, &fdSet);
 
-		pause();
-		return 1;
-	}
-	else
-	{
-		printf("Packet sent.\n");
-	}
-
-	// Create new game.
-	PinnedDownCore::Game* game = new PinnedDownCore::Game();
-
-	// Receive until the peer shuts down the connection.
-	do
-	{
-		result = recv(clientSocket, recvbuf, DEFAULT_BUFLEN, 0);
-
-		if (result > 0)
+		// Add all clients.
+		for(int i = 0; i<MAX_CLIENTS; i++)
 		{
-			// Process client action.
-			ClientAction action = ClientAction();
-			memcpy(&action.actionType, &recvbuf, sizeof(ClientActionType));
-
-			switch (action.actionType)
+			if (clients[i] != INVALID_SOCKET)
 			{
-			case ClientActionType::SelectCard:
-				printf("Select card.\n");
+				FD_SET(clients[i], &fdSet);
 			}
 		}
-		else if (result == 0)
+
+		result = select(0, &fdSet, NULL, NULL, NULL);
+
+		if (result == SOCKET_ERROR) 
 		{
-			printf("Connection closing...\n");
-		}
-		else
-		{
-			printf("Failed to receive packet: %d\n", WSAGetLastError());
-			closesocket(clientSocket);
-			WSACleanup();
+			printf("Error selecting sockets: %s\n",WSAGetLastError());
 
 			pause();
 			return 1;
 		}
+    
+		// Check for new clients.
+		if (FD_ISSET(listenSocket, &fdSet))
+		{
+			// Add new client.
+			for(int i = 0; i < MAX_CLIENTS; i++)
+			{
+				if (clients[i] == INVALID_SOCKET)
+				{
+					struct sockaddr_in sockaddr;
+					int sockaddrLen = sizeof(sockaddr);
+
+					clients[i] = accept(listenSocket, (struct sockaddr*)&sockaddr, &sockaddrLen);
+					printf("Client connected: %s\n", inet_ntoa(sockaddr.sin_addr));
+
+					// Send login ACK.
+					char sendbuf[DEFAULT_BUFLEN];
+					ServerEvent packet = ServerEvent(ServerEventType::LoginSuccess);
+					memcpy(&sendbuf, &packet.eventType, sizeof(ServerEventType));
+
+					result = send(clients[i], sendbuf, sizeof(ServerEventType), 0);
+
+					if (result == SOCKET_ERROR)
+					{
+						printf("Failed to send packet: %d\n", WSAGetLastError());
+						closesocket(clients[i]);
+						WSACleanup();
+
+						pause();
+						return 1;
+					}
+					else
+					{
+						printf("Packet sent.\n");
+					}
+					break;
+				}
+			}
+		}
+
+		for (int i = 0;  i < MAX_CLIENTS; i++) 
+		{
+			// Iterate all connected clients.
+			if (clients[i] == INVALID_SOCKET)
+			{
+				continue; 
+			}
+
+			// Check for new data or disconnects.
+			if (FD_ISSET(clients[i], &fdSet))
+			{
+				char recvbuf[DEFAULT_BUFLEN];
+				result = recv(clients[i], recvbuf, DEFAULT_BUFLEN, 0);
+
+				// Check for disconnect.
+				if (result <= 0)
+				{
+					// Close socket.
+					closesocket(clients[i]);       
+					clients[i] = INVALID_SOCKET;
+
+					if (result == 0)
+					{
+						printf("Connection closed by client %d. \n", i);
+					}
+					else
+					{
+						printf("Failed to receive packet: %d\n", WSAGetLastError());
+					}
+				}
+				else
+				{
+					// Process client action.
+					ClientAction action = ClientAction();
+					memcpy(&action.actionType, &recvbuf, sizeof(ClientActionType));
+
+					switch (action.actionType)
+					{
+					case ClientActionType::SelectCard:
+						printf("Select card.\n");
+					}
+				}
+			}
+		}
 	}
-	while (result > 0);
 
 	// Shutdown the send half of the connection since no more data will be sent.
-	result = shutdown(clientSocket, SD_SEND);
+	/*result = shutdown(clientSocket, SD_SEND);
 
 	if (result == SOCKET_ERROR)
 	{
@@ -212,7 +253,7 @@ int main()
 		printf("Client socket shut down.");
 		closesocket(clientSocket);
 		WSACleanup();
-	}
+	}*/
 
 	pause();
 	return 0;
