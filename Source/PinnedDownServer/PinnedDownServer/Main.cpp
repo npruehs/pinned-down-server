@@ -134,11 +134,9 @@ int main()
 	// Send three packets.
 	for (int i = 0; i < 3; i++)
 	{
-		PinnedDownPacket packet = PinnedDownPacket();
-		packet.packetType = PinnedDownPacketType::LoginSuccess;
-		packet.dataSize = 42;
-		//memcpy(&sendbuf, &packet.packetType, sizeof(PinnedDownPacketType));
-		memcpy(&sendbuf, &packet.dataSize, sizeof(unsigned int));
+		ServerEvent packet = ServerEvent();
+		packet.eventType = ServerEventType::LoginSuccess;
+		memcpy(&sendbuf, &packet.eventType, sizeof(ServerEventType));
 
 		sendResult = send(clientSocket, sendbuf, sizeof(unsigned int), 0);
 
@@ -164,23 +162,14 @@ int main()
 
 		if (result > 0)
 		{
-			printf("Bytes received: %d\n", result);
+			ClientEvent packet = ClientEvent();
+			memcpy(&packet.eventType, &recvbuf, sizeof(ClientEventType));
 
-			// Echo the buffer back to the sender.
-			sendResult = send(clientSocket, recvbuf, result, 0);
-
-			if (sendResult == SOCKET_ERROR)
+			switch (packet.eventType)
 			{
-				printf("send failed: %d\n", WSAGetLastError());
-				closesocket(clientSocket);
-				WSACleanup();
-
-				int i;
-				cin >> i;
-				return 1;
+			case ClientEventType::CardSelected:
+				printf("Card selected.\n");
 			}
-
-			printf("Bytes sent: %d\n", sendResult);
 		}
 		else if (result == 0)
 		{
