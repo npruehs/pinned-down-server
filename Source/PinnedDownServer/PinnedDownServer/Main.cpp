@@ -81,7 +81,7 @@ int main()
 	}
 
 	// Setup the TCP listening socket.
-    result = bind( listenSocket, addressInfo->ai_addr, (int)addressInfo->ai_addrlen);
+    result = bind(listenSocket, addressInfo->ai_addr, (int)addressInfo->ai_addrlen);
 
     if (result == SOCKET_ERROR)
 	{
@@ -117,7 +117,10 @@ int main()
 	}
 
 	// Accept a single client socket.
-	SOCKET clientSocket = accept(listenSocket, NULL, NULL);
+	struct sockaddr_in sockaddr;
+	int sockaddrLen = sizeof(sockaddr);
+
+	SOCKET clientSocket = accept(listenSocket, (struct sockaddr*)&sockaddr, &sockaddrLen);
 
 	if (clientSocket == INVALID_SOCKET)
 	{
@@ -130,7 +133,7 @@ int main()
 	}
 	else
 	{
-		printf("Client connected.\n");
+		printf("Client connected: %s\n", inet_ntoa(sockaddr.sin_addr));
 	}
 
 	// Send login ACK.
