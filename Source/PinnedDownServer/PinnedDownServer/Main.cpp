@@ -5,7 +5,12 @@
 #include "Game.h"
 #include "PinnedDownNet.h"
 
+#include "Network\ServerEventWriter.h"
+#include "Network\ClientActionReader.h"
+
 using namespace std;
+
+using namespace PinnedDownServer::Network;
 
 #pragma comment(lib, "Ws2_32.lib")
 
@@ -21,6 +26,9 @@ void pause()
 
 int main()
 {
+	ServerEventWriter serverEventWriter = ServerEventWriter();
+	ClientActionReader clientActionReader = ClientActionReader();
+
 	// Initialize Winsock.
 	WSADATA wsaData;
 	int result;
@@ -166,20 +174,14 @@ int main()
 					printf("Client connected: %s\n", inet_ntoa(sockaddr.sin_addr));
 
 					// Send login ACK.
-					char sendbuf[DEFAULT_BUFLEN];
 					ServerEvent packet = ServerEvent(ServerEventType::LoginSuccess);
-					memcpy(&sendbuf, &packet.eventType, sizeof(ServerEventType));
-
-					result = send(clients[i], sendbuf, sizeof(ServerEventType), 0);
+					result = serverEventWriter.WriteServerEvent(clients[i], packet);
 
 					if (result == SOCKET_ERROR)
 					{
-						printf("Failed to send packet: %d\n", WSAGetLastError());
+						printf("Failed to send packet: %d; closing connection.\n", WSAGetLastError());
 						closesocket(clients[i]);
-						WSACleanup();
-
-						pause();
-						return 1;
+						clients[i] = INVALID_SOCKET;
 					}
 					else
 					{
@@ -222,15 +224,7 @@ int main()
 				}
 				else
 				{
-					// Process client action.
-					ClientAction action = ClientAction();
-					memcpy(&action.actionType, &recvbuf, sizeof(ClientActionType));
-
-					switch (action.actionType)
-					{
-					case ClientActionType::SelectCard:
-						printf("Select card.\n");
-					}
+					clientActionReader.ReadClientAction(recvbuf);
 				}
 			}
 		}
