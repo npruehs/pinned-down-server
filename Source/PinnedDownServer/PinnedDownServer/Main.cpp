@@ -2,6 +2,7 @@
 #include <ws2tcpip.h>
 #include <stdio.h>
 #include <iostream>
+#include "Game.h"
 #include "PinnedDownNet.h"
 
 using namespace std;
@@ -153,7 +154,8 @@ int main()
 		}
 	}
 
-
+	// Create new game.
+	PinnedDownCore::Game* game = new PinnedDownCore::Game();
 
 	// Receive until the peer shuts down the connection.
 	do
