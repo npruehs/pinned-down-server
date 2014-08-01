@@ -12,21 +12,25 @@ using namespace std;
 #define PINNED_DOWN_SERVER_PORT "27015"
 #define DEFAULT_BUFLEN 512
 
+void pause()
+{
+	int i;
+	cin >> i;
+}
+
 int main()
 {
+	// Initialize Winsock.
 	WSADATA wsaData;
-
 	int result;
 
-	// Initialize Winsock.
 	result = WSAStartup(MAKEWORD(2,2), &wsaData);
 
 	if (result != 0)
 	{
-		printf("WSAStartup failed: %d\n", result);
+		printf("Failed to initialize Winsock: %d\n", result);
 
-		int i;
-		cin >> i;
+		pause();
 		return 1;
 	}
 	else
@@ -34,6 +38,7 @@ int main()
 		printf("Winsock initialized.\n");
 	}
 
+	// Resolve the local address and port to be used by the server
 	addrinfo hints;
 	addrinfo* addressInfo;
 
@@ -43,20 +48,18 @@ int main()
 	hints.ai_protocol = IPPROTO_TCP;	// TCP protocol.
 	hints.ai_flags = AI_PASSIVE;		// Returned socket address structure will be used in a call to the bind function.
 
-	// Resolve the local address and port to be used by the server
 	result = getaddrinfo(NULL, PINNED_DOWN_SERVER_PORT, &hints, &addressInfo);
 	if (result != 0)
 	{
-		printf("getaddrinfo failed: %d\n", result);
+		printf("Failed to resolve local address and port: %d\n", result);
 		WSACleanup();
 
-		int i;
-		cin >> i;
+		pause();
 		return 1;
 	}
 	else
 	{
-		printf("Local address resolved.\n");
+		printf("Local address and port resolved.\n");
 	}
 
 	// Create a SOCKET for the server to listen for client connections.
@@ -65,13 +68,16 @@ int main()
 
 	if (listenSocket == INVALID_SOCKET)
 	{
-		printf("Error at socket(): %ld\n", WSAGetLastError());
+		printf("Failed to create socket: %ld\n", WSAGetLastError());
 		freeaddrinfo(addressInfo);
 		WSACleanup();
 
-		int i;
-		cin >> i;
+		pause();
 		return 1;
+	}
+	else
+	{
+		printf("Socket created.\n");
 	}
 
 	// Setup the TCP listening socket.
@@ -79,18 +85,17 @@ int main()
 
     if (result == SOCKET_ERROR)
 	{
-        printf("bind failed with error: %d\n", WSAGetLastError());
+        printf("Failed to bind TCP listening socket: %d\n", WSAGetLastError());
         freeaddrinfo(addressInfo);
         closesocket(listenSocket);
         WSACleanup();
 
-		int i;
-		cin >> i;
+		pause();
 		return 1;
     }
 	else
 	{
-		printf("TCP socket created.\n");
+		printf("TCP socket bound.\n");
 		freeaddrinfo(addressInfo);
 	}
 
@@ -99,12 +104,11 @@ int main()
 
 	if (result == SOCKET_ERROR)
 	{
-		printf("Listen failed with error: %ld\n", WSAGetLastError());
+		printf("Failed to listen for incoming connections: %ld\n", WSAGetLastError());
 		closesocket(listenSocket);
 		WSACleanup();
 
-		int i;
-		cin >> i;
+		pause();
 		return 1;
 	}
 	else
@@ -117,39 +121,39 @@ int main()
 
 	if (clientSocket == INVALID_SOCKET)
 	{
-		printf("accept failed: %d\n", WSAGetLastError());
+		printf("Failed to accept client socket: %d\n", WSAGetLastError());
 		closesocket(listenSocket);
 		WSACleanup();
 
-		int i;
-		cin >> i;
+		pause();
 		return 1;
 	}
+	else
+	{
+		printf("Client connected.\n");
+	}
 
+	// Send login ACK.
 	char sendbuf[DEFAULT_BUFLEN];
 	char recvbuf[DEFAULT_BUFLEN];
-	int sendResult;
-	int recvbuflen = DEFAULT_BUFLEN;
 
-	// Send three packets.
-	for (int i = 0; i < 3; i++)
+	ServerEvent packet = ServerEvent(ServerEventType::LoginSuccess);
+	memcpy(&sendbuf, &packet.eventType, sizeof(ServerEventType));
+
+	result = send(clientSocket, sendbuf, sizeof(ServerEventType), 0);
+
+	if (result == SOCKET_ERROR)
 	{
-		ServerEvent packet = ServerEvent();
-		packet.eventType = ServerEventType::LoginSuccess;
-		memcpy(&sendbuf, &packet.eventType, sizeof(ServerEventType));
+		printf("Failed to send packet: %d\n", WSAGetLastError());
+		closesocket(clientSocket);
+		WSACleanup();
 
-		sendResult = send(clientSocket, sendbuf, sizeof(unsigned int), 0);
-
-		if (sendResult == SOCKET_ERROR)
-		{
-			printf("send failed: %d\n", WSAGetLastError());
-			closesocket(clientSocket);
-			WSACleanup();
-
-			int i;
-			cin >> i;
-			return 1;
-		}
+		pause();
+		return 1;
+	}
+	else
+	{
+		printf("Packet sent.\n");
 	}
 
 	// Create new game.
@@ -158,17 +162,18 @@ int main()
 	// Receive until the peer shuts down the connection.
 	do
 	{
-		result = recv(clientSocket, recvbuf, recvbuflen, 0);
+		result = recv(clientSocket, recvbuf, DEFAULT_BUFLEN, 0);
 
 		if (result > 0)
 		{
-			ClientEvent packet = ClientEvent();
-			memcpy(&packet.eventType, &recvbuf, sizeof(ClientEventType));
+			// Process client action.
+			ClientAction action = ClientAction();
+			memcpy(&action.actionType, &recvbuf, sizeof(ClientActionType));
 
-			switch (packet.eventType)
+			switch (action.actionType)
 			{
-			case ClientEventType::CardSelected:
-				printf("Card selected.\n");
+			case ClientActionType::SelectCard:
+				printf("Select card.\n");
 			}
 		}
 		else if (result == 0)
@@ -177,12 +182,11 @@ int main()
 		}
 		else
 		{
-			printf("recv failed: %d\n", WSAGetLastError());
+			printf("Failed to receive packet: %d\n", WSAGetLastError());
 			closesocket(clientSocket);
 			WSACleanup();
 
-			int i;
-			cin >> i;
+			pause();
 			return 1;
 		}
 	}
@@ -190,14 +194,14 @@ int main()
 
 	// Shutdown the send half of the connection since no more data will be sent.
 	result = shutdown(clientSocket, SD_SEND);
+
 	if (result == SOCKET_ERROR)
 	{
-		printf("shutdown failed: %d\n", WSAGetLastError());
+		printf("Failed to shut down socket: %d\n", WSAGetLastError());
 		closesocket(clientSocket);
 		WSACleanup();
 
-		int i;
-		cin >> i;
+		pause();
 		return 1;
 	}
 	else
@@ -207,7 +211,6 @@ int main()
 		WSACleanup();
 	}
 
-	int i;
-	cin >> i;
+	pause();
 	return 0;
 }
