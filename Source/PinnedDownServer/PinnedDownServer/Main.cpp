@@ -14,7 +14,7 @@ int main()
 	{
 		while (true)
 		{
-			socketManager->Select(0);
+			socketManager->Select(100);
 		}
 	}
 
