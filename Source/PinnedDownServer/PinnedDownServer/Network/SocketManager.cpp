@@ -189,10 +189,6 @@ void SocketManager::Select(int milliseconds)
 			// Check for disconnect.
 			if (result <= 0)
 			{
-				// Close socket.
-				closesocket(clients[i]);       
-				clients[i] = INVALID_SOCKET;
-
 				if (result == 0)
 				{
 					printf("Connection closed by client %d. \n", i);
@@ -201,6 +197,10 @@ void SocketManager::Select(int milliseconds)
 				{
 					printf("Failed to receive packet: %d\n", WSAGetLastError());
 				}
+
+				// Close socket.
+				closesocket(clients[i]);       
+				clients[i] = INVALID_SOCKET;
 			}
 			else
 			{
