@@ -13,12 +13,18 @@
     <ClCompile Include="Network\ClientActionReader.cpp">
       <Filter>Network</Filter>
     </ClCompile>
+    <ClCompile Include="Network\SocketManager.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Network\ServerEventWriter.h">
       <Filter>Network</Filter>
     </ClInclude>
     <ClInclude Include="Network\ClientActionReader.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\SocketManager.h">
       <Filter>Network</Filter>
     </ClInclude>
   </ItemGroup>
