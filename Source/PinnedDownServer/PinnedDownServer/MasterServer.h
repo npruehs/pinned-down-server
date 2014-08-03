@@ -1,9 +1,11 @@
 #pragma once
 
+#include <map>
 #include <memory>
 
 #include "PinnedDownNet.h"
 
+#include "ServerGame.h"
 #include "Network\SocketManager.h"
 
 using namespace PinnedDownServer::Network;
@@ -23,6 +25,7 @@ namespace PinnedDownServer
 
 	private:
 		std::shared_ptr<SocketManager> socketManager;
-
+		
+		std::map<int, std::shared_ptr<ServerGame>> runningGames;
 	};
 }

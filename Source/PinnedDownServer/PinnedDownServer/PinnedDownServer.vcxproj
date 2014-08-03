@@ -88,6 +88,7 @@
     <ClCompile Include="Network\ServerEventWriter.cpp" />
     <ClCompile Include="Network\SocketManager.cpp" />
     <ClCompile Include="MasterServer.cpp" />
+    <ClCompile Include="ServerGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\pinned-down-core\Source\PinnedDownCore\PinnedDownCore\PinnedDownCore.vcxproj">
@@ -102,6 +103,7 @@
     <ClInclude Include="Network\ServerEventWriter.h" />
     <ClInclude Include="Network\SocketManager.h" />
     <ClInclude Include="MasterServer.h" />
+    <ClInclude Include="ServerGame.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

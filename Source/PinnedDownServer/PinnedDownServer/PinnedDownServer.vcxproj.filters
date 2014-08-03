@@ -17,6 +17,7 @@
       <Filter>Network</Filter>
     </ClCompile>
     <ClCompile Include="MasterServer.cpp" />
+    <ClCompile Include="ServerGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Network\ServerEventWriter.h">
@@ -29,5 +30,6 @@
       <Filter>Network</Filter>
     </ClInclude>
     <ClInclude Include="MasterServer.h" />
+    <ClInclude Include="ServerGame.h" />
   </ItemGroup>
 </Project>
