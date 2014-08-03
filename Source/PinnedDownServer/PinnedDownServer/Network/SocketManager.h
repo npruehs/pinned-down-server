@@ -23,6 +23,8 @@ namespace PinnedDownServer
 			void Select(int timeout);
 			bool IsInitialized();
 
+			void SendServerEvent(int clientId, ServerEvent serverEvent);
+
 			void RemoveClient(int clientId);
 
 		private:

@@ -22,6 +22,7 @@ namespace PinnedDownServer
 		void OnClientConnected(int clientId);
 		void OnClientDisconnected(int clientId);
 		void OnClientAction(int clientId, ClientAction clientAction);
+		void OnServerEvent(int clientId, ServerEvent serverEvent);
 
 	private:
 		std::shared_ptr<SocketManager> socketManager;

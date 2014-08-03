@@ -161,15 +161,10 @@ void SocketManager::Select(int milliseconds)
 				printf("Client connected: %s\n", inet_ntoa(sockaddr.sin_addr));
 
 				// Send login ACK.
-				ServerEvent packet = ServerEvent(ServerEventType::LoginSuccess);
-				result = serverEventWriter.WriteServerEvent(clients[i], packet);
+				ServerEvent serverEvent = ServerEvent(ServerEventType::LoginSuccess);
+				this->SendServerEvent(i, serverEvent);
 
-				if (result == SOCKET_ERROR)
-				{
-					printf("Error %d sending packet to client %d.\n", WSAGetLastError(), i);
-					this->RemoveClient(i);
-				}
-				else
+				if (clients[i] != INVALID_SOCKET)
 				{
 					// Notify master server.
 					this->masterServer->OnClientConnected(i);
@@ -221,6 +216,17 @@ void SocketManager::Select(int milliseconds)
 bool SocketManager::IsInitialized()
 {
 	return this->initialized;
+}
+
+void SocketManager::SendServerEvent(int clientId, ServerEvent serverEvent)
+{
+	result = serverEventWriter.WriteServerEvent(clients[clientId], serverEvent);
+
+	if (result == SOCKET_ERROR)
+	{
+		printf("Error %d sending packet to client %d.\n", WSAGetLastError(), clientId);
+		this->RemoveClient(clientId);
+	}
 }
 
 void SocketManager::RemoveClient(int clientId)

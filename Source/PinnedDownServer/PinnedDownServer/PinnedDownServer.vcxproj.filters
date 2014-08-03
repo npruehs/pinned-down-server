@@ -18,6 +18,8 @@
     </ClCompile>
     <ClCompile Include="MasterServer.cpp" />
     <ClCompile Include="ServerGame.cpp" />
+    <ClCompile Include="ClientActionDispatcher.cpp" />
+    <ClCompile Include="ServerEventDispatcher.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Network\ServerEventWriter.h">
@@ -31,5 +33,7 @@
     </ClInclude>
     <ClInclude Include="MasterServer.h" />
     <ClInclude Include="ServerGame.h" />
+    <ClInclude Include="ClientActionDispatcher.h" />
+    <ClInclude Include="ServerEventDispatcher.h" />
   </ItemGroup>
 </Project>

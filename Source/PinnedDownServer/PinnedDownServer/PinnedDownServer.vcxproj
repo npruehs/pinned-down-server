@@ -83,11 +83,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ClientActionDispatcher.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Network\ClientActionReader.cpp" />
     <ClCompile Include="Network\ServerEventWriter.cpp" />
     <ClCompile Include="Network\SocketManager.cpp" />
     <ClCompile Include="MasterServer.cpp" />
+    <ClCompile Include="ServerEventDispatcher.cpp" />
     <ClCompile Include="ServerGame.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -99,10 +101,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ClientActionDispatcher.h" />
     <ClInclude Include="Network\ClientActionReader.h" />
     <ClInclude Include="Network\ServerEventWriter.h" />
     <ClInclude Include="Network\SocketManager.h" />
     <ClInclude Include="MasterServer.h" />
+    <ClInclude Include="ServerEventDispatcher.h" />
     <ClInclude Include="ServerGame.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

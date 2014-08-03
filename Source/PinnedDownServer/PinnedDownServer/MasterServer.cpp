@@ -27,7 +27,7 @@ void MasterServer::OnClientConnected(int clientId)
 	printf("Client added: %d\n", clientId);
 
 	// Start new game.
-	std::shared_ptr<ServerGame> newGame = std::make_shared<ServerGame>();
+	std::shared_ptr<ServerGame> newGame = std::make_shared<ServerGame>(this, clientId);
 	this->runningGames.insert(std::pair<int, std::shared_ptr<ServerGame>>(clientId, newGame));
 }
 
@@ -47,4 +47,21 @@ void MasterServer::OnClientDisconnected(int clientId)
 void MasterServer::OnClientAction(int clientId, ClientAction clientAction)
 {
 	printf("Client %d sent action %d.\n", clientId, clientAction.actionType);
+
+	// Pass to game.
+	auto iterator = this->runningGames.find(clientId);
+
+	if (iterator != this->runningGames.end())
+	{
+		auto game = iterator->second;
+		game->OnClientAction(clientAction);
+	}
+}
+
+void MasterServer::OnServerEvent(int clientId, ServerEvent serverEvent)
+{
+	printf("Sending event %d to client %d.\n", serverEvent.eventType, clientId);
+
+	// Pass to socket manager.
+	this->socketManager->SendServerEvent(clientId, serverEvent);
 }
