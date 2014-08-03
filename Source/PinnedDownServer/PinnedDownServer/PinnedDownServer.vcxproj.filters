@@ -16,6 +16,7 @@
     <ClCompile Include="Network\SocketManager.cpp">
       <Filter>Network</Filter>
     </ClCompile>
+    <ClCompile Include="MasterServer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Network\ServerEventWriter.h">
@@ -27,5 +28,6 @@
     <ClInclude Include="Network\SocketManager.h">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="MasterServer.h" />
   </ItemGroup>
 </Project>

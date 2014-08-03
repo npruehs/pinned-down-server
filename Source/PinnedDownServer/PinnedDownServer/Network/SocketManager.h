@@ -9,18 +9,26 @@
 
 namespace PinnedDownServer
 {
+	class MasterServer;
+
 	namespace Network
 	{
 		class SocketManager
 		{
 		public:
+			SocketManager(MasterServer* masterServer);
 			~SocketManager();
 
 			void InitSocketManager();
 			void Select(int timeout);
 			bool IsInitialized();
 
+			void RemoveClient(int clientId);
+
 		private:
+			// Server to notify of client events.
+			MasterServer* masterServer;
+
 			// Whether WinSock has been successfully initialized, or not.
 			bool initialized;
 

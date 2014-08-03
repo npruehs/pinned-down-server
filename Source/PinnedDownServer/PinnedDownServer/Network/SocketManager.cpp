@@ -4,10 +4,17 @@
 #include <iostream>
 
 #include "SocketManager.h"
+#include "..\MasterServer.h"
 
 #pragma comment(lib, "Ws2_32.lib")
 
+using namespace PinnedDownServer;
 using namespace PinnedDownServer::Network;
+
+SocketManager::SocketManager(MasterServer* masterServer)
+{
+	this->masterServer = masterServer;
+}
 
 void SocketManager::InitSocketManager()
 {
@@ -159,14 +166,15 @@ void SocketManager::Select(int milliseconds)
 
 				if (result == SOCKET_ERROR)
 				{
-					printf("Failed to send packet: %d; closing connection.\n", WSAGetLastError());
-					closesocket(clients[i]);
-					clients[i] = INVALID_SOCKET;
+					printf("Error %d sending packet to client %d.\n", WSAGetLastError(), i);
+					this->RemoveClient(i);
 				}
 				else
 				{
-					printf("Packet sent.\n");
+					// Notify master server.
+					this->masterServer->OnClientConnected(i);
 				}
+
 				break;
 			}
 		}
@@ -191,20 +199,20 @@ void SocketManager::Select(int milliseconds)
 			{
 				if (result == 0)
 				{
-					printf("Connection closed by client %d. \n", i);
+					printf("Connection closed by client %d.\n", i);
 				}
 				else
 				{
-					printf("Failed to receive packet: %d\n", WSAGetLastError());
+					printf("Error %d receiving packet from client %d.\n", WSAGetLastError(), i);
 				}
 
 				// Close socket.
-				closesocket(clients[i]);       
-				clients[i] = INVALID_SOCKET;
+				this->RemoveClient(i);
 			}
 			else
 			{
-				clientActionReader.ReadClientAction(recvbuf);
+				ClientAction action = clientActionReader.ReadClientAction(recvbuf);
+				this->masterServer->OnClientAction(i, action);
 			}
 		}
 	}
@@ -213,6 +221,16 @@ void SocketManager::Select(int milliseconds)
 bool SocketManager::IsInitialized()
 {
 	return this->initialized;
+}
+
+void SocketManager::RemoveClient(int clientId)
+{
+	// Close socket.
+	closesocket(clients[clientId]);
+	clients[clientId] = INVALID_SOCKET;
+	
+	// Notify master server.
+	this->masterServer->OnClientDisconnected(clientId);
 }
 
 SocketManager::~SocketManager()
@@ -227,14 +245,14 @@ SocketManager::~SocketManager()
 
 			if (result == SOCKET_ERROR)
 			{
-				printf("Failed to shut down socket: %d\n", WSAGetLastError());
+				printf("Error %d shutting down client socket %d.\n", WSAGetLastError(), i);
 			}
 			else
 			{
-				printf("Client socket shut down.");
+				printf("Client socket %d shut down.", i);
 			}
 
-			closesocket(clients[i]);
+			this->RemoveClient(i);
 		}
 	}
 

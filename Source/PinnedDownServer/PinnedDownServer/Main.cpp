@@ -1,24 +1,19 @@
 #include <iostream>
 #include <memory>
 
-#include "Network\SocketManager.h"
+#include "MasterServer.h"
 
-using namespace PinnedDownServer::Network;
+using namespace PinnedDownServer;
 
 int main()
 {
-	std::shared_ptr<SocketManager> socketManager = std::make_shared<SocketManager>();
-	socketManager->InitSocketManager();
+	// Start server.
+	std::shared_ptr<MasterServer> masterServer = std::make_shared<MasterServer>();
+	masterServer->Start();
 
-	if (socketManager->IsInitialized())
-	{
-		while (true)
-		{
-			socketManager->Select(100);
-		}
-	}
-
+	// Wait for keypress.
 	int i;
 	std::cin >> i;
+
 	return 0;
 }
