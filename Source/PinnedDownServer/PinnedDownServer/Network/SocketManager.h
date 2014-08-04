@@ -3,7 +3,6 @@
 #include "ServerEventWriter.h"
 #include "ClientActionReader.h"
 
-#define PINNED_DOWN_SERVER_PORT "27015"
 #define DEFAULT_BUFLEN 512
 #define MAX_CLIENTS 32
 
