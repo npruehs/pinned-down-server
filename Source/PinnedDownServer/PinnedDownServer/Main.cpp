@@ -11,9 +11,5 @@ int main()
 	std::shared_ptr<MasterServer> masterServer = std::make_shared<MasterServer>();
 	masterServer->Start();
 
-	// Wait for keypress.
-	int i;
-	std::cin >> i;
-
 	return 0;
 }

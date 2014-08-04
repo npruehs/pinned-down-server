@@ -1,21 +1,27 @@
 #include <stdio.h>
+
 #include "MasterServer.h"
 
 using namespace PinnedDownServer;
 
+bool MasterServer::running = false;
 
 MasterServer::MasterServer()
 {
 	this->socketManager = std::make_shared<SocketManager>(this);
+
+	SetConsoleCtrlHandler(&PinnedDownServer::MasterServer::OnConsoleCtrlSignal, TRUE);
 }
 
 void MasterServer::Start()
 {
 	this->socketManager->InitSocketManager();
-
+	
 	if (this->socketManager->IsInitialized())
 	{
-		while (true)
+		MasterServer::running = true;
+
+		while (MasterServer::running)
 		{
 			socketManager->Select(100);
 		}
@@ -64,4 +70,15 @@ void MasterServer::OnServerEvent(int clientId, ServerEvent serverEvent)
 
 	// Pass to socket manager.
 	this->socketManager->SendServerEvent(clientId, serverEvent);
+}
+
+BOOL WINAPI MasterServer::OnConsoleCtrlSignal(DWORD signal) {
+
+	if (signal == CTRL_C_EVENT)
+	{
+		MasterServer::running = false;
+		printf("Shutting down server...");
+	}		
+
+	return true;
 }

@@ -25,6 +25,9 @@ namespace PinnedDownServer
 		void OnServerEvent(int clientId, ServerEvent serverEvent);
 
 	private:
+		static bool running;
+		static BOOL WINAPI OnConsoleCtrlSignal(DWORD signal);
+
 		std::shared_ptr<SocketManager> socketManager;
 		
 		std::map<int, std::shared_ptr<ServerGame>> runningGames;
