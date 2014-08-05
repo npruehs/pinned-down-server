@@ -4,6 +4,9 @@
     <Filter Include="Network">
       <UniqueIdentifier>{f718dceb-1184-4e71-8fd1-4ebd05b3a580}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems">
+      <UniqueIdentifier>{883c378b-95a5-45d6-beba-56b7795c5b25}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -19,6 +22,9 @@
     <ClCompile Include="MasterServer.cpp" />
     <ClCompile Include="ServerGame.cpp" />
     <ClCompile Include="ServerEventDispatcher.cpp" />
+    <ClCompile Include="Systems\DistanceSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Network\ServerEventWriter.h">
@@ -33,5 +39,8 @@
     <ClInclude Include="MasterServer.h" />
     <ClInclude Include="ServerGame.h" />
     <ClInclude Include="ServerEventDispatcher.h" />
+    <ClInclude Include="Systems\DistanceSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
