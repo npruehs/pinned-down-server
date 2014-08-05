@@ -22,6 +22,5 @@ namespace PinnedDownServer
 		std::shared_ptr<Game> game;
 
 		void OnEvent(Event & event);
-		void DispatchServerEvent(ServerEvent event);
 	};
 }

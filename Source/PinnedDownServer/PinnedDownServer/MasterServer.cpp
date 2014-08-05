@@ -50,9 +50,9 @@ void MasterServer::OnClientDisconnected(int clientId)
 	}
 }
 
-void MasterServer::OnClientAction(int clientId, ClientAction clientAction)
+void MasterServer::OnClientAction(int clientId, std::shared_ptr<Event> clientAction)
 {
-	printf("Client %d sent action %d.\n", clientId, clientAction.actionType);
+	printf("Client %d sent action %s.\n", clientId, clientAction->GetEventType().getString());
 
 	// Pass to game.
 	auto iterator = this->runningGames.find(clientId);
@@ -64,9 +64,9 @@ void MasterServer::OnClientAction(int clientId, ClientAction clientAction)
 	}
 }
 
-void MasterServer::OnServerEvent(int clientId, ServerEvent serverEvent)
+void MasterServer::OnServerEvent(int clientId, Event& serverEvent)
 {
-	printf("Sending event %d to client %d.\n", serverEvent.eventType, clientId);
+	printf("Sending event %s to client %d.\n", serverEvent.GetEventType().getString(), clientId);
 
 	// Pass to socket manager.
 	this->socketManager->SendServerEvent(clientId, serverEvent);

@@ -21,8 +21,8 @@ namespace PinnedDownServer
 
 		void OnClientConnected(int clientId);
 		void OnClientDisconnected(int clientId);
-		void OnClientAction(int clientId, ClientAction clientAction);
-		void OnServerEvent(int clientId, ServerEvent serverEvent);
+		void OnClientAction(int clientId, std::shared_ptr<Event> clientAction);
+		void OnServerEvent(int clientId, Event& serverEvent);
 
 	private:
 		static bool running;

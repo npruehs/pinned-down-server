@@ -3,7 +3,6 @@
 #include <memory>
 
 #include "Game.h"
-#include "ClientActionDispatcher.h"
 #include "ServerEventDispatcher.h"
 
 using namespace PinnedDownCore;
@@ -17,8 +16,8 @@ namespace PinnedDownServer
     public:
 		ServerGame(MasterServer* masterServer, int clientId);
 
-		void OnClientAction(ClientAction clientAction);
-		void OnServerEvent(ServerEvent serverEvent);
+		void OnClientAction(std::shared_ptr<Event> clientAction);
+		void OnServerEvent(Event& serverEvent);
 
 		std::shared_ptr<Game> GetGame() { return std::shared_ptr<Game>(this->game); }
 
@@ -28,7 +27,6 @@ namespace PinnedDownServer
 		int clientId;
 
 		std::shared_ptr<Game> game;
-		std::shared_ptr<ClientActionDispatcher> clientActionDispatcher;
 		std::shared_ptr<ServerEventDispatcher> serverEventDispatcher;
 
 		void Update();

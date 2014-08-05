@@ -83,7 +83,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ClientActionDispatcher.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Network\ClientActionReader.cpp" />
     <ClCompile Include="Network\ServerEventWriter.cpp" />
@@ -101,7 +100,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ClientActionDispatcher.h" />
     <ClInclude Include="Network\ClientActionReader.h" />
     <ClInclude Include="Network\ServerEventWriter.h" />
     <ClInclude Include="Network\SocketManager.h" />

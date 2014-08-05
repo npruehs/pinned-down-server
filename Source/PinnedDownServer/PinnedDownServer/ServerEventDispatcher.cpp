@@ -12,11 +12,10 @@ ServerEventDispatcher::ServerEventDispatcher(ServerGame* serverGame, std::shared
 	this->game->eventManager->AddListener(this);
 }
 
-void ServerEventDispatcher::OnEvent(Event & newEvent)
+void ServerEventDispatcher::OnEvent(Event& newEvent)
 {
-}
-
-void ServerEventDispatcher::DispatchServerEvent(ServerEvent event)
-{
-	this->serverGame->OnServerEvent(event);
+	if (newEvent.GetNetRole() == NetRole::Client)
+	{
+		this->serverGame->OnServerEvent(newEvent);
+	}
 }

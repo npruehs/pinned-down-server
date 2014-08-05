@@ -2,18 +2,27 @@
 
 #include "ClientActionReader.h"
 
+#include "Actions\EndTurnAction.h"
+
+using namespace PinnedDownCore;
+using namespace PinnedDownNet::Events;
 using namespace PinnedDownServer::Network;
 
-ClientAction ClientActionReader::ReadClientAction(char* buffer)
+std::shared_ptr<Event> ClientActionReader::ReadClientAction(char* buffer)
 {
-	ClientAction action = ClientAction();
-	memcpy(&action.actionType, buffer, sizeof(ClientActionType));
+	std::istrstream	in(buffer);
 
-	switch (action.actionType)
+	char eventType[256];
+	in >> eventType;
+
+	HashedString hashedEventType = HashedString(eventType);
+
+	if (hashedEventType == EndTurnAction::EndTurnActionType)
 	{
-	case ClientActionType::SelectCard:
-		printf("Select card.\n");
+		auto endTurnAction = std::make_shared<EndTurnAction>();
+		endTurnAction->Deserialize(in);
+		return endTurnAction;
 	}
 
-	return action;
+	return nullptr;
 }

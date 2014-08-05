@@ -2,14 +2,18 @@
 #include <ws2tcpip.h>
 #include <stdio.h>
 #include <iostream>
+#include <memory>
 
 #include "SocketManager.h"
 #include "..\MasterServer.h"
+#include "Events\LoginSuccessEvent.h"
 
 #pragma comment(lib, "Ws2_32.lib")
 
+using namespace PinnedDownNet::Events;
 using namespace PinnedDownServer;
 using namespace PinnedDownServer::Network;
+
 
 SocketManager::SocketManager(MasterServer* masterServer)
 {
@@ -161,8 +165,8 @@ void SocketManager::Select(int milliseconds)
 				printf("Client connected: %s\n", inet_ntoa(sockaddr.sin_addr));
 
 				// Send login ACK.
-				ServerEvent serverEvent = ServerEvent(ServerEventType::LoginSuccess);
-				this->SendServerEvent(i, serverEvent);
+				auto serverEvent = std::make_shared<LoginSuccessEvent>();
+				this->SendServerEvent(i, *serverEvent);
 
 				if (clients[i] != INVALID_SOCKET)
 				{
@@ -186,8 +190,8 @@ void SocketManager::Select(int milliseconds)
 		// Check for new data or disconnects.
 		if (FD_ISSET(clients[i], &fdSet))
 		{
-			char recvbuf[DEFAULT_BUFLEN];
-			result = recv(clients[i], recvbuf, DEFAULT_BUFLEN, 0);
+			char recvbuf[4];
+			result = recv(clients[i], recvbuf, 4, 0);
 
 			// Check for disconnect.
 			if (result <= 0)
@@ -206,8 +210,18 @@ void SocketManager::Select(int milliseconds)
 			}
 			else
 			{
-				ClientAction action = clientActionReader.ReadClientAction(recvbuf);
-				this->masterServer->OnClientAction(i, action);
+				// Get packet size.
+				int packetSize = ((int*)recvbuf)[0];
+
+				// Receive packet.
+				auto packetBuffer = new char[packetSize];
+				result = recv(clients[i], packetBuffer, packetSize, 0);
+
+				// Parse client event.
+				std::shared_ptr<Event> clientAction = clientActionReader.ReadClientAction(packetBuffer);
+				this->masterServer->OnClientAction(i, clientAction);
+
+				delete packetBuffer;
 			}
 		}
 	}
@@ -218,7 +232,7 @@ bool SocketManager::IsInitialized()
 	return this->initialized;
 }
 
-void SocketManager::SendServerEvent(int clientId, ServerEvent serverEvent)
+void SocketManager::SendServerEvent(int clientId, Event& serverEvent)
 {
 	result = serverEventWriter.WriteServerEvent(clients[clientId], serverEvent);
 

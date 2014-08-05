@@ -14,17 +14,16 @@ ServerGame::ServerGame(MasterServer* masterServer, int clientId)
 	// Setup game infrastructure.
 	this->game = std::make_shared<Game>();
 
-	this->clientActionDispatcher = std::make_shared<ClientActionDispatcher>(this->game);
 	this->serverEventDispatcher = std::make_shared<ServerEventDispatcher>(this, this->game);
 }
 
-void ServerGame::OnClientAction(ClientAction clientAction)
+void ServerGame::OnClientAction(std::shared_ptr<Event> clientAction)
 {
-	this->clientActionDispatcher->DispatchClientAction(clientAction);
+	this->game->eventManager->QueueEvent(clientAction);
 	this->Update();
 }
 
-void ServerGame::OnServerEvent(ServerEvent serverEvent)
+void ServerGame::OnServerEvent(Event& serverEvent)
 {
 	this->masterServer->OnServerEvent(this->clientId, serverEvent);
 }

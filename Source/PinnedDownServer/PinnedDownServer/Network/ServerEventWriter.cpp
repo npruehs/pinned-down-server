@@ -1,12 +1,28 @@
-
+#include <memory>
+#include <strstream>
 
 #include "ServerEventWriter.h"
 
 using namespace PinnedDownServer::Network;
 
-int ServerEventWriter::WriteServerEvent(SOCKET client, ServerEvent event)
+int ServerEventWriter::WriteServerEvent(SOCKET client, Event& serverEvent)
 {
-	char sendbuf[512];
-	memcpy(&sendbuf, &event.eventType, sizeof(ServerEventType));
-	return send(client, sendbuf, sizeof(ServerEventType), 0);
+	std::ostrstream	out;
+
+	out << serverEvent.GetEventType().getString() << " ";
+	serverEvent.Serialize(out);
+	out << "\r\n";
+
+	auto buffer = out.rdbuf()->str();
+	int count = out.pcount();
+
+	auto sendBuffer = new char[count + sizeof(int)];
+	*(int*)sendBuffer = count;
+	memcpy(sendBuffer + sizeof(int), buffer, count);
+
+	int result = send(client, sendBuffer, count + sizeof(int), 0);
+
+	delete sendBuffer;
+
+	return result;
 }
