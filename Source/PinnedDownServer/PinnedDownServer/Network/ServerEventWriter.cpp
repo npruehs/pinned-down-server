@@ -9,12 +9,12 @@ int ServerEventWriter::WriteServerEvent(SOCKET client, Event& serverEvent)
 {
 	std::ostrstream	out;
 
-	out << serverEvent.GetEventType().getString() << " ";
+	out << serverEvent.GetEventType().GetString() << " ";
 	serverEvent.Serialize(out);
 	out << "\r\n";
 
 	auto buffer = out.rdbuf()->str();
-	int count = out.pcount();
+	int count = (int)out.pcount();
 
 	auto sendBuffer = new char[count + sizeof(int)];
 	*(int*)sendBuffer = count;
