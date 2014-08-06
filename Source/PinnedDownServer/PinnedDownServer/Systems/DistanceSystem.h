@@ -4,7 +4,10 @@
 #include "GameSystem.h"
 #include "IEventListener.h"
 
+#include "Events\TurnPhaseChangedEvent.h"
+
 using namespace PinnedDownCore;
+using namespace PinnedDownNet::Events;
 
 namespace PinnedDownServer
 {
@@ -22,6 +25,10 @@ namespace PinnedDownServer
 			int distanceMaximum;
 
 			void OnEvent(Event & event);
+
+			void OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent);
+
+			void SetDistanceCovered(int distanceCovered);
 		};
 	}
 }
