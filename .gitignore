@@ -29,3 +29,8 @@ Source/PinnedDownServer/Release/
 Source/PinnedDownServer/PinnedDownServer.v12.suo
 Source/PinnedDownServer/PinnedDownServer/PinnedDownServer.vcxproj.user
 Source/PinnedDownServerTests/PinnedDownServerTests/Debug/
+Source/PinnedDownGameplay/PinnedDownGameplay/Debug/
+Source/PinnedDownGameplay/PinnedDownGameplay/PinnedDownGameplay.vcxproj.user
+Source/PinnedDownServer/Debug/
+Source/PinnedDownTests/PinnedDownTests/Debug/
+Source/PinnedDownTests/PinnedDownTests/PinnedDownTests.vcxproj.user
