@@ -28,6 +28,9 @@
     <ClCompile Include="Systems\TurnPhaseSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Systems\DistanceVictorySystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Network\ServerEventWriter.h">
@@ -46,6 +49,9 @@
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="Systems\TurnPhaseSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\DistanceVictorySystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>
