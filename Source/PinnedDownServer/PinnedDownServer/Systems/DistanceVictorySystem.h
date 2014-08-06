@@ -4,6 +4,7 @@
 #include "GameSystem.h"
 #include "IEventListener.h"
 
+#include "Events\CoveredDistanceChangedEvent.h"
 #include "Events\TurnPhaseChangedEvent.h"
 
 using namespace PinnedDownCore;
@@ -13,22 +14,20 @@ namespace PinnedDownServer
 {
 	namespace Systems
 	{
-		class DistanceSystem : public GameSystem, public IEventListener
+		class DistanceVictorySystem : public GameSystem, public IEventListener
 		{
 		public:
-			DistanceSystem();
+			DistanceVictorySystem();
 
 			void InitSystem(PinnedDownCore::Game* game);
 
 		private:
-			int distanceCovered;
-			int distanceMaximum;
+			bool lastTurn = false;
 
 			void OnEvent(Event & event);
 
+			void OnCoveredDistanceChanged(CoveredDistanceChangedEvent& coveredDistanceChangedEvent);
 			void OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent);
-
-			void SetDistanceCovered(int distanceCovered);
 		};
 	}
 }

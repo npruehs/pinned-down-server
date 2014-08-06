@@ -15,15 +15,36 @@ void DistanceSystem::InitSystem(Game* game)
 {
 	GameSystem::InitSystem(game);
 
+	this->game->eventManager->AddListener(this, TurnPhaseChangedEvent::TurnPhaseChangedEventType);
+
 	// Setup victory condition.
-	this->distanceCovered = 0;
 	this->distanceMaximum = 5;
 
-	// Notify listeners.
-	auto coveredDistanceChangedEvent = std::make_shared<CoveredDistanceChangedEvent>(this->distanceCovered, this->distanceMaximum);
-	this->game->eventManager->QueueEvent(coveredDistanceChangedEvent);
+	this->SetDistanceCovered(0);
 }
 
 void DistanceSystem::OnEvent(Event & newEvent)
 {
+	if (newEvent.GetEventType() == TurnPhaseChangedEvent::TurnPhaseChangedEventType)
+	{
+		auto turnPhaseChangedEvent = static_cast<TurnPhaseChangedEvent&>(newEvent);
+		this->OnTurnPhaseChanged(turnPhaseChangedEvent);
+	}
+}
+
+void DistanceSystem::OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent)
+{
+	if (turnPhaseChangedEvent.newTurnPhase == TurnPhase::Jump)
+	{
+		this->SetDistanceCovered(this->distanceCovered + 1);
+	}
+}
+
+void DistanceSystem::SetDistanceCovered(int distanceCovered)
+{
+	this->distanceCovered = distanceCovered;
+
+	// Notify listeners.
+	auto coveredDistanceChangedEvent = std::make_shared<CoveredDistanceChangedEvent>(this->distanceCovered, this->distanceMaximum);
+	this->game->eventManager->QueueEvent(coveredDistanceChangedEvent);
 }

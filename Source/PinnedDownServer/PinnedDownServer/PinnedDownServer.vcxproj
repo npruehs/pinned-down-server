@@ -91,6 +91,8 @@
     <ClCompile Include="ServerEventDispatcher.cpp" />
     <ClCompile Include="ServerGame.cpp" />
     <ClCompile Include="Systems\DistanceSystem.cpp" />
+    <ClCompile Include="Systems\DistanceVictorySystem.cpp" />
+    <ClCompile Include="Systems\TurnPhaseSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\pinned-down-core\Source\PinnedDownCore\PinnedDownCore\PinnedDownCore.vcxproj">
@@ -108,6 +110,8 @@
     <ClInclude Include="ServerEventDispatcher.h" />
     <ClInclude Include="ServerGame.h" />
     <ClInclude Include="Systems\DistanceSystem.h" />
+    <ClInclude Include="Systems\DistanceVictorySystem.h" />
+    <ClInclude Include="Systems\TurnPhaseSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

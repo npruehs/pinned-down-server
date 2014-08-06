@@ -4,6 +4,8 @@
 #include "ServerGame.h"
 
 #include "Systems\DistanceSystem.h"
+#include "Systems\DistanceVictorySystem.h"
+#include "Systems\TurnPhaseSystem.h"
 
 using namespace PinnedDownCore;
 using namespace PinnedDownServer;
@@ -20,6 +22,8 @@ ServerGame::ServerGame(MasterServer* masterServer, int clientId)
 
 	// Init systems.
 	this->game->systemManager->AddSystem(std::make_shared<Systems::DistanceSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<Systems::DistanceVictorySystem>());
+	this->game->systemManager->AddSystem(std::make_shared<Systems::TurnPhaseSystem>());
 
 	this->game->systemManager->InitSystems();
 	this->Update();
