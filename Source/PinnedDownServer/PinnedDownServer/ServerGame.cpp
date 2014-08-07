@@ -7,10 +7,13 @@
 #include "Systems\DistanceSystem.h"
 #include "Systems\DistanceVictorySystem.h"
 #include "Systems\FlagshipSystem.h"
+#include "Systems\FlagshipDefeatSystem.h"
 #include "Systems\TurnPhaseSystem.h"
+
 
 using namespace PinnedDownCore;
 using namespace PinnedDownServer;
+
 
 ServerGame::ServerGame(MasterServer* masterServer, int clientId)
 {
@@ -27,6 +30,7 @@ ServerGame::ServerGame(MasterServer* masterServer, int clientId)
 	this->game->systemManager->AddSystem(std::make_shared<Systems::DistanceSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::DistanceVictorySystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::FlagshipSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<Systems::FlagshipDefeatSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::TurnPhaseSystem>());
 
 	this->game->systemManager->InitSystems();
