@@ -1,6 +1,9 @@
 #include "Event.h"
 #include "FlagshipSystem.h"
 
+#include "Events\CardCreatedEvent.h"
+
+using namespace PinnedDownNet::Events;
 using namespace PinnedDownServer::Systems;
 
 
@@ -25,5 +28,8 @@ void FlagshipSystem::OnEvent(Event & newEvent)
 
 void FlagshipSystem::PlayFlagships()
 {
-	this->cardFactory->CreateCard(0, 56);
+	Entity flagship = this->cardFactory->CreateCard(0, 56);
+
+	auto cardCreatedEvent = std::make_shared<CardCreatedEvent>(flagship, 0, 56);
+	this->game->eventManager->QueueEvent(cardCreatedEvent);
 }
