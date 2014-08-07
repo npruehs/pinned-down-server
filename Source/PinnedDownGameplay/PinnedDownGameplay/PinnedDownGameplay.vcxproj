@@ -88,13 +88,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Systems\CardStateSystem.cpp" />
     <ClCompile Include="Systems\DistanceSystem.cpp" />
     <ClCompile Include="Systems\DistanceVictorySystem.cpp" />
+    <ClCompile Include="Systems\FlagshipDefeatSystem.cpp" />
+    <ClCompile Include="Systems\FlagshipSystem.cpp" />
     <ClCompile Include="Systems\TurnPhaseSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Systems\CardStateSystem.h" />
     <ClInclude Include="Systems\DistanceSystem.h" />
     <ClInclude Include="Systems\DistanceVictorySystem.h" />
+    <ClInclude Include="Systems\FlagshipDefeatSystem.h" />
+    <ClInclude Include="Systems\FlagshipSystem.h" />
     <ClInclude Include="Systems\TurnPhaseSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

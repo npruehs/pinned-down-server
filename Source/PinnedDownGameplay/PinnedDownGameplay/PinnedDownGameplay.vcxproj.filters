@@ -15,6 +15,15 @@
     <ClCompile Include="Systems\TurnPhaseSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Systems\FlagshipSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\CardStateSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\FlagshipDefeatSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\DistanceSystem.h">
@@ -24,6 +33,15 @@
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="Systems\TurnPhaseSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\FlagshipSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\CardStateSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\FlagshipDefeatSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>
