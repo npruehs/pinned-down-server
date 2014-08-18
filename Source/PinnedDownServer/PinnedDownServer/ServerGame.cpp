@@ -16,13 +16,12 @@ using namespace PinnedDownServer;
 
 
 ServerGame::ServerGame(MasterServer* masterServer, int clientId)
+	: game(std::make_shared<Game>())
 {
 	this->masterServer = masterServer;
 	this->clientId = clientId;
 
 	// Setup game infrastructure.
-	this->game = std::make_shared<Game>();
-
 	this->serverEventDispatcher = std::make_shared<ServerEventDispatcher>(this, this->game);
 
 	// Init systems.

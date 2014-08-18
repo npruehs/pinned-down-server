@@ -16,14 +16,14 @@ using namespace PinnedDownServer::Network;
 
 
 SocketManager::SocketManager(MasterServer* masterServer)
+	: initialized(false),
+	result(0)
 {
 	this->masterServer = masterServer;
 }
 
 void SocketManager::InitSocketManager()
 {
-	this->initialized = false;
-
 	// Initialize Winsock.
 	WSADATA wsaData;
 

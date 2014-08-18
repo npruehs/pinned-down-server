@@ -8,6 +8,8 @@ using namespace PinnedDownServer::Systems;
 
 
 DistanceSystem::DistanceSystem()
+	: distanceCovered(0),
+	distanceMaximum(0)
 {
 }
 

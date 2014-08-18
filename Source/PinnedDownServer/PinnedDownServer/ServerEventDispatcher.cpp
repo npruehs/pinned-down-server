@@ -5,9 +5,9 @@ using namespace PinnedDownCore;
 using namespace PinnedDownServer;
 
 ServerEventDispatcher::ServerEventDispatcher(ServerGame* serverGame, std::shared_ptr<Game> game)
+	: game(game)
 {
 	this->serverGame = serverGame;
-	this->game = game;
 
 	this->game->eventManager->AddListener(this);
 }
