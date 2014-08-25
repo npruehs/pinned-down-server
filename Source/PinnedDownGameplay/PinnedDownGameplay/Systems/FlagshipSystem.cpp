@@ -1,9 +1,6 @@
 #include "Event.h"
 #include "FlagshipSystem.h"
 
-#include "Events\CardCreatedEvent.h"
-
-using namespace PinnedDownNet::Events;
 using namespace PinnedDownServer::Systems;
 
 

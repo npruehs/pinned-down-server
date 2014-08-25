@@ -30,6 +30,9 @@
     <ClCompile Include="Systems\ThreatSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Systems\EnemyAttackSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\DistanceSystem.h">
@@ -54,6 +57,9 @@
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="Systems\ThreatSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\EnemyAttackSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>

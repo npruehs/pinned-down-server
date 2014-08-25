@@ -6,6 +6,7 @@
 #include "Systems\CardStateSystem.h"
 #include "Systems\DistanceSystem.h"
 #include "Systems\DistanceVictorySystem.h"
+#include "Systems\EnemyAttackSystem.h"
 #include "Systems\FlagshipSystem.h"
 #include "Systems\FlagshipDefeatSystem.h"
 #include "Systems\JumpThreatSystem.h"
@@ -30,6 +31,7 @@ ServerGame::ServerGame(MasterServer* masterServer, int clientId)
 	this->game->systemManager->AddSystem(std::make_shared<Systems::CardStateSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::DistanceSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::DistanceVictorySystem>());
+	this->game->systemManager->AddSystem(std::make_shared<Systems::EnemyAttackSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::FlagshipSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::FlagshipDefeatSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::TurnPhaseSystem>());
