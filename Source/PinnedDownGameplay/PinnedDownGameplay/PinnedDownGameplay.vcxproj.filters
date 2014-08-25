@@ -27,6 +27,9 @@
     <ClCompile Include="Systems\JumpThreatSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Systems\ThreatSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\DistanceSystem.h">
@@ -48,6 +51,9 @@
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="Systems\JumpThreatSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\ThreatSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>
