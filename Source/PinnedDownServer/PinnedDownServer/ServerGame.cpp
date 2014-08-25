@@ -8,6 +8,7 @@
 #include "Systems\DistanceVictorySystem.h"
 #include "Systems\FlagshipSystem.h"
 #include "Systems\FlagshipDefeatSystem.h"
+#include "Systems\JumpThreatSystem.h"
 #include "Systems\TurnPhaseSystem.h"
 
 
@@ -31,6 +32,7 @@ ServerGame::ServerGame(MasterServer* masterServer, int clientId)
 	this->game->systemManager->AddSystem(std::make_shared<Systems::FlagshipSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::FlagshipDefeatSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::TurnPhaseSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<Systems::JumpThreatSystem>());
 
 	this->game->systemManager->InitSystems();
 	this->Update();
