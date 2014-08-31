@@ -1,35 +1,33 @@
 #pragma once
 
+#include <map>
+
 #include "Game.h"
 #include "GameSystem.h"
 #include "IEventListener.h"
 
-#include "Data\CardFactory.h"
-#include "Events\PlayerAddedEvent.h"
+#include "Actions\AssignCardAction.h"
 
 using namespace PinnedDownCore;
-using namespace PinnedDownNet::Data;
 using namespace PinnedDownNet::Events;
 
 namespace PinnedDownServer
 {
 	namespace Systems
 	{
-		class FlagshipSystem : public GameSystem, public IEventListener
+		class AssignmentSystem : public GameSystem, public IEventListener
 		{
 		public:
-			FlagshipSystem();
+			AssignmentSystem();
 
 			void InitSystem(PinnedDownCore::Game* game);
 
 		private:
-			std::shared_ptr<CardFactory> cardFactory;
+			std::map<Entity, Entity> currentAssignments;
 
 			void OnEvent(Event & event);
 
-			void OnPlayerAdded(PlayerAddedEvent& playerAddedEvent);
-
-			void PlayFlagships();
+			void OnAssignCard(AssignCardAction& assignCardAction);
 		};
 	}
 }

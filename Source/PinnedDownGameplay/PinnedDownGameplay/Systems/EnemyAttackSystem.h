@@ -5,20 +5,20 @@
 #include "IEventListener.h"
 
 #include "Data\CardFactory.h"
-#include "Events\PlayerAddedEvent.h"
+
+#include "Events\TurnPhaseChangedEvent.h"
 
 using namespace PinnedDownCore;
-using namespace PinnedDownNet::Data;
 using namespace PinnedDownNet::Events;
 
 namespace PinnedDownServer
 {
 	namespace Systems
 	{
-		class FlagshipSystem : public GameSystem, public IEventListener
+		class EnemyAttackSystem : public GameSystem, public IEventListener
 		{
 		public:
-			FlagshipSystem();
+			EnemyAttackSystem();
 
 			void InitSystem(PinnedDownCore::Game* game);
 
@@ -27,9 +27,9 @@ namespace PinnedDownServer
 
 			void OnEvent(Event & event);
 
-			void OnPlayerAdded(PlayerAddedEvent& playerAddedEvent);
+			void OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent);
 
-			void PlayFlagships();
+			void PlayEnemyCards();
 		};
 	}
 }
