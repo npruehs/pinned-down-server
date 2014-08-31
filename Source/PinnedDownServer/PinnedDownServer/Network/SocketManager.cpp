@@ -165,7 +165,7 @@ void SocketManager::Select(int milliseconds)
 				printf("Client connected: %s\n", inet_ntoa(sockaddr.sin_addr));
 
 				// Send login ACK.
-				auto serverEvent = std::make_shared<LoginSuccessEvent>();
+				auto serverEvent = std::make_shared<LoginSuccessEvent>(i);
 				this->SendServerEvent(i, *serverEvent);
 
 				if (clients[i] != INVALID_SOCKET)

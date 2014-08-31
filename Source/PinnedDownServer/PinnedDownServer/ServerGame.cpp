@@ -3,6 +3,8 @@
 #include "MasterServer.h"
 #include "ServerGame.h"
 
+#include "Events\ClientConnectedEvent.h"
+
 #include "Systems\CardStateSystem.h"
 #include "Systems\DistanceSystem.h"
 #include "Systems\DistanceVictorySystem.h"
@@ -10,11 +12,13 @@
 #include "Systems\FlagshipSystem.h"
 #include "Systems\FlagshipDefeatSystem.h"
 #include "Systems\JumpThreatSystem.h"
+#include "Systems\PlayerSystem.h"
 #include "Systems\ThreatSystem.h"
 #include "Systems\TurnPhaseSystem.h"
 
 
 using namespace PinnedDownCore;
+using namespace PinnedDownGameplay::Events;
 using namespace PinnedDownServer;
 
 
@@ -36,9 +40,15 @@ ServerGame::ServerGame(MasterServer* masterServer, int clientId)
 	this->game->systemManager->AddSystem(std::make_shared<Systems::FlagshipDefeatSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::TurnPhaseSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::JumpThreatSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<Systems::PlayerSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::ThreatSystem>());
 
 	this->game->systemManager->InitSystems();
+	this->Update();
+
+	// Add first player.
+	auto clientConnectedEvent = std::make_shared<ClientConnectedEvent>(this->clientId);
+	this->game->eventManager->QueueEvent(clientConnectedEvent);
 	this->Update();
 }
 
