@@ -5,10 +5,11 @@
 #include "IEventListener.h"
 
 #include "Data\CardFactory.h"
+#include "Events\PlayerAddedEvent.h"
 
 using namespace PinnedDownCore;
 using namespace PinnedDownNet::Data;
-
+using namespace PinnedDownNet::Events;
 
 namespace PinnedDownServer
 {
@@ -25,6 +26,8 @@ namespace PinnedDownServer
 			std::shared_ptr<CardFactory> cardFactory;
 
 			void OnEvent(Event & event);
+
+			void OnPlayerAdded(PlayerAddedEvent& playerAddedEvent);
 
 			void PlayFlagships();
 		};

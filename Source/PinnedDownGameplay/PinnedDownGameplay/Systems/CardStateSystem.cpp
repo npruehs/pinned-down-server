@@ -2,6 +2,7 @@
 #include "CardStateSystem.h"
 
 #include "Components\CardComponent.h"
+#include "Components\OwnerComponent.h"
 
 #include "Events\CardCreatedEvent.h"
 #include "Events\CardRemovedEvent.h"
@@ -41,11 +42,12 @@ void CardStateSystem::OnEntityInitialized(EntityInitializedEvent& entityInitiali
 {
 	auto entity = entityInitializedEvent.entity;
 	auto cardComponent = this->game->entityManager->GetComponent<CardComponent>(entity, CardComponent::CardComponentType);
+	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(entity, OwnerComponent::OwnerComponentType);
 
-	if (cardComponent != nullptr)
+	if (cardComponent != nullptr && ownerComponent != nullptr)
 	{
 		// Notify client.
-		auto cardCreatedEvent = std::make_shared<CardCreatedEvent>(entity, cardComponent->setIndex, cardComponent->cardIndex);
+		auto cardCreatedEvent = std::make_shared<CardCreatedEvent>(entity, ownerComponent->owner, cardComponent->setIndex, cardComponent->cardIndex);
 		this->game->eventManager->QueueEvent(cardCreatedEvent);
 	}
 }

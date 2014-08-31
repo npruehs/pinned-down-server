@@ -1,3 +1,4 @@
+#include "EntityManager.h"
 #include "Event.h"
 #include "EnemyAttackSystem.h"
 
@@ -42,7 +43,7 @@ void EnemyAttackSystem::OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChang
 void EnemyAttackSystem::PlayEnemyCards()
 {
 	// Play enemy card.
-	this->cardFactory->CreateCard(0, 73);
+	this->cardFactory->CreateCard(INVALID_ENTITY_ID, 0, 73);
 
 	// End turn phase.
 	auto endTurnAction = std::make_shared<EndTurnAction>();
