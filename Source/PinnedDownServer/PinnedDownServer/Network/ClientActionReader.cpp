@@ -2,6 +2,7 @@
 
 #include "ClientActionReader.h"
 
+#include "Actions\AssignCardAction.h"
 #include "Actions\EndTurnAction.h"
 
 using namespace PinnedDownCore;
@@ -17,7 +18,13 @@ std::shared_ptr<Event> ClientActionReader::ReadClientAction(char* buffer)
 
 	HashedString hashedEventType = HashedString(eventType);
 
-	if (hashedEventType == EndTurnAction::EndTurnActionType)
+	if (hashedEventType == AssignCardAction::AssignCardActionType)
+	{
+		auto assignCardAction = std::make_shared<AssignCardAction>();
+		assignCardAction->Deserialize(in);
+		return assignCardAction;
+	}
+	else if (hashedEventType == EndTurnAction::EndTurnActionType)
 	{
 		auto endTurnAction = std::make_shared<EndTurnAction>();
 		endTurnAction->Deserialize(in);

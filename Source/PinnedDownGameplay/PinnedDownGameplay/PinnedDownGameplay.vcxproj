@@ -89,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Events\ClientConnectedEvent.cpp" />
+    <ClCompile Include="Systems\AssignmentSystem.cpp" />
     <ClCompile Include="Systems\CardStateSystem.cpp" />
     <ClCompile Include="Systems\DistanceSystem.cpp" />
     <ClCompile Include="Systems\DistanceVictorySystem.cpp" />
@@ -102,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Events\ClientConnectedEvent.h" />
+    <ClInclude Include="Systems\AssignmentSystem.h" />
     <ClInclude Include="Systems\CardStateSystem.h" />
     <ClInclude Include="Systems\DistanceSystem.h" />
     <ClInclude Include="Systems\DistanceVictorySystem.h" />
