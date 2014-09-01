@@ -89,11 +89,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Events\ClientConnectedEvent.cpp" />
+    <ClCompile Include="Events\FightStartedEvent.cpp" />
     <ClCompile Include="Systems\AssignmentSystem.cpp" />
     <ClCompile Include="Systems\CardStateSystem.cpp" />
     <ClCompile Include="Systems\DistanceSystem.cpp" />
     <ClCompile Include="Systems\DistanceVictorySystem.cpp" />
     <ClCompile Include="Systems\EnemyAttackSystem.cpp" />
+    <ClCompile Include="Systems\FightSystem.cpp" />
     <ClCompile Include="Systems\FlagshipDefeatSystem.cpp" />
     <ClCompile Include="Systems\FlagshipSystem.cpp" />
     <ClCompile Include="Systems\JumpThreatSystem.cpp" />
@@ -103,11 +105,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Events\ClientConnectedEvent.h" />
+    <ClInclude Include="Events\FightStartedEvent.h" />
     <ClInclude Include="Systems\AssignmentSystem.h" />
     <ClInclude Include="Systems\CardStateSystem.h" />
     <ClInclude Include="Systems\DistanceSystem.h" />
     <ClInclude Include="Systems\DistanceVictorySystem.h" />
     <ClInclude Include="Systems\EnemyAttackSystem.h" />
+    <ClInclude Include="Systems\FightSystem.h" />
     <ClInclude Include="Systems\FlagshipDefeatSystem.h" />
     <ClInclude Include="Systems\FlagshipSystem.h" />
     <ClInclude Include="Systems\JumpThreatSystem.h" />

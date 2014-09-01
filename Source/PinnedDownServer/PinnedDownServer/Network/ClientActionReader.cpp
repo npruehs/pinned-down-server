@@ -4,6 +4,7 @@
 
 #include "Actions\AssignCardAction.h"
 #include "Actions\EndTurnAction.h"
+#include "Actions\ResolveFightAction.h"
 
 using namespace PinnedDownCore;
 using namespace PinnedDownNet::Events;
@@ -30,6 +31,12 @@ std::shared_ptr<Event> ClientActionReader::ReadClientAction(char* buffer)
 		endTurnAction->Deserialize(in);
 		return endTurnAction;
 	}
-
+	else if (hashedEventType == ResolveFightAction::ResolveFightActionType)
+	{
+		auto resolveFightAction = std::make_shared<ResolveFightAction>();
+		resolveFightAction->Deserialize(in);
+		return resolveFightAction;
+	}
+	
 	return nullptr;
 }

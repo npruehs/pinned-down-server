@@ -45,6 +45,12 @@
     <ClCompile Include="Systems\AssignmentSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Events\FightStartedEvent.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\FightSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\DistanceSystem.h">
@@ -81,6 +87,12 @@
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="Systems\AssignmentSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\FightStartedEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\FightSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>

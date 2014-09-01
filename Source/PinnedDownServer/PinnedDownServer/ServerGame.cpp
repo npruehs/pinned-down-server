@@ -10,6 +10,7 @@
 #include "Systems\DistanceSystem.h"
 #include "Systems\DistanceVictorySystem.h"
 #include "Systems\EnemyAttackSystem.h"
+#include "Systems\FightSystem.h"
 #include "Systems\FlagshipSystem.h"
 #include "Systems\FlagshipDefeatSystem.h"
 #include "Systems\JumpThreatSystem.h"
@@ -44,6 +45,7 @@ ServerGame::ServerGame(MasterServer* masterServer, int clientId)
 	this->game->systemManager->AddSystem(std::make_shared<Systems::PlayerSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::ThreatSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::AssignmentSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<Systems::FightSystem>());
 
 	this->game->systemManager->InitSystems();
 	this->Update();

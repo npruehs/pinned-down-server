@@ -7,6 +7,7 @@
 #include "IEventListener.h"
 
 #include "Actions\AssignCardAction.h"
+#include "Actions\ResolveFightAction.h"
 
 using namespace PinnedDownCore;
 using namespace PinnedDownNet::Events;
@@ -28,6 +29,7 @@ namespace PinnedDownServer
 			void OnEvent(Event & event);
 
 			void OnAssignCard(AssignCardAction& assignCardAction);
+			void OnResolveFight(ResolveFightAction& resolveFightAction);
 		};
 	}
 }

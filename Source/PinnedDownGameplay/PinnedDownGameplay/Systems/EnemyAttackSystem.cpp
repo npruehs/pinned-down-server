@@ -43,7 +43,7 @@ void EnemyAttackSystem::OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChang
 void EnemyAttackSystem::PlayEnemyCards()
 {
 	// Play enemy card.
-	this->cardFactory->CreateCard(INVALID_ENTITY_ID, 0, 73);
+	this->cardFactory->CreateCard(INVALID_ENTITY_ID, 0, 84);
 
 	// End turn phase.
 	auto endTurnAction = std::make_shared<EndTurnAction>();
