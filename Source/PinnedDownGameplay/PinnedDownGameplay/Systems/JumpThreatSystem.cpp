@@ -1,10 +1,11 @@
 #include "Event.h"
 #include "JumpThreatSystem.h"
 
-#include "Actions\AddThreatAction.h"
+#include "..\Actions\AddThreatAction.h"
 #include "Actions\EndTurnAction.h"
 
 using namespace PinnedDownNet::Events;
+using namespace PinnedDownServer::Events;
 using namespace PinnedDownServer::Systems;
 
 

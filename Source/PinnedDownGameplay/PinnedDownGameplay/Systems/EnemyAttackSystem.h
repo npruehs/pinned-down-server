@@ -8,6 +8,7 @@
 #include "Data\CardFactory.h"
 #include "..\Data\Deck.h"
 
+#include "Events\ThreatChangedEvent.h"
 #include "Events\TurnPhaseChangedEvent.h"
 
 using namespace PinnedDownCore;
@@ -26,13 +27,15 @@ namespace PinnedDownServer
 			void InitSystem(PinnedDownCore::Game* game);
 
 		private:
+			int currentThreat;
 			std::shared_ptr<CardFactory> cardFactory;
 			std::shared_ptr<Deck> attackDeck;
 
 			void OnEvent(Event & event);
 
+			void OnThreatChanged(ThreatChangedEvent& threatChangedEvent);
 			void OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent);
-
+			
 			void PrepareAttackDeck();
 			void PlayEnemyCards();
 		};

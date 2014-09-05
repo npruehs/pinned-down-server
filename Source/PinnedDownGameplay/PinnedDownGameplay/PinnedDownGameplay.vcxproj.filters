@@ -10,6 +10,9 @@
     <Filter Include="Data">
       <UniqueIdentifier>{78535052-bf2c-4145-9006-fa36c2456835}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Actions">
+      <UniqueIdentifier>{c389a30d-3815-4012-85f5-5cf32dcb75cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Systems\DistanceSystem.cpp">
@@ -56,6 +59,12 @@
     </ClCompile>
     <ClCompile Include="Data\Deck.cpp">
       <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Actions\AddThreatAction.cpp">
+      <Filter>Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\EnemyCardPlayedEvent.cpp">
+      <Filter>Events</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -106,6 +115,12 @@
     </ClInclude>
     <ClInclude Include="Data\Deck.h">
       <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Actions\AddThreatAction.h">
+      <Filter>Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\EnemyCardPlayedEvent.h">
+      <Filter>Events</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

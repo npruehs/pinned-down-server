@@ -4,10 +4,11 @@
 #include "GameSystem.h"
 #include "IEventListener.h"
 
-#include "Actions\AddThreatAction.h"
+#include "..\Actions\AddThreatAction.h"
+#include "..\Events\EnemyCardPlayedEvent.h"
 
 using namespace PinnedDownCore;
-using namespace PinnedDownNet::Events;
+using namespace PinnedDownServer::Events;
 
 namespace PinnedDownServer
 {
@@ -26,6 +27,7 @@ namespace PinnedDownServer
 			void OnEvent(Event & event);
 
 			void OnAddThreat(AddThreatAction& addThreatAction);
+			void OnEnemyCardPlayed(EnemyCardPlayedEvent& enemyCardPlayedEvent);
 
 			void SetThreat(int newThreat);
 		};
