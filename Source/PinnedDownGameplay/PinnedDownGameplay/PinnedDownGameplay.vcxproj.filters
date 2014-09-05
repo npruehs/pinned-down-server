@@ -13,6 +13,9 @@
     <Filter Include="Actions">
       <UniqueIdentifier>{c389a30d-3815-4012-85f5-5cf32dcb75cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{412e0fd5-18ab-40fb-865d-8abb83be4067}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Systems\DistanceSystem.cpp">
@@ -65,6 +68,9 @@
     </ClCompile>
     <ClCompile Include="Events\EnemyCardPlayedEvent.cpp">
       <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Random.cpp">
+      <Filter>Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="Events\EnemyCardPlayedEvent.h">
       <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Random.h">
+      <Filter>Util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

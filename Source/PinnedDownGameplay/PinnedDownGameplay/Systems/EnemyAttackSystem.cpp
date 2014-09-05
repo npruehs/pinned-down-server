@@ -117,4 +117,10 @@ void EnemyAttackSystem::PrepareAttackDeck()
 
 	this->attackDeck->Add(CardData(0, 73));
 	this->attackDeck->Add(CardData(0, 84));
+	this->attackDeck->Add(CardData(0, 84));
+	this->attackDeck->Add(CardData(0, 84));
+
+	// Shuffle deck.
+	auto random = std::make_shared<Random>();
+	this->attackDeck->Shuffle(random);
 }

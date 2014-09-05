@@ -1,8 +1,13 @@
 #pragma once
 
-#include <list>
+#include <memory>
+#include <vector>
 
 #include "CardData.h"
+
+#include "..\Util\Random.h"
+
+using namespace PinnedDownServer::Util;
 
 namespace PinnedDownServer
 {
@@ -16,9 +21,11 @@ namespace PinnedDownServer
 			void Add(CardData data);
 			CardData Draw();
 			bool IsEmpty();
+			void Shuffle(std::shared_ptr<Random> random);
 
 		private:
-			std::list<CardData> cards;
+			int current;
+			std::vector<CardData> cards;
 		};
 	}
 }
