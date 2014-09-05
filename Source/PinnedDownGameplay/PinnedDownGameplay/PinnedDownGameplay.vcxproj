@@ -88,6 +88,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Data\Deck.cpp" />
     <ClCompile Include="Events\ClientConnectedEvent.cpp" />
     <ClCompile Include="Events\FightStartedEvent.cpp" />
     <ClCompile Include="Systems\AssignmentSystem.cpp" />
@@ -104,6 +105,8 @@
     <ClCompile Include="Systems\TurnPhaseSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Data\CardData.h" />
+    <ClInclude Include="Data\Deck.h" />
     <ClInclude Include="Events\ClientConnectedEvent.h" />
     <ClInclude Include="Events\FightStartedEvent.h" />
     <ClInclude Include="Systems\AssignmentSystem.h" />

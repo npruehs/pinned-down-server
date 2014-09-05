@@ -5,6 +5,7 @@
 #include "Actions\EndTurnAction.h"
 
 using namespace PinnedDownNet::Events;
+using namespace PinnedDownServer::Data;
 using namespace PinnedDownServer::Systems;
 
 
@@ -18,6 +19,9 @@ void EnemyAttackSystem::InitSystem(Game* game)
 
 	// Setup card factory.
 	this->cardFactory = std::make_shared<CardFactory>(this->game);
+
+	// Prepare attack deck.
+	this->PrepareAttackDeck();
 
 	// Register for events.
 	this->game->eventManager->AddListener(this, TurnPhaseChangedEvent::TurnPhaseChangedEventType);
@@ -43,9 +47,21 @@ void EnemyAttackSystem::OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChang
 void EnemyAttackSystem::PlayEnemyCards()
 {
 	// Play enemy card.
-	this->cardFactory->CreateCard(INVALID_ENTITY_ID, 0, 84);
+	CardData topCard = this->attackDeck->Draw();
+	this->cardFactory->CreateCard(INVALID_ENTITY_ID, topCard.setIndex, topCard.cardIndex);
 
 	// End turn phase.
 	auto endTurnAction = std::make_shared<EndTurnAction>();
 	this->game->eventManager->QueueEvent(endTurnAction);
+}
+
+void EnemyAttackSystem::PrepareAttackDeck()
+{
+	// Add cards.
+	this->attackDeck = std::make_shared<Deck>();
+
+	for (int i = 0; i < 100; i++)
+	{
+		this->attackDeck->Add(CardData(0, 84));
+	}
 }

@@ -7,6 +7,9 @@
     <Filter Include="Events">
       <UniqueIdentifier>{54f684dc-628a-4c08-80c9-1b49e2e54eb6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{78535052-bf2c-4145-9006-fa36c2456835}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Systems\DistanceSystem.cpp">
@@ -51,6 +54,9 @@
     <ClCompile Include="Systems\FightSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Data\Deck.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\DistanceSystem.h">
@@ -94,6 +100,12 @@
     </ClInclude>
     <ClInclude Include="Systems\FightSystem.h">
       <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\CardData.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\Deck.h">
+      <Filter>Data</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
