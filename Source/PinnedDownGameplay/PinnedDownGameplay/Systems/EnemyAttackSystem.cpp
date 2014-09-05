@@ -68,6 +68,11 @@ void EnemyAttackSystem::PlayEnemyCards()
 	while (true)
 	{
 		// Get top enemy card.
+		if (this->attackDeck->IsEmpty())
+		{
+			this->PrepareAttackDeck();
+		}
+
 		CardData topCard = this->attackDeck->Draw();
 		auto cardEntity = this->cardFactory->PrepareCard(INVALID_ENTITY_ID, topCard.setIndex, topCard.cardIndex);
 
@@ -104,8 +109,5 @@ void EnemyAttackSystem::PrepareAttackDeck()
 	// Add cards.
 	this->attackDeck = std::make_shared<Deck>();
 
-	for (int i = 0; i < 100; i++)
-	{
-		this->attackDeck->Add(CardData(0, 84));
-	}
+	this->attackDeck->Add(CardData(0, 84));
 }

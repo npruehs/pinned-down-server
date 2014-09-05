@@ -18,3 +18,8 @@ CardData Deck::Draw()
 	this->cards.pop_front();
 	return card;
 }
+
+bool Deck::IsEmpty()
+{
+	return this->cards.empty();
+}

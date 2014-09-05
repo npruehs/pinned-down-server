@@ -15,6 +15,7 @@ namespace PinnedDownServer
 
 			void Add(CardData data);
 			CardData Draw();
+			bool IsEmpty();
 
 		private:
 			std::list<CardData> cards;
