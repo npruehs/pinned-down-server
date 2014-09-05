@@ -88,6 +88,12 @@ void EnemyAttackSystem::PlayEnemyCards()
 			// Notify listeners.
 			auto enemyCardPlayedEvent = std::make_shared<EnemyCardPlayedEvent>(cardEntity);
 			this->game->eventManager->QueueEvent(enemyCardPlayedEvent);
+
+			if (remainingThreat == 0)
+			{
+				// Stop playing.
+				break;
+			}
 		}
 		else
 		{
@@ -109,5 +115,6 @@ void EnemyAttackSystem::PrepareAttackDeck()
 	// Add cards.
 	this->attackDeck = std::make_shared<Deck>();
 
+	this->attackDeck->Add(CardData(0, 73));
 	this->attackDeck->Add(CardData(0, 84));
 }
