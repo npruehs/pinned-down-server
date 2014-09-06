@@ -88,7 +88,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Actions\AddThreatAction.cpp" />
+    <ClCompile Include="Data\Deck.cpp" />
     <ClCompile Include="Events\ClientConnectedEvent.cpp" />
+    <ClCompile Include="Events\EnemyCardPlayedEvent.cpp" />
     <ClCompile Include="Events\FightStartedEvent.cpp" />
     <ClCompile Include="Systems\AssignmentSystem.cpp" />
     <ClCompile Include="Systems\CardStateSystem.cpp" />
@@ -102,9 +105,14 @@
     <ClCompile Include="Systems\PlayerSystem.cpp" />
     <ClCompile Include="Systems\ThreatSystem.cpp" />
     <ClCompile Include="Systems\TurnPhaseSystem.cpp" />
+    <ClCompile Include="Util\Random.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actions\AddThreatAction.h" />
+    <ClInclude Include="Data\CardData.h" />
+    <ClInclude Include="Data\Deck.h" />
     <ClInclude Include="Events\ClientConnectedEvent.h" />
+    <ClInclude Include="Events\EnemyCardPlayedEvent.h" />
     <ClInclude Include="Events\FightStartedEvent.h" />
     <ClInclude Include="Systems\AssignmentSystem.h" />
     <ClInclude Include="Systems\CardStateSystem.h" />
@@ -118,6 +126,7 @@
     <ClInclude Include="Systems\PlayerSystem.h" />
     <ClInclude Include="Systems\ThreatSystem.h" />
     <ClInclude Include="Systems\TurnPhaseSystem.h" />
+    <ClInclude Include="Util\Random.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

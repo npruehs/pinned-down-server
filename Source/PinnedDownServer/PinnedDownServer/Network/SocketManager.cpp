@@ -162,7 +162,11 @@ void SocketManager::Select(int milliseconds)
 				int sockaddrLen = sizeof(sockaddr);
 
 				clients[i] = accept(listenSocket, (struct sockaddr*)&sockaddr, &sockaddrLen);
-				printf("Client connected: %s\n", inet_ntoa(sockaddr.sin_addr));
+
+				// Get client IP address.
+				char buffer[16];
+				inet_ntop(AF_INET, &sockaddr.sin_addr, buffer, sizeof(buffer));
+				printf("Client connected: %s\n", buffer);
 
 				// Send login ACK.
 				auto serverEvent = std::make_shared<LoginSuccessEvent>(i);
