@@ -7,6 +7,7 @@
 
 #include "Systems\AssignmentSystem.h"
 #include "Systems\CardStateSystem.h"
+#include "Systems\DamageSystem.h"
 #include "Systems\DistanceSystem.h"
 #include "Systems\DistanceVictorySystem.h"
 #include "Systems\EnemyAttackSystem.h"
@@ -35,6 +36,7 @@ ServerGame::ServerGame(MasterServer* masterServer, int clientId)
 
 	// Init systems.
 	this->game->systemManager->AddSystem(std::make_shared<Systems::CardStateSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<Systems::DamageSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::DistanceSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::DistanceVictorySystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::EnemyAttackSystem>());

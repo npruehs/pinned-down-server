@@ -4,6 +4,8 @@
 #include "Components\PowerComponent.h"
 
 #include "Events\FightResolvedEvent.h"
+#include "..\Events\ShipDefeatedEvent.h"
+#include "..\Events\ShipVictoriousEvent.h"
 
 using namespace PinnedDownGameplay::Events;
 using namespace PinnedDownServer::Systems;
@@ -37,15 +39,14 @@ void FightSystem::OnFightStarted(FightStartedEvent& fightStartedEvent)
 	auto playerPowerComponent = this->game->entityManager->GetComponent<PowerComponent>(fightStartedEvent.playerShip, PowerComponent::PowerComponentType);
 	auto enemyPowerComponent = this->game->entityManager->GetComponent<PowerComponent>(fightStartedEvent.enemyShip, PowerComponent::PowerComponentType);
 
-	// Remove defeated ship.
-	if (playerPowerComponent->power <= enemyPowerComponent->power)
-	{
-		this->game->entityManager->RemoveEntity(fightStartedEvent.playerShip);
-	}
-	else
-	{
-		this->game->entityManager->RemoveEntity(fightStartedEvent.enemyShip);
-	}
+	// Notify listeners.
+	auto winner = playerPowerComponent->power <= enemyPowerComponent->power ? fightStartedEvent.enemyShip : fightStartedEvent.playerShip;
+	auto loser = playerPowerComponent->power <= enemyPowerComponent->power ? fightStartedEvent.playerShip : fightStartedEvent.enemyShip;
+
+	auto shipVictoriousEvent = std::make_shared<ShipVictoriousEvent>(winner);
+	this->game->eventManager->QueueEvent(shipVictoriousEvent);
+	auto shipDefeatedEvent = std::make_shared<ShipDefeatedEvent>(loser);
+	this->game->eventManager->QueueEvent(shipDefeatedEvent);
 
 	// Notify client.
 	auto fightResolvedEvent = std::make_shared<FightResolvedEvent>(fightStartedEvent.playerShip);

@@ -93,8 +93,11 @@
     <ClCompile Include="Events\ClientConnectedEvent.cpp" />
     <ClCompile Include="Events\EnemyCardPlayedEvent.cpp" />
     <ClCompile Include="Events\FightStartedEvent.cpp" />
+    <ClCompile Include="Events\ShipDefeatedEvent.cpp" />
+    <ClCompile Include="Events\ShipVictoriousEvent.cpp" />
     <ClCompile Include="Systems\AssignmentSystem.cpp" />
     <ClCompile Include="Systems\CardStateSystem.cpp" />
+    <ClCompile Include="Systems\DamageSystem.cpp" />
     <ClCompile Include="Systems\DistanceSystem.cpp" />
     <ClCompile Include="Systems\DistanceVictorySystem.cpp" />
     <ClCompile Include="Systems\EnemyAttackSystem.cpp" />
@@ -114,8 +117,11 @@
     <ClInclude Include="Events\ClientConnectedEvent.h" />
     <ClInclude Include="Events\EnemyCardPlayedEvent.h" />
     <ClInclude Include="Events\FightStartedEvent.h" />
+    <ClInclude Include="Events\ShipDefeatedEvent.h" />
+    <ClInclude Include="Events\ShipVictoriousEvent.h" />
     <ClInclude Include="Systems\AssignmentSystem.h" />
     <ClInclude Include="Systems\CardStateSystem.h" />
+    <ClInclude Include="Systems\DamageSystem.h" />
     <ClInclude Include="Systems\DistanceSystem.h" />
     <ClInclude Include="Systems\DistanceVictorySystem.h" />
     <ClInclude Include="Systems\EnemyAttackSystem.h" />
