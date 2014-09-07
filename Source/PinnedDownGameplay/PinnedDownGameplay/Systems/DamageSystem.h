@@ -11,6 +11,7 @@
 #include "..\Data\Deck.h"
 
 #include "..\Events\ShipDefeatedEvent.h"
+#include "EntityRemovedEvent.h"
 
 #include "Damage\DamageData.h"
 
@@ -38,6 +39,7 @@ namespace PinnedDownServer
 
 			void OnEvent(Event & event);
 
+			void OnEntityRemoved(EntityRemovedEvent& EntityRemovedEvent);
 			void OnShipDefeated(ShipDefeatedEvent& shipDefeatedEvent);
 
 			void PrepareDamageDeck();

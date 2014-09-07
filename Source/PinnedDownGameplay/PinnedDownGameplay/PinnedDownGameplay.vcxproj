@@ -104,6 +104,7 @@
     <ClCompile Include="Systems\FightSystem.cpp" />
     <ClCompile Include="Systems\FlagshipDefeatSystem.cpp" />
     <ClCompile Include="Systems\FlagshipSystem.cpp" />
+    <ClCompile Include="Systems\JumpEnemyRemovalSystem.cpp" />
     <ClCompile Include="Systems\JumpThreatSystem.cpp" />
     <ClCompile Include="Systems\PlayerSystem.cpp" />
     <ClCompile Include="Systems\ThreatSystem.cpp" />
@@ -129,6 +130,7 @@
     <ClInclude Include="Systems\FightSystem.h" />
     <ClInclude Include="Systems\FlagshipDefeatSystem.h" />
     <ClInclude Include="Systems\FlagshipSystem.h" />
+    <ClInclude Include="Systems\JumpEnemyRemovalSystem.h" />
     <ClInclude Include="Systems\JumpThreatSystem.h" />
     <ClInclude Include="Systems\PlayerSystem.h" />
     <ClInclude Include="Systems\ThreatSystem.h" />

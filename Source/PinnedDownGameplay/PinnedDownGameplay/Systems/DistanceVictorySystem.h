@@ -5,7 +5,6 @@
 #include "IEventListener.h"
 
 #include "Events\CoveredDistanceChangedEvent.h"
-#include "Events\TurnPhaseChangedEvent.h"
 
 using namespace PinnedDownCore;
 using namespace PinnedDownNet::Events;
@@ -27,7 +26,6 @@ namespace PinnedDownServer
 			void OnEvent(Event & event);
 
 			void OnCoveredDistanceChanged(CoveredDistanceChangedEvent& coveredDistanceChangedEvent);
-			void OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent);
 		};
 	}
 }

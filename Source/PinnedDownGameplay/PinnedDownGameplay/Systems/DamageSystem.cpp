@@ -27,15 +27,40 @@ void DamageSystem::InitSystem(Game* game)
 	this->PrepareDamageDeck();
 
 	// Register for events.
+	this->game->eventManager->AddListener(this, EntityRemovedEvent::EntityRemovedEventType);
 	this->game->eventManager->AddListener(this, ShipDefeatedEvent::ShipDefeatedEventType);
 }
 
 void DamageSystem::OnEvent(Event & newEvent)
 {
-	if (newEvent.GetEventType() == ShipDefeatedEvent::ShipDefeatedEventType)
+	if (newEvent.GetEventType() == EntityRemovedEvent::EntityRemovedEventType)
+	{
+		auto entityRemovedEvent = static_cast<EntityRemovedEvent&>(newEvent);
+		this->OnEntityRemoved(entityRemovedEvent);
+	}
+	else if (newEvent.GetEventType() == ShipDefeatedEvent::ShipDefeatedEventType)
 	{
 		auto shipDefeatedEvent = static_cast<ShipDefeatedEvent&>(newEvent);
 		this->OnShipDefeated(shipDefeatedEvent);
+	}
+}
+
+void DamageSystem::OnEntityRemoved(EntityRemovedEvent& entityRemovedEvent)
+{
+	auto entity = entityRemovedEvent.entity;
+
+	// Remove all damage attached to removed ship.
+	for (auto iterator = this->damageList.begin(); iterator != this->damageList.end();)
+	{
+		if (iterator->damagedShip == entity)
+		{
+			this->game->entityManager->RemoveEntity(iterator->damage);
+			iterator = this->damageList.erase(iterator);
+		}
+		else
+		{
+			++iterator;
+		}
 	}
 }
 
@@ -70,20 +95,7 @@ void DamageSystem::OnShipDefeated(ShipDefeatedEvent& shipDefeatedEvent)
 	// Check for destruction.
 	if (shipStructureComponent->structure <= 0)
 	{
-		// Remove damage and ship.
-		for (auto iterator = this->damageList.begin(); iterator != this->damageList.end(); )
-		{
-			if (iterator->damagedShip == damagedShipEntity)
-			{
-				this->game->entityManager->RemoveEntity(iterator->damage);
-				iterator = this->damageList.erase(iterator);
-			}
-			else
-			{
-				++iterator;
-			}
-		}
-
+		// Remove ship.
 		this->game->entityManager->RemoveEntity(damagedShipEntity);
 	}
 }

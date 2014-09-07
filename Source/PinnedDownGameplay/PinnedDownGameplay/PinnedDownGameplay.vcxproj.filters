@@ -84,6 +84,9 @@
     <ClCompile Include="Systems\DamageSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Systems\JumpEnemyRemovalSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\DistanceSystem.h">
@@ -154,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="Systems\Damage\DamageData.h">
       <Filter>Systems\Damage</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\JumpEnemyRemovalSystem.h">
+      <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
