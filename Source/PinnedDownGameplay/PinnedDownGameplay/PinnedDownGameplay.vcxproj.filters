@@ -16,6 +16,9 @@
     <Filter Include="Util">
       <UniqueIdentifier>{412e0fd5-18ab-40fb-865d-8abb83be4067}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems\Damage">
+      <UniqueIdentifier>{d543ce4c-3ade-4683-baf0-7b18571253bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Systems\DistanceSystem.cpp">
@@ -71,6 +74,15 @@
     </ClCompile>
     <ClCompile Include="Util\Random.cpp">
       <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\ShipVictoriousEvent.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\ShipDefeatedEvent.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\DamageSystem.cpp">
+      <Filter>Systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +142,18 @@
     </ClInclude>
     <ClInclude Include="Util\Random.h">
       <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\DamageSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\ShipVictoriousEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\ShipDefeatedEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\Damage\DamageData.h">
+      <Filter>Systems\Damage</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
