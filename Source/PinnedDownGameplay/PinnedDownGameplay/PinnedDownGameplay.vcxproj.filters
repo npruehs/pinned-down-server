@@ -16,6 +16,9 @@
     <Filter Include="Util">
       <UniqueIdentifier>{412e0fd5-18ab-40fb-865d-8abb83be4067}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems\Damage">
+      <UniqueIdentifier>{d543ce4c-3ade-4683-baf0-7b18571253bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Systems\DistanceSystem.cpp">
@@ -148,6 +151,9 @@
     </ClInclude>
     <ClInclude Include="Events\ShipDefeatedEvent.h">
       <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\Damage\DamageData.h">
+      <Filter>Systems\Damage</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

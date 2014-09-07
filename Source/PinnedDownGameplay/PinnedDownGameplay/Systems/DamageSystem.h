@@ -1,5 +1,7 @@
 #pragma once
 
+#include <list>
+
 #include "Game.h"
 #include "GameSystem.h"
 #include "IEventListener.h"
@@ -10,10 +12,13 @@
 
 #include "..\Events\ShipDefeatedEvent.h"
 
+#include "Damage\DamageData.h"
+
 using namespace PinnedDownCore;
 using namespace PinnedDownGameplay::Events;
 using namespace PinnedDownNet::Data;
 using namespace PinnedDownServer::Data;
+using namespace PinnedDownServer::Systems::Damage;
 
 namespace PinnedDownServer
 {
@@ -29,6 +34,7 @@ namespace PinnedDownServer
 		private:
 			std::shared_ptr<CardFactory> cardFactory;
 			std::shared_ptr<Deck> damageDeck;
+			std::list<DamageData> damageList;
 
 			void OnEvent(Event & event);
 

@@ -122,6 +122,7 @@
     <ClInclude Include="Systems\AssignmentSystem.h" />
     <ClInclude Include="Systems\CardStateSystem.h" />
     <ClInclude Include="Systems\DamageSystem.h" />
+    <ClInclude Include="Systems\Damage\DamageData.h" />
     <ClInclude Include="Systems\DistanceSystem.h" />
     <ClInclude Include="Systems\DistanceVictorySystem.h" />
     <ClInclude Include="Systems\EnemyAttackSystem.h" />
