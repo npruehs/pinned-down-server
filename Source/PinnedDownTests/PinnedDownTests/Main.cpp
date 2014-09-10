@@ -1,15 +1,8 @@
 #include <memory>
 #include <stdio.h>
 
-#include "gtest/gtest.h"
-
-#include "src/gtest.cc"
-#include "src/gtest-death-test.cc"
-#include "src/gtest-filepath.cc"
-#include "src/gtest-port.cc"
-#include "src/gtest-printers.cc"
-#include "src/gtest-test-part.cc"
-#include "src/gtest-typed-test.cc"
+#include "src/gtest-all.cc"
+#include "src/gmock-all.cc"
 
 #include "EventListenerMock.h"
 
@@ -38,7 +31,7 @@ TEST(DistanceVictorySystemTest, VictoryWhenFullDistanceCovered)
 	auto coveredDistanceChangedEvent = std::make_shared<CoveredDistanceChangedEvent>(5, 5);
 	game->eventManager->QueueEvent(coveredDistanceChangedEvent);
 
-	auto turnPhaseChangedEvent = std::make_shared<TurnPhaseChangedEvent>(TurnPhase::WrapUp);
+	auto turnPhaseChangedEvent = std::make_shared<TurnPhaseChangedEvent>(TurnPhase::Jump);
 	game->eventManager->QueueEvent(turnPhaseChangedEvent);
 
 	game->Update(1.0f);

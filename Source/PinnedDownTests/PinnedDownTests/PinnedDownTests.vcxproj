@@ -73,7 +73,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\..\..\pinned-down-core\Source\PinnedDownCore\PinnedDownCore;..\..\..\..\pinned-down-net\Source\PinnedDownNet\PinnedDownNet;..\..\..\..\pinned-down-server\Source\PinnedDownGameplay\PinnedDownGameplay;..\..\..\..\pinned-down-server\Vendor\gtest-1.7.0\include;..\..\..\..\pinned-down-server\Vendor\gtest-1.7.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\pinned-down-core\Source\PinnedDownCore\PinnedDownCore;..\..\..\..\pinned-down-net\Source\PinnedDownNet\PinnedDownNet;..\..\..\..\pinned-down-server\Source\PinnedDownGameplay\PinnedDownGameplay;..\..\..\..\pinned-down-server\Vendor\gtest-1.7.0\include;..\..\..\..\pinned-down-server\Vendor\gtest-1.7.0;D:\Dev\SCM\pinned-down-server\Vendor\gmock-1.7.0\include;D:\Dev\SCM\pinned-down-server\Vendor\gmock-1.7.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
