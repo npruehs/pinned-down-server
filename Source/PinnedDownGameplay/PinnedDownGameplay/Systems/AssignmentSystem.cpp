@@ -26,6 +26,7 @@ void AssignmentSystem::InitSystem(Game* game)
 	this->game->eventManager->AddListener(this, CardCreatedEvent::CardCreatedEventType);
 	this->game->eventManager->AddListener(this, CardRemovedEvent::CardRemovedEventType);
 	this->game->eventManager->AddListener(this, EndTurnAction::EndTurnActionType);
+	this->game->eventManager->AddListener(this, FightResolvedEvent::FightResolvedEventType);
 	this->game->eventManager->AddListener(this, ResolveFightAction::ResolveFightActionType);
 	this->game->eventManager->AddListener(this, TurnPhaseChangedEvent::TurnPhaseChangedEventType);
 }
@@ -51,6 +52,11 @@ void AssignmentSystem::OnEvent(Event & newEvent)
 	{
 		auto endTurnAction = static_cast<EndTurnAction&>(newEvent);
 		this->OnEndTurn(endTurnAction);
+	}
+	else if (newEvent.GetEventType() == FightResolvedEvent::FightResolvedEventType)
+	{
+		auto fightResolvedEvent = static_cast<FightResolvedEvent&>(newEvent);
+		this->OnFightResolved(fightResolvedEvent);
 	}
 	else if (newEvent.GetEventType() == ResolveFightAction::ResolveFightActionType)
 	{
@@ -122,27 +128,32 @@ void AssignmentSystem::OnEndTurn(EndTurnAction& endTurnAction)
 		return;
 	}
 
-	// Check if all player ships assigned.
-	for (auto itPlayerShips = this->playerCards.begin(); itPlayerShips != this->playerCards.end(); ++itPlayerShips)
+	// Check if enough enemy ships assigned.
+	auto reqEnemyAssignments = enemyCards.size() < playerCards.size() ? enemyCards.size() : playerCards.size();
+
+	if (this->currentAssignments.size() < reqEnemyAssignments)
 	{
-		auto playerShip = *itPlayerShips;
+		// Error: Enemy ship not assigned.
+		auto errorMessageEvent = std::make_shared<ErrorMessageEvent>("Error_NotAllEnemyShipsAssigned");
+		this->game->eventManager->QueueEvent(errorMessageEvent);
 
-		auto itAssignment = this->currentAssignments.find(playerShip);
-
-		if (itAssignment == this->currentAssignments.end())
-		{
-			// Error: Player ship not assigned.
-			auto errorMessageEvent = std::make_shared<ErrorMessageEvent>("Error_NotAllPlayerShipsAssigned");
-			this->game->eventManager->QueueEvent(errorMessageEvent);
-
-			return;
-		}
+		return;
 	}
-
 
 	// Notify listeners.
 	auto turnPhaseChangedEvent = std::make_shared<TurnPhaseChangedEvent>(TurnPhase::Fight);
 	this->game->eventManager->QueueEvent(turnPhaseChangedEvent);
+}
+
+void AssignmentSystem::OnFightResolved(FightResolvedEvent& fightResolvedEvent)
+{
+	// Remove assignment.
+	auto itAssignment = this->currentAssignments.find(fightResolvedEvent.assignedCard);
+
+	if (itAssignment != this->currentAssignments.end())
+	{
+		this->currentAssignments.erase(itAssignment);
+	}
 }
 
 void AssignmentSystem::OnResolveFight(ResolveFightAction& resolveFightAction)

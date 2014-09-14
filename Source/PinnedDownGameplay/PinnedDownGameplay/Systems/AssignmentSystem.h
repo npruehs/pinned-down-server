@@ -15,6 +15,7 @@
 
 #include "Events\CardCreatedEvent.h"
 #include "Events\CardRemovedEvent.h"
+#include "Events\FightResolvedEvent.h"
 #include "Events\TurnPhaseChangedEvent.h"
 
 using namespace PinnedDownCore;
@@ -43,6 +44,7 @@ namespace PinnedDownServer
 			void OnCardCreated(CardCreatedEvent& cardCreatedEvent);
 			void OnCardRemoved(CardRemovedEvent& cardRemovedEvent);
 			void OnEndTurn(EndTurnAction& endTurnAction);
+			void OnFightResolved(FightResolvedEvent& fightResolvedEvent);
 			void OnResolveFight(ResolveFightAction& resolveFightAction);
 			void OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent);
 		};
