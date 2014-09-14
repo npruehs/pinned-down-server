@@ -7,6 +7,7 @@
 #include "..\Events\FightStartedEvent.h"
 
 using namespace PinnedDownNet::Components;
+using namespace PinnedDownNet::Data;
 using namespace PinnedDownNet::Events;
 using namespace PinnedDownGameplay::Events;
 using namespace PinnedDownServer::Systems;
@@ -21,7 +22,11 @@ void AssignmentSystem::InitSystem(Game* game)
 	GameSystem::InitSystem(game);
 
 	this->game->eventManager->AddListener(this, AssignCardAction::AssignCardActionType);
+	this->game->eventManager->AddListener(this, CardCreatedEvent::CardCreatedEventType);
+	this->game->eventManager->AddListener(this, CardRemovedEvent::CardRemovedEventType);
+	this->game->eventManager->AddListener(this, EndTurnAction::EndTurnActionType);
 	this->game->eventManager->AddListener(this, ResolveFightAction::ResolveFightActionType);
+	this->game->eventManager->AddListener(this, TurnPhaseChangedEvent::TurnPhaseChangedEventType);
 }
 
 void AssignmentSystem::OnEvent(Event & newEvent)
@@ -31,10 +36,30 @@ void AssignmentSystem::OnEvent(Event & newEvent)
 		auto assignCardAction = static_cast<AssignCardAction&>(newEvent);
 		this->OnAssignCard(assignCardAction);
 	}
+	else if (newEvent.GetEventType() == CardCreatedEvent::CardCreatedEventType)
+	{
+		auto cardCreatedEvent = static_cast<CardCreatedEvent&>(newEvent);
+		this->OnCardCreated(cardCreatedEvent);
+	}
+	else if (newEvent.GetEventType() == CardRemovedEvent::CardRemovedEventType)
+	{
+		auto cardRemovedEvent = static_cast<CardRemovedEvent&>(newEvent);
+		this->OnCardRemoved(cardRemovedEvent);
+	}
+	else if (newEvent.GetEventType() == EndTurnAction::EndTurnActionType)
+	{
+		auto endTurnAction = static_cast<EndTurnAction&>(newEvent);
+		this->OnEndTurn(endTurnAction);
+	}
 	else if (newEvent.GetEventType() == ResolveFightAction::ResolveFightActionType)
 	{
 		auto resolveFightAction = static_cast<ResolveFightAction&>(newEvent);
 		this->OnResolveFight(resolveFightAction);
+	}
+	else if (newEvent.GetEventType() == TurnPhaseChangedEvent::TurnPhaseChangedEventType)
+	{
+		auto turnPhaseChangedEvent = static_cast<TurnPhaseChangedEvent&>(newEvent);
+		this->OnTurnPhaseChanged(turnPhaseChangedEvent);
 	}
 }
 
@@ -63,6 +88,44 @@ void AssignmentSystem::OnAssignCard(AssignCardAction& assignCardAction)
 	}
 }
 
+void AssignmentSystem::OnCardCreated(CardCreatedEvent& cardCreatedEvent)
+{
+	if (cardCreatedEvent.owner != INVALID_ENTITY_ID)
+	{
+		this->playerCards.push_back(cardCreatedEvent.serverEntity);
+	}
+	else
+	{
+		this->enemyCards.push_back(cardCreatedEvent.serverEntity);
+	}
+}
+
+void AssignmentSystem::OnCardRemoved(CardRemovedEvent& cardRemovedEvent)
+{
+	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(cardRemovedEvent.serverEntity, OwnerComponent::OwnerComponentType);
+
+	if (ownerComponent->owner != INVALID_ENTITY_ID)
+	{
+		this->playerCards.remove(cardRemovedEvent.serverEntity);
+	}
+	else
+	{
+		this->enemyCards.remove(cardRemovedEvent.serverEntity);
+	}
+}
+
+void AssignmentSystem::OnEndTurn(EndTurnAction& endTurnAction)
+{
+	if (this->currentTurnPhase != TurnPhase::Assignment)
+	{
+		return;
+	}
+
+	// Notify listeners.
+	auto turnPhaseChangedEvent = std::make_shared<TurnPhaseChangedEvent>(TurnPhase::Fight);
+	this->game->eventManager->QueueEvent(turnPhaseChangedEvent);
+}
+
 void AssignmentSystem::OnResolveFight(ResolveFightAction& resolveFightAction)
 {
 	// Get assignment.
@@ -79,4 +142,9 @@ void AssignmentSystem::OnResolveFight(ResolveFightAction& resolveFightAction)
 			this->game->eventManager->QueueEvent(fightStartedEvent);
 		}
 	}
+}
+
+void AssignmentSystem::OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent)
+{
+	this->currentTurnPhase = turnPhaseChangedEvent.newTurnPhase;
 }
