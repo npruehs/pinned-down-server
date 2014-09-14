@@ -4,6 +4,7 @@
 #include "Components\OwnerComponent.h"
 
 #include "Events\CardAssignedEvent.h"
+#include "Events\ErrorMessageEvent.h"
 #include "..\Events\FightStartedEvent.h"
 
 using namespace PinnedDownNet::Components;
@@ -120,6 +121,24 @@ void AssignmentSystem::OnEndTurn(EndTurnAction& endTurnAction)
 	{
 		return;
 	}
+
+	// Check if all player ships assigned.
+	for (auto itPlayerShips = this->playerCards.begin(); itPlayerShips != this->playerCards.end(); ++itPlayerShips)
+	{
+		auto playerShip = *itPlayerShips;
+
+		auto itAssignment = this->currentAssignments.find(playerShip);
+
+		if (itAssignment == this->currentAssignments.end())
+		{
+			// Error: Player ship not assigned.
+			auto errorMessageEvent = std::make_shared<ErrorMessageEvent>("Error_NotAllPlayerShipsAssigned");
+			this->game->eventManager->QueueEvent(errorMessageEvent);
+
+			return;
+		}
+	}
+
 
 	// Notify listeners.
 	auto turnPhaseChangedEvent = std::make_shared<TurnPhaseChangedEvent>(TurnPhase::Fight);
