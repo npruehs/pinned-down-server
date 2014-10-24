@@ -44,12 +44,6 @@ void TurnPhaseSystem::OnEndTurn(EndTurnAction& endTurnAction)
 	case TurnPhase::Main:
 		this->SetTurnPhase(TurnPhase::Attack);
 		break;
-	case TurnPhase::Attack:
-		this->SetTurnPhase(TurnPhase::Assignment);
-		break;
-	case TurnPhase::Jump:
-		this->SetTurnPhase(TurnPhase::Main);
-		break;
 	}
 }
 

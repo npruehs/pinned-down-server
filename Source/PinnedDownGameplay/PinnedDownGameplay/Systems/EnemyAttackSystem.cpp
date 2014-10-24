@@ -105,9 +105,9 @@ void EnemyAttackSystem::PlayEnemyCards()
 		}
 	}
 	
-	// End turn phase.
-	auto endTurnAction = std::make_shared<EndTurnAction>();
-	this->game->eventManager->QueueEvent(endTurnAction);
+	// End attack phase.
+	auto turnPhaseChangedEvent = std::make_shared<TurnPhaseChangedEvent>(TurnPhase::Assignment);
+	this->game->eventManager->QueueEvent(turnPhaseChangedEvent);
 }
 
 void EnemyAttackSystem::PrepareAttackDeck()
