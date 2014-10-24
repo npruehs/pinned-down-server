@@ -33,7 +33,7 @@ namespace PinnedDownServer
 			void InitSystem(PinnedDownCore::Game* game);
 
 		private:
-			std::map<Entity, Entity> currentAssignments;
+			std::map<Entity, std::shared_ptr<std::list<Entity>>> currentAssignments;
 			std::list<Entity> playerCards;
 			std::list<Entity> enemyCards;
 			TurnPhase currentTurnPhase;

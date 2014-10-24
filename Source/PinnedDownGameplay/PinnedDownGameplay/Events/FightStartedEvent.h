@@ -1,5 +1,7 @@
 #pragma once
 
+#include <list>
+
 #include "EntityManager.h"
 #include "Event.h"
 
@@ -24,12 +26,12 @@ namespace PinnedDownGameplay
 			}
 
 			Entity playerShip;
-			Entity enemyShip;
+			std::shared_ptr<std::list<Entity>> enemyShips;
 
-			explicit FightStartedEvent(Entity playerShip, Entity enemyShip)
+			explicit FightStartedEvent(Entity playerShip, std::shared_ptr<std::list<Entity>> enemyShips)
 			{
 				this->playerShip = playerShip;
-				this->enemyShip = enemyShip;
+				this->enemyShips = enemyShips;
 
 			}
 		};

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <list>
-
 #include "EntityManager.h"
 
 using namespace PinnedDownCore;

@@ -87,7 +87,9 @@ void AssignmentSystem::OnAssignCard(AssignCardAction& assignCardAction)
 		}
 
 		// Assign card.
-		this->currentAssignments.insert(std::pair<Entity, Entity>(assignCardAction.assignedCard, assignCardAction.targetCard));
+		auto enemies = std::make_shared<std::list<Entity>>();
+		enemies->push_back(assignCardAction.targetCard);
+		this->currentAssignments.insert(std::pair<Entity, std::shared_ptr<std::list<Entity>>>(assignCardAction.assignedCard, enemies));
 
 		// Notify listeners.
 		auto cardAssignedEvent = std::make_shared<CardAssignedEvent>(assignCardAction.assignedCard, assignCardAction.targetCard);
