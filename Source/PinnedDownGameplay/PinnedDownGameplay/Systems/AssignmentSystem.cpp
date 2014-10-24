@@ -156,6 +156,14 @@ void AssignmentSystem::OnFightResolved(FightResolvedEvent& fightResolvedEvent)
 	{
 		this->currentAssignments.erase(itAssignment);
 	}
+
+	// Check if all fights resolved.
+	if (this->currentAssignments.empty())
+	{
+		// End fight phase.
+		auto turnPhaseChangedEvent = std::make_shared<TurnPhaseChangedEvent>(TurnPhase::Jump);
+		this->game->eventManager->QueueEvent(turnPhaseChangedEvent);
+	}
 }
 
 void AssignmentSystem::OnResolveFight(ResolveFightAction& resolveFightAction)
