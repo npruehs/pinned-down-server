@@ -37,8 +37,8 @@ void JumpThreatSystem::OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChange
 		auto addThreatAction = std::make_shared<AddThreatAction>(3);
 		this->game->eventManager->QueueEvent(addThreatAction);
 
-		// End turn phase.
-		auto endTurnAction = std::make_shared<EndTurnAction>();
-		this->game->eventManager->QueueEvent(endTurnAction);
+		// End jump phase.
+		auto turnPhaseChangedEvent = std::make_shared<TurnPhaseChangedEvent>(TurnPhase::Main);
+		this->game->eventManager->QueueEvent(turnPhaseChangedEvent);
 	}
 }

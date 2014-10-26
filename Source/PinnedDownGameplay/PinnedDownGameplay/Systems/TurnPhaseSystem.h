@@ -6,6 +6,7 @@
 
 #include "Actions\EndTurnAction.h"
 #include "Data\TurnPhase.h"
+#include "Events\TurnPhaseChangedEvent.h"
 
 using namespace PinnedDownCore;
 using namespace PinnedDownNet::Data;
@@ -28,6 +29,7 @@ namespace PinnedDownServer
 			void OnEvent(Event & event);
 
 			void OnEndTurn(EndTurnAction& endTurnAction);
+			void OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent);
 
 			void SetTurnPhase(TurnPhase turnPhase);
 		};

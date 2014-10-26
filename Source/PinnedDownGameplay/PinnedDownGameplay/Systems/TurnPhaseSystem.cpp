@@ -16,6 +16,7 @@ void TurnPhaseSystem::InitSystem(Game* game)
 	GameSystem::InitSystem(game);
 
 	this->game->eventManager->AddListener(this, EndTurnAction::EndTurnActionType);
+	this->game->eventManager->AddListener(this, TurnPhaseChangedEvent::TurnPhaseChangedEventType);
 
 	// Setup turn sequence.
 	this->SetTurnPhase(TurnPhase::Main);
@@ -28,6 +29,11 @@ void TurnPhaseSystem::OnEvent(Event & newEvent)
 		auto endTurnAction = static_cast<EndTurnAction&>(newEvent);
 		this->OnEndTurn(endTurnAction);
 	}
+	else if (newEvent.GetEventType() == TurnPhaseChangedEvent::TurnPhaseChangedEventType)
+	{
+		auto turnPhaseChangedEvent = static_cast<TurnPhaseChangedEvent&>(newEvent);
+		this->OnTurnPhaseChanged(turnPhaseChangedEvent);
+	}
 }
 
 void TurnPhaseSystem::OnEndTurn(EndTurnAction& endTurnAction)
@@ -38,19 +44,12 @@ void TurnPhaseSystem::OnEndTurn(EndTurnAction& endTurnAction)
 	case TurnPhase::Main:
 		this->SetTurnPhase(TurnPhase::Attack);
 		break;
-	case TurnPhase::Attack:
-		this->SetTurnPhase(TurnPhase::Assignment);
-		break;
-	case TurnPhase::Assignment:
-		this->SetTurnPhase(TurnPhase::Fight);
-		break;
-	case TurnPhase::Fight:
-		this->SetTurnPhase(TurnPhase::Jump);
-		break;
-	case TurnPhase::Jump:
-		this->SetTurnPhase(TurnPhase::Main);
-		break;
 	}
+}
+
+void TurnPhaseSystem::OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent)
+{
+	this->currentPhase = turnPhaseChangedEvent.newTurnPhase;
 }
 
 void TurnPhaseSystem::SetTurnPhase(TurnPhase turnPhase)

@@ -35,18 +35,44 @@ void FightSystem::OnEvent(Event & newEvent)
 
 void FightSystem::OnFightStarted(FightStartedEvent& fightStartedEvent)
 {
-	// Compare power.
+	// Compute player power.
 	auto playerPowerComponent = this->game->entityManager->GetComponent<PowerComponent>(fightStartedEvent.playerShip, PowerComponent::PowerComponentType);
-	auto enemyPowerComponent = this->game->entityManager->GetComponent<PowerComponent>(fightStartedEvent.enemyShip, PowerComponent::PowerComponentType);
+	auto playerPower = playerPowerComponent->power;
 
-	// Notify listeners.
-	auto winner = playerPowerComponent->power <= enemyPowerComponent->power ? fightStartedEvent.enemyShip : fightStartedEvent.playerShip;
-	auto loser = playerPowerComponent->power <= enemyPowerComponent->power ? fightStartedEvent.playerShip : fightStartedEvent.enemyShip;
+	// Compute enemy power.
+	auto enemyPower = 0;
 
-	auto shipVictoriousEvent = std::make_shared<ShipVictoriousEvent>(winner);
-	this->game->eventManager->QueueEvent(shipVictoriousEvent);
-	auto shipDefeatedEvent = std::make_shared<ShipDefeatedEvent>(loser);
-	this->game->eventManager->QueueEvent(shipDefeatedEvent);
+	for (auto it = fightStartedEvent.enemyShips->begin(); it != fightStartedEvent.enemyShips->end(); ++it)
+	{
+		auto enemyPowerComponent = this->game->entityManager->GetComponent<PowerComponent>(*it, PowerComponent::PowerComponentType);
+		enemyPower += enemyPowerComponent->power;
+	}
+
+	// Compare power.
+	if (playerPower <= enemyPower)
+	{
+		// Enemy victory.
+		for (auto it = fightStartedEvent.enemyShips->begin(); it != fightStartedEvent.enemyShips->end(); ++it)
+		{
+			auto shipVictoriousEvent = std::make_shared<ShipVictoriousEvent>(*it);
+			this->game->eventManager->QueueEvent(shipVictoriousEvent);
+		}
+
+		auto shipDefeatedEvent = std::make_shared<ShipDefeatedEvent>(fightStartedEvent.playerShip);
+		this->game->eventManager->QueueEvent(shipDefeatedEvent);
+	}
+	else
+	{
+		// Player victory.
+		auto shipVictoriousEvent = std::make_shared<ShipVictoriousEvent>(fightStartedEvent.playerShip);
+		this->game->eventManager->QueueEvent(shipVictoriousEvent);
+
+		for (auto it = fightStartedEvent.enemyShips->begin(); it != fightStartedEvent.enemyShips->end(); ++it)
+		{
+			auto shipDefeatedEvent = std::make_shared<ShipDefeatedEvent>(*it);
+			this->game->eventManager->QueueEvent(shipDefeatedEvent);
+		}
+	}
 
 	// Notify client.
 	auto fightResolvedEvent = std::make_shared<FightResolvedEvent>(fightStartedEvent.playerShip);
