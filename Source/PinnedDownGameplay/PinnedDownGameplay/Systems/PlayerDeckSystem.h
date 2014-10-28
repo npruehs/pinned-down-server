@@ -4,6 +4,7 @@
 #include "GameSystem.h"
 #include "IEventListener.h"
 
+#include "..\Components\PlayerDeckComponent.h"
 #include "Data\CardFactory.h"
 #include "Events\PlayerAddedEvent.h"
 
@@ -15,10 +16,10 @@ namespace PinnedDownServer
 {
 	namespace Systems
 	{
-		class FlagshipSystem : public GameSystem, public IEventListener
+		class PlayerDeckSystem : public GameSystem, public IEventListener
 		{
 		public:
-			FlagshipSystem();
+			PlayerDeckSystem();
 
 			void InitSystem(PinnedDownCore::Game* game);
 

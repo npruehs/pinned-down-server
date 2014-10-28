@@ -75,7 +75,7 @@ void DamageSystem::OnShipDefeated(ShipDefeatedEvent& shipDefeatedEvent)
 	}
 
 	CardData topCard = this->damageDeck->Draw();
-	auto damageCardEntity = this->cardFactory->CreateCard(INVALID_ENTITY_ID, topCard.setIndex, topCard.cardIndex);
+	auto damageCardEntity = this->cardFactory->CreateCard(INVALID_ENTITY_ID, topCard.setIndex, topCard.cardIndex, CardState::InPlay);
 
 	this->damageList.push_back(DamageData(damagedShipEntity, damageCardEntity));
 

@@ -89,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actions\AddThreatAction.cpp" />
+    <ClCompile Include="Components\PlayerDeckComponent.cpp" />
     <ClCompile Include="Data\Deck.cpp" />
     <ClCompile Include="Events\ClientConnectedEvent.cpp" />
     <ClCompile Include="Events\EnemyCardPlayedEvent.cpp" />
@@ -106,6 +107,7 @@
     <ClCompile Include="Systems\FlagshipSystem.cpp" />
     <ClCompile Include="Systems\JumpEnemyRemovalSystem.cpp" />
     <ClCompile Include="Systems\JumpThreatSystem.cpp" />
+    <ClCompile Include="Systems\PlayerDeckSystem.cpp" />
     <ClCompile Include="Systems\PlayerSystem.cpp" />
     <ClCompile Include="Systems\ThreatSystem.cpp" />
     <ClCompile Include="Systems\TurnPhaseSystem.cpp" />
@@ -113,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actions\AddThreatAction.h" />
+    <ClInclude Include="Components\PlayerDeckComponent.h" />
     <ClInclude Include="Data\CardData.h" />
     <ClInclude Include="Data\Deck.h" />
     <ClInclude Include="Events\ClientConnectedEvent.h" />
@@ -132,6 +135,7 @@
     <ClInclude Include="Systems\FlagshipSystem.h" />
     <ClInclude Include="Systems\JumpEnemyRemovalSystem.h" />
     <ClInclude Include="Systems\JumpThreatSystem.h" />
+    <ClInclude Include="Systems\PlayerDeckSystem.h" />
     <ClInclude Include="Systems\PlayerSystem.h" />
     <ClInclude Include="Systems\ThreatSystem.h" />
     <ClInclude Include="Systems\TurnPhaseSystem.h" />
