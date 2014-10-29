@@ -97,6 +97,7 @@
     <ClCompile Include="Events\ShipDefeatedEvent.cpp" />
     <ClCompile Include="Events\ShipVictoriousEvent.cpp" />
     <ClCompile Include="Systems\AssignmentSystem.cpp" />
+    <ClCompile Include="Systems\CardPlayingSystem.cpp" />
     <ClCompile Include="Systems\CardStateSystem.cpp" />
     <ClCompile Include="Systems\DamageSystem.cpp" />
     <ClCompile Include="Systems\DistanceSystem.cpp" />
@@ -124,6 +125,7 @@
     <ClInclude Include="Events\ShipDefeatedEvent.h" />
     <ClInclude Include="Events\ShipVictoriousEvent.h" />
     <ClInclude Include="Systems\AssignmentSystem.h" />
+    <ClInclude Include="Systems\CardPlayingSystem.h" />
     <ClInclude Include="Systems\CardStateSystem.h" />
     <ClInclude Include="Systems\DamageSystem.h" />
     <ClInclude Include="Systems\Damage\DamageData.h" />

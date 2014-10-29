@@ -72,6 +72,11 @@ void AssignmentSystem::OnEvent(Event & newEvent)
 
 void AssignmentSystem::OnAssignCard(AssignCardAction& assignCardAction)
 {
+	if (this->currentTurnPhase != TurnPhase::Assignment)
+	{
+		return;
+	}
+
 	// Check owners.
 	auto assignedCardOwner = this->game->entityManager->GetComponent<OwnerComponent>(assignCardAction.assignedCard, OwnerComponent::OwnerComponentType);
 	auto targetCardOwner = this->game->entityManager->GetComponent<OwnerComponent>(assignCardAction.targetCard, OwnerComponent::OwnerComponentType);
