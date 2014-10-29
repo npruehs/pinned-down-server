@@ -19,6 +19,9 @@
     <Filter Include="Systems\Damage">
       <UniqueIdentifier>{d543ce4c-3ade-4683-baf0-7b18571253bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{677ae421-6d40-4858-ae6e-96b7843e4e9c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Systems\DistanceSystem.cpp">
@@ -85,6 +88,15 @@
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="Systems\JumpEnemyRemovalSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\PlayerDeckSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\PlayerDeckComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\CardPlayingSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
   </ItemGroup>
@@ -159,6 +171,15 @@
       <Filter>Systems\Damage</Filter>
     </ClInclude>
     <ClInclude Include="Systems\JumpEnemyRemovalSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\PlayerDeckSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\PlayerDeckComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\CardPlayingSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>

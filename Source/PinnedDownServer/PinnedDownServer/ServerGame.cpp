@@ -6,6 +6,7 @@
 #include "Events\ClientConnectedEvent.h"
 
 #include "Systems\AssignmentSystem.h"
+#include "Systems\CardPlayingSystem.h"
 #include "Systems\CardStateSystem.h"
 #include "Systems\DamageSystem.h"
 #include "Systems\DistanceSystem.h"
@@ -17,6 +18,7 @@
 #include "Systems\JumpEnemyRemovalSystem.h"
 #include "Systems\JumpThreatSystem.h"
 #include "Systems\PlayerSystem.h"
+#include "Systems\PlayerDeckSystem.h"
 #include "Systems\ThreatSystem.h"
 #include "Systems\TurnPhaseSystem.h"
 
@@ -47,10 +49,12 @@ ServerGame::ServerGame(MasterServer* masterServer, int clientId)
 	this->game->systemManager->AddSystem(std::make_shared<Systems::JumpEnemyRemovalSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::JumpThreatSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::PlayerSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<Systems::PlayerDeckSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::ThreatSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::AssignmentSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::FightSystem>());
-
+	this->game->systemManager->AddSystem(std::make_shared<Systems::CardPlayingSystem>());
+	
 	this->game->systemManager->InitSystems();
 	this->Update();
 

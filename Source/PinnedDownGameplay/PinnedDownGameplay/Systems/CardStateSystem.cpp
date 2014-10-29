@@ -2,10 +2,12 @@
 #include "CardStateSystem.h"
 
 #include "Components\CardComponent.h"
+#include "Components\CardStateComponent.h"
 #include "Components\OwnerComponent.h"
 
 #include "Events\CardCreatedEvent.h"
 #include "Events\CardRemovedEvent.h"
+#include "Events\CardStateChangedEvent.h"
 
 using namespace PinnedDownNet::Components;
 using namespace PinnedDownNet::Events;
@@ -43,11 +45,12 @@ void CardStateSystem::OnEntityInitialized(EntityInitializedEvent& entityInitiali
 	auto entity = entityInitializedEvent.entity;
 	auto cardComponent = this->game->entityManager->GetComponent<CardComponent>(entity, CardComponent::CardComponentType);
 	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(entity, OwnerComponent::OwnerComponentType);
+	auto cardStateComponent = this->game->entityManager->GetComponent<CardStateComponent>(entity, CardStateComponent::CardStateComponentType);
 
 	if (cardComponent != nullptr && ownerComponent != nullptr)
 	{
 		// Notify client.
-		auto cardCreatedEvent = std::make_shared<CardCreatedEvent>(entity, ownerComponent->owner, cardComponent->setIndex, cardComponent->cardIndex);
+		auto cardCreatedEvent = std::make_shared<CardCreatedEvent>(entity, ownerComponent->owner, cardComponent->setIndex, cardComponent->cardIndex, cardStateComponent->cardState);
 		this->game->eventManager->QueueEvent(cardCreatedEvent);
 	}
 }

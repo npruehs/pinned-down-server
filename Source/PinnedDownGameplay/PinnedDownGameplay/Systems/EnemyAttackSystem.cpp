@@ -74,7 +74,7 @@ void EnemyAttackSystem::PlayEnemyCards()
 		}
 
 		CardData topCard = this->attackDeck->Draw();
-		auto cardEntity = this->cardFactory->PrepareCard(INVALID_ENTITY_ID, topCard.setIndex, topCard.cardIndex);
+		auto cardEntity = this->cardFactory->PrepareCard(INVALID_ENTITY_ID, topCard.setIndex, topCard.cardIndex, CardState::InPlay);
 
 		// Check card cost.
 		auto threatComponent = this->game->entityManager->GetComponent<ThreatComponent>(cardEntity, ThreatComponent::ThreatComponentType);

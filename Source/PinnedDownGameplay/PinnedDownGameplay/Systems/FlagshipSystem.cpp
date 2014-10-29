@@ -32,5 +32,5 @@ void FlagshipSystem::OnPlayerAdded(PlayerAddedEvent& playerAddedEvent)
 {
 	// Play flagship.
 	auto owner = playerAddedEvent.serverEntity;
-	this->cardFactory->CreateCard(owner, 0, 56);
+	this->cardFactory->CreateCard(owner, 0, 56, CardState::InPlay);
 }
