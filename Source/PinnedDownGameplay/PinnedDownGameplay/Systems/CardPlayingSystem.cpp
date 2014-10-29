@@ -5,10 +5,12 @@
 
 #include "Components\CardStateComponent.h"
 #include "Components\OwnerComponent.h"
+#include "..\Components\PlayerDeckComponent.h"
 #include "Components\ThreatComponent.h"
 
 #include "Events\CardStateChangedEvent.h"
 
+using namespace PinnedDownGameplay::Components;
 using namespace PinnedDownNet::Components;
 using namespace PinnedDownNet::Data;
 using namespace PinnedDownNet::Events;
@@ -54,10 +56,15 @@ void CardPlayingSystem::OnPlayCard(PlayCardAction& playCardAction)
 
 	if (playedCardOwner != nullptr && playedCardOwner->owner != INVALID_ENTITY_ID)
 	{
-		// Play card.
+		// Put card in play.
 		auto cardStateComponent = this->game->entityManager->GetComponent<CardStateComponent>(playCardAction.cardToPlay, OwnerComponent::OwnerComponentType);
 		cardStateComponent->cardState = CardState::InPlay;
 
+		// Remove from player hand.
+		auto playerDeckComponent = this->game->entityManager->GetComponent<PlayerDeckComponent>(playedCardOwner->owner, PlayerDeckComponent::PlayerDeckComponentType);
+		playerDeckComponent->hand.remove(playCardAction.cardToPlay);
+
+		// Increase threat.
 		auto threatComponent = this->game->entityManager->GetComponent<ThreatComponent>(playCardAction.cardToPlay, ThreatComponent::ThreatComponentType);
 		auto addThreatAction = std::make_shared<AddThreatAction>(threatComponent->threat);
 		this->game->eventManager->QueueEvent(addThreatAction);
