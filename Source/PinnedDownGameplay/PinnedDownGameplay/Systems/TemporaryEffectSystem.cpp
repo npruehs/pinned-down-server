@@ -3,6 +3,8 @@
 
 #include "Components\PowerComponent.h"
 
+#include "Events\PowerChangedEvent.h"
+
 using namespace PinnedDownNet::Components;
 using namespace PinnedDownNet::Events;
 using namespace PinnedDownServer::Systems;
@@ -52,6 +54,10 @@ void TemporaryEffectSystem::OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseC
 			{
 				powerComponent->power -= powerComponent->bonusPowerUntilEndOfTurn;
 				powerComponent->bonusPowerUntilEndOfTurn = 0;
+
+				// Notify listeners.
+				auto powerChangedEvent = std::make_shared<PowerChangedEvent>(entity, powerComponent->power);
+				this->game->eventManager->QueueEvent(powerChangedEvent);
 			}
 		}
 

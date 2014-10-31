@@ -10,6 +10,7 @@
 #include "Components\ThreatComponent.h"
 
 #include "..\Events\BonusPowerChangedEvent.h"
+#include "Events\PowerChangedEvent.h"
 
 using namespace PinnedDownGameplay::Components;
 using namespace PinnedDownGameplay::Events;
@@ -70,6 +71,10 @@ void EffectPlayingSystem::OnEffectPlayed(EffectPlayedEvent& effectPlayedEvent)
 			// Notify listeners.
 			auto bonusPowerChangedEvent = std::make_shared<BonusPowerChangedEvent>(effectPlayedEvent.targetEntity);
 			this->game->eventManager->QueueEvent(bonusPowerChangedEvent);
+
+			// Notify listeners.
+			auto powerChangedEvent = std::make_shared<PowerChangedEvent>(effectPlayedEvent.targetEntity, targetPowerComponent->power);
+			this->game->eventManager->QueueEvent(powerChangedEvent);
 		}
 	}
 
