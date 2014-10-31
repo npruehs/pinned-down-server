@@ -1,35 +1,38 @@
 #pragma once
 
+#include <list>
+
 #include "Game.h"
 #include "GameSystem.h"
 #include "IEventListener.h"
 
 #include "Data\TurnPhase.h"
 
-#include "..\Events\StarshipPlayedEvent.h"
+#include "..\Events\BonusPowerChangedEvent.h"
 #include "Events\TurnPhaseChangedEvent.h"
 
 using namespace PinnedDownCore;
 using namespace PinnedDownGameplay::Events;
+using namespace PinnedDownNet::Data;
 using namespace PinnedDownNet::Events;
 
 namespace PinnedDownServer
 {
 	namespace Systems
 	{
-		class StarshipPlayingSystem : public GameSystem, public IEventListener
+		class TemporaryEffectSystem : public GameSystem, public IEventListener
 		{
 		public:
-			StarshipPlayingSystem();
+			TemporaryEffectSystem();
 
 			void InitSystem(PinnedDownCore::Game* game);
 
 		private:
-			TurnPhase currentTurnPhase;
+			std::list<Entity> buffedEntities;
 
 			void OnEvent(Event & event);
 
-			void OnStarshipPlayed(StarshipPlayedEvent& starshipPlayedEvent);
+			void OnBonusPowerChanged(BonusPowerChangedEvent& bonusPowerChangedEvent);
 			void OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent);
 		};
 	}

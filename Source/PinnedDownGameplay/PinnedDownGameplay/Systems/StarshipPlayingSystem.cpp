@@ -28,6 +28,7 @@ void StarshipPlayingSystem::InitSystem(Game* game)
 	GameSystem::InitSystem(game);
 
 	this->game->eventManager->AddListener(this, StarshipPlayedEvent::StarshipPlayedEventType);
+	this->game->eventManager->AddListener(this, TurnPhaseChangedEvent::TurnPhaseChangedEventType);
 }
 
 void StarshipPlayingSystem::OnEvent(Event & newEvent)
@@ -37,10 +38,20 @@ void StarshipPlayingSystem::OnEvent(Event & newEvent)
 		auto starshipPlayedEvent = static_cast<StarshipPlayedEvent&>(newEvent);
 		this->OnStarshipPlayed(starshipPlayedEvent);
 	}
+	else if (newEvent.GetEventType() == TurnPhaseChangedEvent::TurnPhaseChangedEventType)
+	{
+		auto turnPhaseChangedEvent = static_cast<TurnPhaseChangedEvent&>(newEvent);
+		this->OnTurnPhaseChanged(turnPhaseChangedEvent);
+	}
 }
 
 void StarshipPlayingSystem::OnStarshipPlayed(StarshipPlayedEvent& starshipPlayedEvent)
 {
+	if (this->currentTurnPhase != TurnPhase::Main)
+	{
+		return;
+	}
+
 	// Put card in play.
 	auto cardStateComponent = this->game->entityManager->GetComponent<CardStateComponent>(starshipPlayedEvent.shipEntity, CardStateComponent::CardStateComponentType);
 	cardStateComponent->cardState = CardState::InPlay;
@@ -58,4 +69,9 @@ void StarshipPlayingSystem::OnStarshipPlayed(StarshipPlayedEvent& starshipPlayed
 	// Notify listeners.
 	auto cardStateChangedEvent = std::make_shared<CardStateChangedEvent>(starshipPlayedEvent.shipEntity, cardStateComponent->cardState);
 	this->game->eventManager->QueueEvent(cardStateChangedEvent);
+}
+
+void StarshipPlayingSystem::OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent)
+{
+	this->currentTurnPhase = turnPhaseChangedEvent.newTurnPhase;
 }

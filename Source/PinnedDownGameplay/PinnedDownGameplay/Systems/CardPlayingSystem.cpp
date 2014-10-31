@@ -7,6 +7,7 @@
 #include "..\Components\PlayerDeckComponent.h"
 #include "Components\ThreatComponent.h"
 
+#include "..\Events\EffectPlayedEvent.h"
 #include "..\Events\StarshipPlayedEvent.h"
 
 using namespace PinnedDownGameplay::Components;
@@ -26,7 +27,6 @@ void CardPlayingSystem::InitSystem(Game* game)
 	GameSystem::InitSystem(game);
 
 	this->game->eventManager->AddListener(this, PlayCardAction::PlayCardActionType);
-	this->game->eventManager->AddListener(this, TurnPhaseChangedEvent::TurnPhaseChangedEventType);
 }
 
 void CardPlayingSystem::OnEvent(Event & newEvent)
@@ -36,20 +36,10 @@ void CardPlayingSystem::OnEvent(Event & newEvent)
 		auto playCardAction = static_cast<PlayCardAction&>(newEvent);
 		this->OnPlayCard(playCardAction);
 	}
-	else if (newEvent.GetEventType() == TurnPhaseChangedEvent::TurnPhaseChangedEventType)
-	{
-		auto turnPhaseChangedEvent = static_cast<TurnPhaseChangedEvent&>(newEvent);
-		this->OnTurnPhaseChanged(turnPhaseChangedEvent);
-	}
 }
 
 void CardPlayingSystem::OnPlayCard(PlayCardAction& playCardAction)
 {
-	if (this->currentTurnPhase != TurnPhase::Main)
-	{
-		return;
-	}
-
 	// Can only play cards from hand.
 	auto cardStateComponent = this->game->entityManager->GetComponent<CardStateComponent>(playCardAction.cardToPlay, CardStateComponent::CardStateComponentType);
 
@@ -75,9 +65,10 @@ void CardPlayingSystem::OnPlayCard(PlayCardAction& playCardAction)
 		auto starshipPlayedEvent = std::make_shared<StarshipPlayedEvent>(playCardAction.cardToPlay);
 		this->game->eventManager->QueueEvent(starshipPlayedEvent);
 	}
-}
-
-void CardPlayingSystem::OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent)
-{
-	this->currentTurnPhase = turnPhaseChangedEvent.newTurnPhase;
+	else if (cardComponent->cardType == CardType::Effect)
+	{
+		// Notify listeners.
+		auto effectPlayedEvent = std::make_shared<EffectPlayedEvent>(playCardAction.cardToPlay, playCardAction.targetCard);
+		this->game->eventManager->QueueEvent(effectPlayedEvent);
+	}
 }

@@ -6,7 +6,7 @@
 
 #include "Data\TurnPhase.h"
 
-#include "..\Events\StarshipPlayedEvent.h"
+#include "..\Events\EffectPlayedEvent.h"
 #include "Events\TurnPhaseChangedEvent.h"
 
 using namespace PinnedDownCore;
@@ -17,10 +17,10 @@ namespace PinnedDownServer
 {
 	namespace Systems
 	{
-		class StarshipPlayingSystem : public GameSystem, public IEventListener
+		class EffectPlayingSystem : public GameSystem, public IEventListener
 		{
 		public:
-			StarshipPlayingSystem();
+			EffectPlayingSystem();
 
 			void InitSystem(PinnedDownCore::Game* game);
 
@@ -29,7 +29,7 @@ namespace PinnedDownServer
 
 			void OnEvent(Event & event);
 
-			void OnStarshipPlayed(StarshipPlayedEvent& starshipPlayedEvent);
+			void OnEffectPlayed(EffectPlayedEvent& effectPlayedEvent);
 			void OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent);
 		};
 	}
