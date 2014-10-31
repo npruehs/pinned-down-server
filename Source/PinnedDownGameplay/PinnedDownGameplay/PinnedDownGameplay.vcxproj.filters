@@ -99,6 +99,12 @@
     <ClCompile Include="Systems\CardPlayingSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Events\StarshipPlayedEvent.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\StarshipPlayingSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\DistanceSystem.h">
@@ -180,6 +186,12 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Systems\CardPlayingSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\StarshipPlayedEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\StarshipPlayingSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>

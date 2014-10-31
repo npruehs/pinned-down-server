@@ -19,6 +19,7 @@
 #include "Systems\JumpThreatSystem.h"
 #include "Systems\PlayerSystem.h"
 #include "Systems\PlayerDeckSystem.h"
+#include "Systems\StarshipPlayingSystem.h"
 #include "Systems\ThreatSystem.h"
 #include "Systems\TurnPhaseSystem.h"
 
@@ -54,6 +55,7 @@ ServerGame::ServerGame(MasterServer* masterServer, int clientId)
 	this->game->systemManager->AddSystem(std::make_shared<Systems::AssignmentSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::FightSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<Systems::CardPlayingSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<Systems::StarshipPlayingSystem>());
 	
 	this->game->systemManager->InitSystems();
 	this->Update();

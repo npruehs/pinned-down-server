@@ -1,20 +1,19 @@
 #include "Event.h"
 #include "CardPlayingSystem.h"
 
-#include "..\Actions\AddThreatAction.h"
-
+#include "Components\CardComponent.h"
 #include "Components\CardStateComponent.h"
 #include "Components\OwnerComponent.h"
 #include "..\Components\PlayerDeckComponent.h"
 #include "Components\ThreatComponent.h"
 
-#include "Events\CardStateChangedEvent.h"
+#include "..\Events\StarshipPlayedEvent.h"
 
 using namespace PinnedDownGameplay::Components;
+using namespace PinnedDownGameplay::Events;
 using namespace PinnedDownNet::Components;
 using namespace PinnedDownNet::Data;
 using namespace PinnedDownNet::Events;
-using namespace PinnedDownServer::Events;
 using namespace PinnedDownServer::Systems;
 
 
@@ -51,27 +50,30 @@ void CardPlayingSystem::OnPlayCard(PlayCardAction& playCardAction)
 		return;
 	}
 
-	// Check owners.
-	auto playedCardOwner = this->game->entityManager->GetComponent<OwnerComponent>(playCardAction.cardToPlay, OwnerComponent::OwnerComponentType);
+	// Can only play cards from hand.
+	auto cardStateComponent = this->game->entityManager->GetComponent<CardStateComponent>(playCardAction.cardToPlay, CardStateComponent::CardStateComponentType);
 
-	if (playedCardOwner != nullptr && playedCardOwner->owner != INVALID_ENTITY_ID)
+	if (cardStateComponent == nullptr || cardStateComponent->cardState != CardState::Hand)
 	{
-		// Put card in play.
-		auto cardStateComponent = this->game->entityManager->GetComponent<CardStateComponent>(playCardAction.cardToPlay, OwnerComponent::OwnerComponentType);
-		cardStateComponent->cardState = CardState::InPlay;
+		return;
+	}
 
-		// Remove from player hand.
-		auto playerDeckComponent = this->game->entityManager->GetComponent<PlayerDeckComponent>(playedCardOwner->owner, PlayerDeckComponent::PlayerDeckComponentType);
-		playerDeckComponent->hand.remove(playCardAction.cardToPlay);
+	// Only play own cards.
+	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(playCardAction.cardToPlay, OwnerComponent::OwnerComponentType);
 
-		// Increase threat.
-		auto threatComponent = this->game->entityManager->GetComponent<ThreatComponent>(playCardAction.cardToPlay, ThreatComponent::ThreatComponentType);
-		auto addThreatAction = std::make_shared<AddThreatAction>(threatComponent->threat);
-		this->game->eventManager->QueueEvent(addThreatAction);
+	if (ownerComponent == nullptr || ownerComponent->owner == INVALID_ENTITY_ID)
+	{
+		return;
+	}
 
+	// Check card type.
+	auto cardComponent = this->game->entityManager->GetComponent<CardComponent>(playCardAction.cardToPlay, CardComponent::CardComponentType);
+
+	if (cardComponent->cardType == CardType::Starship)
+	{
 		// Notify listeners.
-		auto cardStateChangedEvent = std::make_shared<CardStateChangedEvent>(playCardAction.cardToPlay, cardStateComponent->cardState);
-		this->game->eventManager->QueueEvent(cardStateChangedEvent);
+		auto starshipPlayedEvent = std::make_shared<StarshipPlayedEvent>(playCardAction.cardToPlay);
+		this->game->eventManager->QueueEvent(starshipPlayedEvent);
 	}
 }
 

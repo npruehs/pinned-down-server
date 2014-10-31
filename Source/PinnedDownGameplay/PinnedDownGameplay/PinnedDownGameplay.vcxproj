@@ -96,6 +96,7 @@
     <ClCompile Include="Events\FightStartedEvent.cpp" />
     <ClCompile Include="Events\ShipDefeatedEvent.cpp" />
     <ClCompile Include="Events\ShipVictoriousEvent.cpp" />
+    <ClCompile Include="Events\StarshipPlayedEvent.cpp" />
     <ClCompile Include="Systems\AssignmentSystem.cpp" />
     <ClCompile Include="Systems\CardPlayingSystem.cpp" />
     <ClCompile Include="Systems\CardStateSystem.cpp" />
@@ -110,6 +111,7 @@
     <ClCompile Include="Systems\JumpThreatSystem.cpp" />
     <ClCompile Include="Systems\PlayerDeckSystem.cpp" />
     <ClCompile Include="Systems\PlayerSystem.cpp" />
+    <ClCompile Include="Systems\StarshipPlayingSystem.cpp" />
     <ClCompile Include="Systems\ThreatSystem.cpp" />
     <ClCompile Include="Systems\TurnPhaseSystem.cpp" />
     <ClCompile Include="Util\Random.cpp" />
@@ -124,6 +126,7 @@
     <ClInclude Include="Events\FightStartedEvent.h" />
     <ClInclude Include="Events\ShipDefeatedEvent.h" />
     <ClInclude Include="Events\ShipVictoriousEvent.h" />
+    <ClInclude Include="Events\StarshipPlayedEvent.h" />
     <ClInclude Include="Systems\AssignmentSystem.h" />
     <ClInclude Include="Systems\CardPlayingSystem.h" />
     <ClInclude Include="Systems\CardStateSystem.h" />
@@ -139,6 +142,7 @@
     <ClInclude Include="Systems\JumpThreatSystem.h" />
     <ClInclude Include="Systems\PlayerDeckSystem.h" />
     <ClInclude Include="Systems\PlayerSystem.h" />
+    <ClInclude Include="Systems\StarshipPlayingSystem.h" />
     <ClInclude Include="Systems\ThreatSystem.h" />
     <ClInclude Include="Systems\TurnPhaseSystem.h" />
     <ClInclude Include="Util\Random.h" />
