@@ -96,6 +96,7 @@
     <ClCompile Include="Events\EffectPlayedEvent.cpp" />
     <ClCompile Include="Events\EnemyCardPlayedEvent.cpp" />
     <ClCompile Include="Events\FightStartedEvent.cpp" />
+    <ClCompile Include="Events\FlagshipPlayedEvent.cpp" />
     <ClCompile Include="Events\ShipDefeatedEvent.cpp" />
     <ClCompile Include="Events\ShipVictoriousEvent.cpp" />
     <ClCompile Include="Events\StarshipPlayedEvent.cpp" />
@@ -130,6 +131,7 @@
     <ClInclude Include="Events\EnemyCardPlayedEvent.h" />
     <ClInclude Include="Events\EffectPlayedEvent.h" />
     <ClInclude Include="Events\FightStartedEvent.h" />
+    <ClInclude Include="Events\FlagshipPlayedEvent.h" />
     <ClInclude Include="Events\ShipDefeatedEvent.h" />
     <ClInclude Include="Events\ShipVictoriousEvent.h" />
     <ClInclude Include="Events\StarshipPlayedEvent.h" />

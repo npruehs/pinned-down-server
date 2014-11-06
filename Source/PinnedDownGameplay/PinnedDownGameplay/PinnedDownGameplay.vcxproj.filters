@@ -117,6 +117,9 @@
     <ClCompile Include="Systems\TemporaryEffectSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Events\FlagshipPlayedEvent.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\DistanceSystem.h">
@@ -217,6 +220,9 @@
     </ClInclude>
     <ClInclude Include="Systems\TemporaryEffectSystem.h">
       <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\FlagshipPlayedEvent.h">
+      <Filter>Events</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,8 +1,11 @@
 #include "Event.h"
 #include "FlagshipSystem.h"
 
+#include "..\Events\FlagshipPlayedEvent.h"
+
 using namespace PinnedDownServer::Systems;
 using namespace PinnedDownNet::Events;
+using namespace PinnedDownGameplay::Events;
 
 FlagshipSystem::FlagshipSystem()
 {
@@ -32,5 +35,9 @@ void FlagshipSystem::OnPlayerAdded(PlayerAddedEvent& playerAddedEvent)
 {
 	// Play flagship.
 	auto owner = playerAddedEvent.serverEntity;
-	this->cardFactory->CreateCard(owner, 0, 56, CardState::InPlay);
+	auto shipEntity = this->cardFactory->CreateCard(owner, 0, 56, CardState::InPlay);
+
+	// Notify listeners.
+	auto flagshipPlayedEvent = std::make_shared<FlagshipPlayedEvent>(shipEntity);
+	this->game->eventManager->QueueEvent(flagshipPlayedEvent);
 }

@@ -13,7 +13,9 @@
 
 #include "Data\TurnPhase.h"
 
+#include "..\Events\EnemyCardPlayedEvent.h"
 #include "Events\FightResolvedEvent.h"
+#include "..\Events\FlagshipPlayedEvent.h"
 #include "..\Events\ShipDefeatedEvent.h"
 #include "..\Events\StarshipPlayedEvent.h"
 #include "Events\TurnPhaseChangedEvent.h"
@@ -21,6 +23,7 @@
 using namespace PinnedDownCore;
 using namespace PinnedDownGameplay::Events;
 using namespace PinnedDownNet::Events;
+using namespace PinnedDownServer::Events;
 
 namespace PinnedDownServer
 {
@@ -42,11 +45,13 @@ namespace PinnedDownServer
 			void OnEvent(Event & event);
 
 			void OnAssignCard(AssignCardAction& assignCardAction);
-			void OnStarshipPlayed(StarshipPlayedEvent& starshipPlayedEvent);
-			void OnShipDefeated(ShipDefeatedEvent& shipDefeatedEvent);
+			void OnEnemyCardPlayed(EnemyCardPlayedEvent& enemyCardPlayedEvent);
 			void OnEndTurn(EndTurnAction& endTurnAction);
+			void OnFlagshipPlayed(FlagshipPlayedEvent& flagshipPlayedEvent);
 			void OnFightResolved(FightResolvedEvent& fightResolvedEvent);
 			void OnResolveFight(ResolveFightAction& resolveFightAction);
+			void OnStarshipPlayed(StarshipPlayedEvent& starshipPlayedEvent);
+			void OnShipDefeated(ShipDefeatedEvent& shipDefeatedEvent);
 			void OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent);
 		};
 	}
