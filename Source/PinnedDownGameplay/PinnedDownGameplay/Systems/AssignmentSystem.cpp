@@ -1,9 +1,12 @@
+#include <algorithm>
+
 #include "Event.h"
 #include "AssignmentSystem.h"
 
 #include "Components\OwnerComponent.h"
 
 #include "Events\CardAssignedEvent.h"
+#include "Events\CardUnassignedEvent.h"
 #include "Events\ErrorMessageEvent.h"
 #include "..\Events\FightStartedEvent.h"
 
@@ -83,12 +86,39 @@ void AssignmentSystem::OnAssignCard(AssignCardAction& assignCardAction)
 
 	if (assignedCardOwner != nullptr && assignedCardOwner->owner != INVALID_ENTITY_ID && targetCardOwner != nullptr && targetCardOwner->owner == INVALID_ENTITY_ID)
 	{
-		// Check for previous assignment.
+		// Check for previous assignment of source card.
 		auto assignment = this->currentAssignments.find(assignCardAction.assignedCard);
 
 		if (assignment != this->currentAssignments.end())
 		{
+			// Notify listeners.
+			auto cardUnassignedEvent = std::make_shared<CardUnassignedEvent>(assignment->first);
+			this->game->eventManager->QueueEvent(cardUnassignedEvent);
+
 			this->currentAssignments.erase(assignment);
+		}
+
+		// Check for previous assignment of target card.
+		auto foundCard = this->currentAssignments.end();
+
+		for (auto it = this->currentAssignments.begin(); it != this->currentAssignments.end(); ++it)
+		{
+			auto targetCards = it->second;
+			auto targetCard = std::find(targetCards->begin(), targetCards->end(), assignCardAction.targetCard);
+
+			if (targetCard != targetCards->end())
+			{
+				foundCard = it;
+			}
+		}
+
+		if (foundCard != this->currentAssignments.end())
+		{
+			// Notify listeners.
+			auto cardUnassignedEvent = std::make_shared<CardUnassignedEvent>(foundCard->first);
+			this->game->eventManager->QueueEvent(cardUnassignedEvent);
+
+			this->currentAssignments.erase(foundCard);
 		}
 
 		// Assign card.
