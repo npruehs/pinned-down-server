@@ -3,6 +3,7 @@
 #include "Event.h"
 #include "AssignmentSystem.h"
 
+#include "Components\CardComponent.h"
 #include "Components\OwnerComponent.h"
 
 #include "Events\CardAssignedEvent.h"
@@ -25,12 +26,12 @@ void AssignmentSystem::InitSystem(Game* game)
 {
 	GameSystem::InitSystem(game);
 
-	this->game->eventManager->AddListener(this, AssignCardAction::AssignCardActionType);
-	this->game->eventManager->AddListener(this, CardCreatedEvent::CardCreatedEventType);
-	this->game->eventManager->AddListener(this, CardRemovedEvent::CardRemovedEventType);
+	this->game->eventManager->AddListener(this, AssignCardAction::AssignCardActionType);	
 	this->game->eventManager->AddListener(this, EndTurnAction::EndTurnActionType);
 	this->game->eventManager->AddListener(this, FightResolvedEvent::FightResolvedEventType);
 	this->game->eventManager->AddListener(this, ResolveFightAction::ResolveFightActionType);
+	this->game->eventManager->AddListener(this, ShipDefeatedEvent::ShipDefeatedEventType);
+	this->game->eventManager->AddListener(this, StarshipPlayedEvent::StarshipPlayedEventType);
 	this->game->eventManager->AddListener(this, TurnPhaseChangedEvent::TurnPhaseChangedEventType);
 }
 
@@ -40,16 +41,6 @@ void AssignmentSystem::OnEvent(Event & newEvent)
 	{
 		auto assignCardAction = static_cast<AssignCardAction&>(newEvent);
 		this->OnAssignCard(assignCardAction);
-	}
-	else if (newEvent.GetEventType() == CardCreatedEvent::CardCreatedEventType)
-	{
-		auto cardCreatedEvent = static_cast<CardCreatedEvent&>(newEvent);
-		this->OnCardCreated(cardCreatedEvent);
-	}
-	else if (newEvent.GetEventType() == CardRemovedEvent::CardRemovedEventType)
-	{
-		auto cardRemovedEvent = static_cast<CardRemovedEvent&>(newEvent);
-		this->OnCardRemoved(cardRemovedEvent);
 	}
 	else if (newEvent.GetEventType() == EndTurnAction::EndTurnActionType)
 	{
@@ -65,6 +56,16 @@ void AssignmentSystem::OnEvent(Event & newEvent)
 	{
 		auto resolveFightAction = static_cast<ResolveFightAction&>(newEvent);
 		this->OnResolveFight(resolveFightAction);
+	}
+	else if (newEvent.GetEventType() == ShipDefeatedEvent::ShipDefeatedEventType)
+	{
+		auto shipDefeatedEvent = static_cast<ShipDefeatedEvent&>(newEvent);
+		this->OnShipDefeated(shipDefeatedEvent);
+	}
+	else if (newEvent.GetEventType() == StarshipPlayedEvent::StarshipPlayedEventType)
+	{
+		auto starshipPlayedEvent = static_cast<StarshipPlayedEvent&>(newEvent);
+		this->OnStarshipPlayed(starshipPlayedEvent);
 	}
 	else if (newEvent.GetEventType() == TurnPhaseChangedEvent::TurnPhaseChangedEventType)
 	{
@@ -132,29 +133,31 @@ void AssignmentSystem::OnAssignCard(AssignCardAction& assignCardAction)
 	}
 }
 
-void AssignmentSystem::OnCardCreated(CardCreatedEvent& cardCreatedEvent)
+void AssignmentSystem::OnStarshipPlayed(StarshipPlayedEvent& starshipPlayedEvent)
 {
-	if (cardCreatedEvent.owner != INVALID_ENTITY_ID)
-	{
-		this->playerCards.push_back(cardCreatedEvent.serverEntity);
-	}
-	else
-	{
-		this->enemyCards.push_back(cardCreatedEvent.serverEntity);
-	}
-}
-
-void AssignmentSystem::OnCardRemoved(CardRemovedEvent& cardRemovedEvent)
-{
-	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(cardRemovedEvent.serverEntity, OwnerComponent::OwnerComponentType);
+	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(starshipPlayedEvent.shipEntity, OwnerComponent::OwnerComponentType);
 
 	if (ownerComponent->owner != INVALID_ENTITY_ID)
 	{
-		this->playerCards.remove(cardRemovedEvent.serverEntity);
+		this->playerCards.push_back(starshipPlayedEvent.shipEntity);
 	}
 	else
 	{
-		this->enemyCards.remove(cardRemovedEvent.serverEntity);
+		this->enemyCards.push_back(starshipPlayedEvent.shipEntity);
+	}
+}
+
+void AssignmentSystem::OnShipDefeated(ShipDefeatedEvent& shipDefeatedEvent)
+{
+	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(shipDefeatedEvent.shipEntity, OwnerComponent::OwnerComponentType);
+
+	if (ownerComponent->owner != INVALID_ENTITY_ID)
+	{
+		this->playerCards.remove(shipDefeatedEvent.shipEntity);
+	}
+	else
+	{
+		this->enemyCards.remove(shipDefeatedEvent.shipEntity);
 	}
 }
 
