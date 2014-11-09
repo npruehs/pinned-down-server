@@ -12,7 +12,7 @@ using namespace PinnedDownCore;
 using namespace PinnedDownGameplay::Events;
 using namespace PinnedDownNet::Data;
 
-namespace PinnedDownServer
+namespace PinnedDownGameplay
 {
 	namespace Systems
 	{

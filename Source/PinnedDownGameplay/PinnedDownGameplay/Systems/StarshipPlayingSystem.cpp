@@ -10,10 +10,10 @@
 
 using namespace PinnedDownGameplay::Components;
 using namespace PinnedDownGameplay::Events;
+using namespace PinnedDownGameplay::Systems;
 using namespace PinnedDownNet::Components;
 using namespace PinnedDownNet::Data;
 using namespace PinnedDownNet::Events;
-using namespace PinnedDownServer::Systems;
 
 
 StarshipPlayingSystem::StarshipPlayingSystem()

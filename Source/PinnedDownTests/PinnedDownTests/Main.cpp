@@ -12,7 +12,7 @@
 #include "Systems\DistanceVictorySystem.h"
 
 
-using namespace PinnedDownServer;
+using namespace PinnedDownGameplay;
 
 
 TEST(DistanceVictorySystemTest, VictoryWhenFullDistanceCovered)

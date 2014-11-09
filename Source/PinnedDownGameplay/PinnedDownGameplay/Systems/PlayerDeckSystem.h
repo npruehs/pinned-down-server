@@ -17,7 +17,7 @@ using namespace PinnedDownCore;
 using namespace PinnedDownNet::Data;
 using namespace PinnedDownNet::Events;
 
-namespace PinnedDownServer
+namespace PinnedDownGameplay
 {
 	namespace Systems
 	{
@@ -29,7 +29,7 @@ namespace PinnedDownServer
 			void InitSystem(PinnedDownCore::Game* game);
 
 		private:
-			const int handCardLimit = 2;
+			const unsigned int handCardLimit = 2;
 
 			std::list<Entity> players;
 

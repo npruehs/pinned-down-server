@@ -4,7 +4,7 @@
 
 using namespace PinnedDownCore;
 
-namespace PinnedDownServer
+namespace PinnedDownGameplay
 {
 	namespace Systems
 	{

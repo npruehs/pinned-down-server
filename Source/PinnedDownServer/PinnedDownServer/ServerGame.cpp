@@ -27,6 +27,7 @@
 
 using namespace PinnedDownCore;
 using namespace PinnedDownGameplay::Events;
+using namespace PinnedDownGameplay::Systems;
 using namespace PinnedDownServer;
 
 
@@ -40,24 +41,24 @@ ServerGame::ServerGame(MasterServer* masterServer, int clientId)
 	this->serverEventDispatcher = std::make_shared<ServerEventDispatcher>(this, this->game);
 
 	// Init systems.
-	this->game->systemManager->AddSystem(std::make_shared<Systems::CardStateSystem>());
-	this->game->systemManager->AddSystem(std::make_shared<Systems::DamageSystem>());
-	this->game->systemManager->AddSystem(std::make_shared<Systems::DistanceSystem>());
-	this->game->systemManager->AddSystem(std::make_shared<Systems::DistanceVictorySystem>());
-	this->game->systemManager->AddSystem(std::make_shared<Systems::EnemyAttackSystem>());
-	this->game->systemManager->AddSystem(std::make_shared<Systems::FlagshipSystem>());
-	this->game->systemManager->AddSystem(std::make_shared<Systems::FlagshipDefeatSystem>());
-	this->game->systemManager->AddSystem(std::make_shared<Systems::TurnPhaseSystem>());
-	this->game->systemManager->AddSystem(std::make_shared<Systems::JumpEnemyRemovalSystem>());
-	this->game->systemManager->AddSystem(std::make_shared<Systems::PlayerSystem>());
-	this->game->systemManager->AddSystem(std::make_shared<Systems::PlayerDeckSystem>());
-	this->game->systemManager->AddSystem(std::make_shared<Systems::ThreatSystem>());
-	this->game->systemManager->AddSystem(std::make_shared<Systems::AssignmentSystem>());
-	this->game->systemManager->AddSystem(std::make_shared<Systems::FightSystem>());
-	this->game->systemManager->AddSystem(std::make_shared<Systems::CardPlayingSystem>());
-	this->game->systemManager->AddSystem(std::make_shared<Systems::StarshipPlayingSystem>());
-	this->game->systemManager->AddSystem(std::make_shared<Systems::EffectPlayingSystem>());
-	this->game->systemManager->AddSystem(std::make_shared<Systems::TemporaryEffectSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<CardStateSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<DamageSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<DistanceSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<DistanceVictorySystem>());
+	this->game->systemManager->AddSystem(std::make_shared<EnemyAttackSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<FlagshipSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<FlagshipDefeatSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<TurnPhaseSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<JumpEnemyRemovalSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<PlayerSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<PlayerDeckSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<ThreatSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<AssignmentSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<FightSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<CardPlayingSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<StarshipPlayingSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<EffectPlayingSystem>());
+	this->game->systemManager->AddSystem(std::make_shared<TemporaryEffectSystem>());
 	
 	this->game->systemManager->InitSystems();
 	this->Update();

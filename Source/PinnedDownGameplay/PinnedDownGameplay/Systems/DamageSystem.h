@@ -16,12 +16,13 @@
 #include "Damage\DamageData.h"
 
 using namespace PinnedDownCore;
+using namespace PinnedDownGameplay::Data;
 using namespace PinnedDownGameplay::Events;
+using namespace PinnedDownGameplay::Systems::Damage;
 using namespace PinnedDownNet::Data;
-using namespace PinnedDownServer::Data;
-using namespace PinnedDownServer::Systems::Damage;
 
-namespace PinnedDownServer
+
+namespace PinnedDownGameplay
 {
 	namespace Systems
 	{

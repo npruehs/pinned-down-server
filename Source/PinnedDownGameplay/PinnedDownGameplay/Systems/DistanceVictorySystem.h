@@ -9,7 +9,7 @@
 using namespace PinnedDownCore;
 using namespace PinnedDownNet::Events;
 
-namespace PinnedDownServer
+namespace PinnedDownGameplay
 {
 	namespace Systems
 	{

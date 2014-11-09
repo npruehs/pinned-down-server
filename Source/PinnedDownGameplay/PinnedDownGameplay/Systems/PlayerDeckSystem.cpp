@@ -6,7 +6,7 @@
 #include "Events\CardStateChangedEvent.h"
 
 using namespace PinnedDownGameplay::Components;
-using namespace PinnedDownServer::Systems;
+using namespace PinnedDownGameplay::Systems;
 using namespace PinnedDownNet::Components;
 using namespace PinnedDownNet::Events;
 

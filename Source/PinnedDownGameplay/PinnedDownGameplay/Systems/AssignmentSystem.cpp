@@ -15,7 +15,7 @@ using namespace PinnedDownNet::Components;
 using namespace PinnedDownNet::Data;
 using namespace PinnedDownNet::Events;
 using namespace PinnedDownGameplay::Events;
-using namespace PinnedDownServer::Systems;
+using namespace PinnedDownGameplay::Systems;
 
 
 AssignmentSystem::AssignmentSystem()

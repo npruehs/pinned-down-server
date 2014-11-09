@@ -1,5 +1,5 @@
 #include "EnemyCardPlayedEvent.h"
 
-using namespace PinnedDownServer::Events;
+using namespace PinnedDownGameplay::Events;
 
 const HashedString EnemyCardPlayedEvent::EnemyCardPlayedEventType = HashedString("EnemyCardPlayed");

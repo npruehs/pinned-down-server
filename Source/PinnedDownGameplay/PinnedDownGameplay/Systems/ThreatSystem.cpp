@@ -9,7 +9,7 @@
 
 using namespace PinnedDownNet::Components;
 using namespace PinnedDownNet::Events;
-using namespace PinnedDownServer::Systems;
+using namespace PinnedDownGameplay::Systems;
 
 
 ThreatSystem::ThreatSystem()

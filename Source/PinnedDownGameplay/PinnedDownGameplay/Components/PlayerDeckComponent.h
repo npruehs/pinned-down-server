@@ -8,7 +8,7 @@
 #include "..\Data\Deck.h"
 
 using namespace PinnedDownCore;
-using namespace PinnedDownServer::Data;
+using namespace PinnedDownGameplay::Data;
 
 namespace PinnedDownGameplay
 {

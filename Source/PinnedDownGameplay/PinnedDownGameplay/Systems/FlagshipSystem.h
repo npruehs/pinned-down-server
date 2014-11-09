@@ -11,7 +11,7 @@ using namespace PinnedDownCore;
 using namespace PinnedDownNet::Data;
 using namespace PinnedDownNet::Events;
 
-namespace PinnedDownServer
+namespace PinnedDownGameplay
 {
 	namespace Systems
 	{

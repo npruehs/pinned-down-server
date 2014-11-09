@@ -14,10 +14,9 @@
 using namespace PinnedDownCore;
 using namespace PinnedDownNet::Events;
 using namespace PinnedDownGameplay::Events;
-using namespace PinnedDownServer::Events;
 
 
-namespace PinnedDownServer
+namespace PinnedDownGameplay
 {
 	namespace Systems
 	{

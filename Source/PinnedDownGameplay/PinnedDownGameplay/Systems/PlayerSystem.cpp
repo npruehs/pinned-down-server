@@ -5,7 +5,7 @@
 #include "Events\PlayerAddedEvent.h"
 
 using namespace PinnedDownNet::Events;
-using namespace PinnedDownServer::Systems;
+using namespace PinnedDownGameplay::Systems;
 
 
 PlayerSystem::PlayerSystem()

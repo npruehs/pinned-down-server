@@ -1,6 +1,6 @@
 #pragma once
 
-namespace PinnedDownServer
+namespace PinnedDownGameplay
 {
 	namespace Data
 	{

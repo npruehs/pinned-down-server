@@ -4,7 +4,7 @@
 #include "Events\VictoryEvent.h"
 
 using namespace PinnedDownNet::Events;
-using namespace PinnedDownServer::Systems;
+using namespace PinnedDownGameplay::Systems;
 
 
 DistanceVictorySystem::DistanceVictorySystem()

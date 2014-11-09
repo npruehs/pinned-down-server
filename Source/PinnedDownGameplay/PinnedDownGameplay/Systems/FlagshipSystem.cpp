@@ -3,9 +3,10 @@
 
 #include "..\Events\FlagshipPlayedEvent.h"
 
-using namespace PinnedDownServer::Systems;
-using namespace PinnedDownNet::Events;
 using namespace PinnedDownGameplay::Events;
+using namespace PinnedDownGameplay::Systems;
+using namespace PinnedDownNet::Events;
+
 
 FlagshipSystem::FlagshipSystem()
 {

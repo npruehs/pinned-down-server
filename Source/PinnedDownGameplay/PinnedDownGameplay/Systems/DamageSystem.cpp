@@ -7,7 +7,7 @@
 #include "Components\StructureComponent.h"
 
 using namespace PinnedDownGameplay::Events;
-using namespace PinnedDownServer::Systems;
+using namespace PinnedDownGameplay::Systems;
 using namespace PinnedDownNet::Events;
 using namespace PinnedDownNet::Components;
 

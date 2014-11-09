@@ -7,9 +7,9 @@
 
 #include "..\Util\Random.h"
 
-using namespace PinnedDownServer::Util;
+using namespace PinnedDownGameplay::Util;
 
-namespace PinnedDownServer
+namespace PinnedDownGameplay
 {
 	namespace Data
 	{

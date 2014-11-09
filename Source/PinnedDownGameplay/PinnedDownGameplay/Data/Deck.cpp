@@ -1,7 +1,7 @@
 #include "Deck.h"
 
-using namespace PinnedDownServer::Data;
-using namespace PinnedDownServer::Util;
+using namespace PinnedDownGameplay::Data;
+using namespace PinnedDownGameplay::Util;
 
 Deck::Deck() :
 	current(0)

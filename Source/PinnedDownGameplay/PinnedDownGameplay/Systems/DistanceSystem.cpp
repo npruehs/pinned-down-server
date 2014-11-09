@@ -4,7 +4,7 @@
 #include "Events\CoveredDistanceChangedEvent.h"
 
 using namespace PinnedDownNet::Events;
-using namespace PinnedDownServer::Systems;
+using namespace PinnedDownGameplay::Systems;
 
 
 DistanceSystem::DistanceSystem()
