@@ -1,8 +1,6 @@
 #include "Event.h"
 #include "StarshipPlayingSystem.h"
 
-#include "..\Actions\AddThreatAction.h"
-
 #include "Components\CardStateComponent.h"
 #include "Components\OwnerComponent.h"
 #include "..\Components\PlayerDeckComponent.h"
@@ -15,7 +13,6 @@ using namespace PinnedDownGameplay::Events;
 using namespace PinnedDownNet::Components;
 using namespace PinnedDownNet::Data;
 using namespace PinnedDownNet::Events;
-using namespace PinnedDownServer::Events;
 using namespace PinnedDownServer::Systems;
 
 
@@ -60,11 +57,6 @@ void StarshipPlayingSystem::OnStarshipPlayed(StarshipPlayedEvent& starshipPlayed
 	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(starshipPlayedEvent.shipEntity, OwnerComponent::OwnerComponentType);
 	auto playerDeckComponent = this->game->entityManager->GetComponent<PlayerDeckComponent>(ownerComponent->owner, PlayerDeckComponent::PlayerDeckComponentType);
 	playerDeckComponent->hand.remove(starshipPlayedEvent.shipEntity);
-
-	// Increase threat.
-	auto threatComponent = this->game->entityManager->GetComponent<ThreatComponent>(starshipPlayedEvent.shipEntity, ThreatComponent::ThreatComponentType);
-	auto addThreatAction = std::make_shared<AddThreatAction>(threatComponent->threat);
-	this->game->eventManager->QueueEvent(addThreatAction);
 
 	// Notify listeners.
 	auto cardStateChangedEvent = std::make_shared<CardStateChangedEvent>(starshipPlayedEvent.shipEntity, cardStateComponent->cardState);

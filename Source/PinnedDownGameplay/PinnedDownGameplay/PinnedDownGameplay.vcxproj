@@ -88,7 +88,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Actions\AddThreatAction.cpp" />
     <ClCompile Include="Components\PlayerDeckComponent.cpp" />
     <ClCompile Include="Data\Deck.cpp" />
     <ClCompile Include="Events\BonusPowerChangedEvent.cpp" />
@@ -112,7 +111,6 @@
     <ClCompile Include="Systems\FlagshipDefeatSystem.cpp" />
     <ClCompile Include="Systems\FlagshipSystem.cpp" />
     <ClCompile Include="Systems\JumpEnemyRemovalSystem.cpp" />
-    <ClCompile Include="Systems\JumpThreatSystem.cpp" />
     <ClCompile Include="Systems\PlayerDeckSystem.cpp" />
     <ClCompile Include="Systems\PlayerSystem.cpp" />
     <ClCompile Include="Systems\StarshipPlayingSystem.cpp" />
@@ -122,7 +120,6 @@
     <ClCompile Include="Util\Random.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Actions\AddThreatAction.h" />
     <ClInclude Include="Components\PlayerDeckComponent.h" />
     <ClInclude Include="Data\CardData.h" />
     <ClInclude Include="Data\Deck.h" />
@@ -148,7 +145,6 @@
     <ClInclude Include="Systems\FlagshipDefeatSystem.h" />
     <ClInclude Include="Systems\FlagshipSystem.h" />
     <ClInclude Include="Systems\JumpEnemyRemovalSystem.h" />
-    <ClInclude Include="Systems\JumpThreatSystem.h" />
     <ClInclude Include="Systems\PlayerDeckSystem.h" />
     <ClInclude Include="Systems\PlayerSystem.h" />
     <ClInclude Include="Systems\StarshipPlayingSystem.h" />

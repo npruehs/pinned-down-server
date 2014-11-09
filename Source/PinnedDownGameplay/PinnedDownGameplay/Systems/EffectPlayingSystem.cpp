@@ -1,8 +1,6 @@
 #include "Event.h"
 #include "EffectPlayingSystem.h"
 
-#include "..\Actions\AddThreatAction.h"
-
 #include "Components\CardStateComponent.h"
 #include "Components\OwnerComponent.h"
 #include "..\Components\PlayerDeckComponent.h"
@@ -17,7 +15,6 @@ using namespace PinnedDownGameplay::Events;
 using namespace PinnedDownNet::Components;
 using namespace PinnedDownNet::Data;
 using namespace PinnedDownNet::Events;
-using namespace PinnedDownServer::Events;
 using namespace PinnedDownServer::Systems;
 
 
