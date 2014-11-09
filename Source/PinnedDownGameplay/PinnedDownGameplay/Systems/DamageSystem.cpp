@@ -105,8 +105,20 @@ void DamageSystem::PrepareDamageDeck()
 	// Add cards.
 	this->damageDeck = std::make_shared<Deck>();
 
+	this->damageDeck->Add(CardData(0, 0));
+	this->damageDeck->Add(CardData(0, 0));
+	this->damageDeck->Add(CardData(0, 1));
+	this->damageDeck->Add(CardData(0, 1));
 	this->damageDeck->Add(CardData(0, 3));
 	this->damageDeck->Add(CardData(0, 3));
+	this->damageDeck->Add(CardData(0, 4));
+	this->damageDeck->Add(CardData(0, 4));
+	this->damageDeck->Add(CardData(0, 5));
+	this->damageDeck->Add(CardData(0, 5));
+	this->damageDeck->Add(CardData(0, 6));
+	this->damageDeck->Add(CardData(0, 6));
+	this->damageDeck->Add(CardData(0, 7));
+	this->damageDeck->Add(CardData(0, 7));
 
 	// Shuffle deck.
 	auto random = std::make_shared<Random>();

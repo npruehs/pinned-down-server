@@ -115,8 +115,12 @@ void EnemyAttackSystem::PrepareAttackDeck()
 	// Add cards.
 	this->attackDeck = std::make_shared<Deck>();
 
+	this->attackDeck->Add(CardData(0, 72));
+	this->attackDeck->Add(CardData(0, 72));
 	this->attackDeck->Add(CardData(0, 73));
-	this->attackDeck->Add(CardData(0, 84));
+	this->attackDeck->Add(CardData(0, 73));
+	this->attackDeck->Add(CardData(0, 75));
+	this->attackDeck->Add(CardData(0, 75));
 	this->attackDeck->Add(CardData(0, 84));
 	this->attackDeck->Add(CardData(0, 84));
 

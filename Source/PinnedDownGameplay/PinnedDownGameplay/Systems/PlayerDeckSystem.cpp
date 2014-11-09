@@ -52,14 +52,18 @@ void PlayerDeckSystem::OnPlayerAdded(PlayerAddedEvent& playerAddedEvent)
 	this->game->entityManager->AddComponent(playerEntity, playerDeckComponent);
 	
 	// Add cards.
+	playerDeckComponent->drawDeck->Add(CardData(0, 45));
+	playerDeckComponent->drawDeck->Add(CardData(0, 45));
+	playerDeckComponent->drawDeck->Add(CardData(0, 45));
+	playerDeckComponent->drawDeck->Add(CardData(0, 45));
 	playerDeckComponent->drawDeck->Add(CardData(0, 48));
 	playerDeckComponent->drawDeck->Add(CardData(0, 48));
 	playerDeckComponent->drawDeck->Add(CardData(0, 48));
 	playerDeckComponent->drawDeck->Add(CardData(0, 48));
+	playerDeckComponent->drawDeck->Add(CardData(0, 54));
+	playerDeckComponent->drawDeck->Add(CardData(0, 55));
 	playerDeckComponent->drawDeck->Add(CardData(0, 57));
-	playerDeckComponent->drawDeck->Add(CardData(0, 57));
-	playerDeckComponent->drawDeck->Add(CardData(0, 57));
-	playerDeckComponent->drawDeck->Add(CardData(0, 57));
+	playerDeckComponent->drawDeck->Add(CardData(0, 58));
 
 	// Shuffle deck.
 	auto random = std::make_shared<Random>();
