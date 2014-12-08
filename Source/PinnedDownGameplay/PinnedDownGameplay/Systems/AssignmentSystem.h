@@ -14,9 +14,9 @@
 #include "Data\TurnPhase.h"
 
 #include "..\Events\EnemyCardPlayedEvent.h"
+#include "EntityRemovedEvent.h"
 #include "Events\FightResolvedEvent.h"
 #include "..\Events\FlagshipPlayedEvent.h"
-#include "..\Events\ShipDefeatedEvent.h"
 #include "..\Events\StarshipPlayedEvent.h"
 #include "Events\TurnPhaseChangedEvent.h"
 
@@ -44,13 +44,13 @@ namespace PinnedDownGameplay
 			void OnEvent(Event & event);
 
 			void OnAssignCard(AssignCardAction& assignCardAction);
-			void OnEnemyCardPlayed(EnemyCardPlayedEvent& enemyCardPlayedEvent);
 			void OnEndTurn(EndTurnAction& endTurnAction);
+			void OnEnemyCardPlayed(EnemyCardPlayedEvent& enemyCardPlayedEvent);
+			void OnEntityRemoved(EntityRemovedEvent& entityRemovedEvent);
 			void OnFlagshipPlayed(FlagshipPlayedEvent& flagshipPlayedEvent);
 			void OnFightResolved(FightResolvedEvent& fightResolvedEvent);
 			void OnResolveFight(ResolveFightAction& resolveFightAction);
 			void OnStarshipPlayed(StarshipPlayedEvent& starshipPlayedEvent);
-			void OnShipDefeated(ShipDefeatedEvent& shipDefeatedEvent);
 			void OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent);
 		};
 	}

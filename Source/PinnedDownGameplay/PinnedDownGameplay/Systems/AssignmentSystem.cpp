@@ -29,10 +29,10 @@ void AssignmentSystem::InitSystem(Game* game)
 	this->game->eventManager->AddListener(this, AssignCardAction::AssignCardActionType);	
 	this->game->eventManager->AddListener(this, EndTurnAction::EndTurnActionType);
 	this->game->eventManager->AddListener(this, EnemyCardPlayedEvent::EnemyCardPlayedEventType);
+	this->game->eventManager->AddListener(this, EntityRemovedEvent::EntityRemovedEventType);
 	this->game->eventManager->AddListener(this, FightResolvedEvent::FightResolvedEventType);
 	this->game->eventManager->AddListener(this, FlagshipPlayedEvent::FlagshipPlayedEventType);
 	this->game->eventManager->AddListener(this, ResolveFightAction::ResolveFightActionType);
-	this->game->eventManager->AddListener(this, ShipDefeatedEvent::ShipDefeatedEventType);
 	this->game->eventManager->AddListener(this, StarshipPlayedEvent::StarshipPlayedEventType);	
 	this->game->eventManager->AddListener(this, TurnPhaseChangedEvent::TurnPhaseChangedEventType);
 }
@@ -54,6 +54,11 @@ void AssignmentSystem::OnEvent(Event & newEvent)
 		auto enemyCardPlayedEvent = static_cast<EnemyCardPlayedEvent&>(newEvent);
 		this->OnEnemyCardPlayed(enemyCardPlayedEvent);
 	}
+	else if (newEvent.GetEventType() == EntityRemovedEvent::EntityRemovedEventType)
+	{
+		auto entityRemovedEvent = static_cast<EntityRemovedEvent&>(newEvent);
+		this->OnEntityRemoved(entityRemovedEvent);
+	}
 	else if (newEvent.GetEventType() == FightResolvedEvent::FightResolvedEventType)
 	{
 		auto fightResolvedEvent = static_cast<FightResolvedEvent&>(newEvent);
@@ -68,11 +73,6 @@ void AssignmentSystem::OnEvent(Event & newEvent)
 	{
 		auto resolveFightAction = static_cast<ResolveFightAction&>(newEvent);
 		this->OnResolveFight(resolveFightAction);
-	}
-	else if (newEvent.GetEventType() == ShipDefeatedEvent::ShipDefeatedEventType)
-	{
-		auto shipDefeatedEvent = static_cast<ShipDefeatedEvent&>(newEvent);
-		this->OnShipDefeated(shipDefeatedEvent);
 	}
 	else if (newEvent.GetEventType() == StarshipPlayedEvent::StarshipPlayedEventType)
 	{
@@ -231,17 +231,24 @@ void AssignmentSystem::OnStarshipPlayed(StarshipPlayedEvent& starshipPlayedEvent
 	}
 }
 
-void AssignmentSystem::OnShipDefeated(ShipDefeatedEvent& shipDefeatedEvent)
+void AssignmentSystem::OnEntityRemoved(EntityRemovedEvent& entityRemovedEvent)
 {
-	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(shipDefeatedEvent.shipEntity, OwnerComponent::OwnerComponentType);
+	auto cardComponent = this->game->entityManager->GetComponent<CardComponent>(entityRemovedEvent.entity, CardComponent::CardComponentType);
+
+	if (cardComponent == nullptr || cardComponent->cardType != CardType::Starship)
+	{
+		return;
+	}
+
+	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(entityRemovedEvent.entity, OwnerComponent::OwnerComponentType);
 
 	if (ownerComponent->owner != INVALID_ENTITY_ID)
 	{
-		this->playerCards.remove(shipDefeatedEvent.shipEntity);
+		this->playerCards.remove(entityRemovedEvent.entity);
 	}
 	else
 	{
-		this->enemyCards.remove(shipDefeatedEvent.shipEntity);
+		this->enemyCards.remove(entityRemovedEvent.entity);
 	}
 }
 
