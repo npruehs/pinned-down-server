@@ -1,6 +1,8 @@
 #include "Event.h"
 #include "DamageSystem.h"
 
+#include "Events\PowerChangedEvent.h"
+#include "Events\StructureChangedEvent.h"
 #include "Events\ShipDamagedEvent.h"
 
 #include "Components\PowerComponent.h"
@@ -91,6 +93,12 @@ void DamageSystem::OnShipDefeated(ShipDefeatedEvent& shipDefeatedEvent)
 	// Notify listeners.
 	auto shipDamagedEvent = std::make_shared<ShipDamagedEvent>(damagedShipEntity, damageCardEntity);
 	this->game->eventManager->QueueEvent(shipDamagedEvent);
+
+	auto powerChangedEvent = std::make_shared<PowerChangedEvent>(damagedShipEntity, shipPowerComponent->power);
+	this->game->eventManager->QueueEvent(powerChangedEvent);
+
+	auto structureChangedEvent = std::make_shared<StructureChangedEvent>(damagedShipEntity, shipStructureComponent->structure);
+	this->game->eventManager->QueueEvent(structureChangedEvent);
 
 	// Check for destruction.
 	if (shipStructureComponent->structure <= 0)
