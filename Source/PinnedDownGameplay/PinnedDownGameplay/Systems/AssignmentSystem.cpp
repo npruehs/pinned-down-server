@@ -147,26 +147,30 @@ void AssignmentSystem::OnAssignCard(AssignCardAction& assignCardAction)
 
 void AssignmentSystem::OnEndTurn(EndTurnAction& endTurnAction)
 {
-	if (this->currentTurnPhase != TurnPhase::Assignment)
+	if (this->currentTurnPhase == TurnPhase::Assignment)
 	{
-		return;
+		// Check if enough enemy ships assigned.
+		auto reqEnemyAssignments = enemyCards.size() < playerCards.size() ? enemyCards.size() : playerCards.size();
+
+		if (this->currentAssignments.size() < reqEnemyAssignments)
+		{
+			// Error: Enemy ship not assigned.
+			auto errorMessageEvent = std::make_shared<ErrorMessageEvent>("Error_NotAllEnemyShipsAssigned");
+			this->game->eventManager->QueueEvent(errorMessageEvent);
+
+			return;
+		}
+
+		// Notify listeners.
+		auto turnPhaseChangedEvent = std::make_shared<TurnPhaseChangedEvent>(TurnPhase::Fight);
+		this->game->eventManager->QueueEvent(turnPhaseChangedEvent);
 	}
-
-	// Check if enough enemy ships assigned.
-	auto reqEnemyAssignments = enemyCards.size() < playerCards.size() ? enemyCards.size() : playerCards.size();
-
-	if (this->currentAssignments.size() < reqEnemyAssignments)
+	else if (this->currentTurnPhase == TurnPhase::Fight)
 	{
-		// Error: Enemy ship not assigned.
-		auto errorMessageEvent = std::make_shared<ErrorMessageEvent>("Error_NotAllEnemyShipsAssigned");
+		// Fight phase is automatically ended in OnFightResolved.
+		auto errorMessageEvent = std::make_shared<ErrorMessageEvent>("Error_NotAllFightsResolved");
 		this->game->eventManager->QueueEvent(errorMessageEvent);
-
-		return;
 	}
-
-	// Notify listeners.
-	auto turnPhaseChangedEvent = std::make_shared<TurnPhaseChangedEvent>(TurnPhase::Fight);
-	this->game->eventManager->QueueEvent(turnPhaseChangedEvent);
 }
 
 void AssignmentSystem::OnEnemyCardPlayed(EnemyCardPlayedEvent& enemyCardPlayedEvent)
