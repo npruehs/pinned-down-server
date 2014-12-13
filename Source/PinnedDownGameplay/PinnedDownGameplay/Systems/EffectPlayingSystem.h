@@ -7,6 +7,8 @@
 #include "Data\TurnPhase.h"
 
 #include "..\Events\EffectPlayedEvent.h"
+#include "EntityRemovedEvent.h"
+#include "Events\ShipDamagedEvent.h"
 #include "Events\TurnPhaseChangedEvent.h"
 
 using namespace PinnedDownCore;
@@ -29,7 +31,11 @@ namespace PinnedDownGameplay
 
 			void OnEvent(Event & event);
 
+			std::list<Entity> damagedShips;
+
 			void OnEffectPlayed(EffectPlayedEvent& effectPlayedEvent);
+			void OnEntityRemoved(EntityRemovedEvent& entityRemovedEvent);
+			void OnShipDamaged(ShipDamagedEvent& shipDamagedEvent);
 			void OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent);
 		};
 	}

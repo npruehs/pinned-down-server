@@ -2,6 +2,8 @@
 #include "EffectPlayingSystem.h"
 
 #include "Components\CardStateComponent.h"
+#include "Components\ConditionalPowerComponent.h"
+#include "Components\ConditionNotDamagedComponent.h"
 #include "Components\OwnerComponent.h"
 #include "..\Components\PlayerDeckComponent.h"
 #include "Components\PowerComponent.h"
@@ -27,6 +29,8 @@ void EffectPlayingSystem::InitSystem(Game* game)
 	GameSystem::InitSystem(game);
 
 	this->game->eventManager->AddListener(this, EffectPlayedEvent::EffectPlayedEventType);
+	this->game->eventManager->AddListener(this, EntityRemovedEvent::EntityRemovedEventType);
+	this->game->eventManager->AddListener(this, ShipDamagedEvent::ShipDamagedEventType);
 	this->game->eventManager->AddListener(this, TurnPhaseChangedEvent::TurnPhaseChangedEventType);
 }
 
@@ -36,6 +40,16 @@ void EffectPlayingSystem::OnEvent(Event & newEvent)
 	{
 		auto effectPlayedEvent = static_cast<EffectPlayedEvent&>(newEvent);
 		this->OnEffectPlayed(effectPlayedEvent);
+	}
+	else if (newEvent.GetEventType() == EntityRemovedEvent::EntityRemovedEventType)
+	{
+		auto entityRemovedEvent = static_cast<EntityRemovedEvent&>(newEvent);
+		this->OnEntityRemoved(entityRemovedEvent);
+	}
+	else if (newEvent.GetEventType() == ShipDamagedEvent::ShipDamagedEventType)
+	{
+		auto shipDamagedEvent = static_cast<ShipDamagedEvent&>(newEvent);
+		this->OnShipDamaged(shipDamagedEvent);
 	}
 	else if (newEvent.GetEventType() == TurnPhaseChangedEvent::TurnPhaseChangedEventType)
 	{
@@ -61,9 +75,31 @@ void EffectPlayingSystem::OnEffectPlayed(EffectPlayedEvent& effectPlayedEvent)
 
 		if (targetPowerComponent != nullptr)
 		{
+			int bonusPower = effectPowerComponent->bonusPowerUntilEndOfTurn;
+
+			// Check for conditional bonus.
+			auto conditionalPowerComponent = this->game->entityManager->GetComponent<ConditionalPowerComponent>(effectPlayedEvent.effectEntity, ConditionalPowerComponent::ConditionalPowerComponentType);
+
+			if (conditionalPowerComponent != nullptr)
+			{
+				auto conditionNotDamagedComponent = this->game->entityManager->GetComponent<ConditionNotDamagedComponent>(effectPlayedEvent.effectEntity, ConditionNotDamagedComponent::ConditionNotDamagedComponentType);
+
+				if (conditionNotDamagedComponent != nullptr)
+				{
+					// Check if ship is damaged.
+					auto damagedShip = std::find(this->damagedShips.begin(), this->damagedShips.end(), effectPlayedEvent.targetEntity);
+
+					if (damagedShip == this->damagedShips.end())
+					{
+						// Conditions met - increase power.
+						bonusPower = conditionalPowerComponent->conditionalPower;
+					}
+				}
+			}
+
 			// Apply power bonus.
-			targetPowerComponent->bonusPowerUntilEndOfTurn += effectPowerComponent->bonusPowerUntilEndOfTurn;
-			targetPowerComponent->power += effectPowerComponent->bonusPowerUntilEndOfTurn;
+			targetPowerComponent->bonusPowerUntilEndOfTurn += bonusPower;
+			targetPowerComponent->power += bonusPower;
 
 			// Notify listeners.
 			auto bonusPowerChangedEvent = std::make_shared<BonusPowerChangedEvent>(effectPlayedEvent.targetEntity);
@@ -82,6 +118,16 @@ void EffectPlayingSystem::OnEffectPlayed(EffectPlayedEvent& effectPlayedEvent)
 
 	// Remove card.
 	this->game->entityManager->RemoveEntity(effectPlayedEvent.effectEntity);
+}
+
+void EffectPlayingSystem::OnEntityRemoved(EntityRemovedEvent& entityRemovedEvent)
+{
+	this->damagedShips.remove(entityRemovedEvent.entity);
+}
+
+void EffectPlayingSystem::OnShipDamaged(ShipDamagedEvent& shipDamagedEvent)
+{
+	this->damagedShips.push_back(shipDamagedEvent.damagedShip);
 }
 
 void EffectPlayingSystem::OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent)
