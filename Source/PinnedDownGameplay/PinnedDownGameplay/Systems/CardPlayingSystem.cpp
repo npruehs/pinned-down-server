@@ -7,6 +7,7 @@
 #include "..\Components\PlayerDeckComponent.h"
 #include "Components\ThreatComponent.h"
 
+#include "Events\CardPlayedEvent.h"
 #include "..\Events\EffectPlayedEvent.h"
 #include "..\Events\StarshipPlayedEvent.h"
 
@@ -59,6 +60,9 @@ void CardPlayingSystem::OnPlayCard(PlayCardAction& playCardAction)
 
 	// Check card type.
 	auto cardComponent = this->game->entityManager->GetComponent<CardComponent>(playCardAction.cardToPlay, CardComponent::CardComponentType);
+
+	auto cardPlayedEvent = std::make_shared<CardPlayedEvent>(playCardAction.cardToPlay);
+	this->game->eventManager->QueueEvent(cardPlayedEvent);
 
 	if (cardComponent->cardType == CardType::Starship)
 	{
