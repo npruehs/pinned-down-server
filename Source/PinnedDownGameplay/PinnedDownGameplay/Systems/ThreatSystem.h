@@ -9,6 +9,8 @@
 #include "Events\TurnPhaseChangedEvent.h"
 
 #include "..\Events\EnemyCardPlayedEvent.h"
+#include "EntityRemovedEvent.h"
+#include "..\Events\FlagshipPlayedEvent.h"
 #include "..\Events\StarshipPlayedEvent.h"
 
 using namespace PinnedDownCore;
@@ -30,10 +32,14 @@ namespace PinnedDownGameplay
 		private:
 			TurnPhase currentTurnPhase;
 			int threat;
-			
+			int locationThreat;
+			int playerShips;
+
 			void OnEvent(Event & event);
 
 			void OnEnemyCardPlayed(EnemyCardPlayedEvent& enemyCardPlayedEvent);
+			void OnEntityRemoved(EntityRemovedEvent& entityRemovedEvent);
+			void OnFlagshipPlayed(FlagshipPlayedEvent& flagshipPlayedEvent);
 			void OnStarshipPlayed(StarshipPlayedEvent& starshipPlayedEvent);
 			void OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent);
 
