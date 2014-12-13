@@ -32,7 +32,7 @@ void ThreatSystem::InitSystem(Game* game)
 	this->game->eventManager->AddListener(this, TurnPhaseChangedEvent::TurnPhaseChangedEventType);
 
 	// Set initial threat value.
-	this->SetThreat(0);
+	this->SetThreat(initialThreat);
 }
 
 void ThreatSystem::OnEvent(Event & newEvent)

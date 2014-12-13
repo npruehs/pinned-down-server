@@ -35,6 +35,8 @@ namespace PinnedDownGameplay
 			int locationThreat;
 			int playerShips;
 
+			const int initialThreat = 4;
+
 			void OnEvent(Event & event);
 
 			EVENT_HANDLER_DECLARATION(EnemyCardPlayedEvent);
