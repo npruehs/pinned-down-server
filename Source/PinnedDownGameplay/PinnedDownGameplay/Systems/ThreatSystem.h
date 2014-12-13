@@ -37,11 +37,11 @@ namespace PinnedDownGameplay
 
 			void OnEvent(Event & event);
 
-			void OnEnemyCardPlayed(EnemyCardPlayedEvent& enemyCardPlayedEvent);
-			void OnEntityRemoved(EntityRemovedEvent& entityRemovedEvent);
-			void OnFlagshipPlayed(FlagshipPlayedEvent& flagshipPlayedEvent);
-			void OnStarshipPlayed(StarshipPlayedEvent& starshipPlayedEvent);
-			void OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent);
+			EVENT_HANDLER_DECLARATION(EnemyCardPlayedEvent);
+			EVENT_HANDLER_DECLARATION(EntityRemovedEvent);
+			EVENT_HANDLER_DECLARATION(FlagshipPlayedEvent);
+			EVENT_HANDLER_DECLARATION(StarshipPlayedEvent);
+			EVENT_HANDLER_DECLARATION(TurnPhaseChangedEvent);
 
 			void SetThreat(int newThreat);
 		};

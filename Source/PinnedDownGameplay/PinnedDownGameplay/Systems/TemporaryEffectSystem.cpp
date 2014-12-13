@@ -24,26 +24,18 @@ void TemporaryEffectSystem::InitSystem(Game* game)
 
 void TemporaryEffectSystem::OnEvent(Event & newEvent)
 {
-	if (newEvent.GetEventType() == BonusPowerChangedEvent::BonusPowerChangedEventType)
-	{
-		auto bonusPowerChangedEvent = static_cast<BonusPowerChangedEvent&>(newEvent);
-		this->OnBonusPowerChanged(bonusPowerChangedEvent);
-	}
-	else if (newEvent.GetEventType() == TurnPhaseChangedEvent::TurnPhaseChangedEventType)
-	{
-		auto turnPhaseChangedEvent = static_cast<TurnPhaseChangedEvent&>(newEvent);
-		this->OnTurnPhaseChanged(turnPhaseChangedEvent);
-	}
+	CALL_EVENT_HANDLER(BonusPowerChangedEvent);
+	CALL_EVENT_HANDLER(TurnPhaseChangedEvent);
 }
 
-void TemporaryEffectSystem::OnBonusPowerChanged(BonusPowerChangedEvent& bonusPowerChangedEvent)
+EVENT_HANDLER_DEFINITION(TemporaryEffectSystem, BonusPowerChangedEvent)
 {
-	this->buffedEntities.push_back(bonusPowerChangedEvent.entity);
+	this->buffedEntities.push_back(data.entity);
 }
 
-void TemporaryEffectSystem::OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent)
+EVENT_HANDLER_DEFINITION(TemporaryEffectSystem, TurnPhaseChangedEvent)
 {
-	if (turnPhaseChangedEvent.newTurnPhase == TurnPhase::Main)
+	if (data.newTurnPhase == TurnPhase::Main)
 	{
 		for (auto it = this->buffedEntities.begin(); it != this->buffedEntities.end(); ++it)
 		{

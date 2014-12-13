@@ -40,8 +40,8 @@ namespace PinnedDownGameplay
 
 			void OnEvent(Event & event);
 
-			void OnEntityRemoved(EntityRemovedEvent& EntityRemovedEvent);
-			void OnShipDefeated(ShipDefeatedEvent& shipDefeatedEvent);
+			EVENT_HANDLER_DECLARATION(EntityRemovedEvent);
+			EVENT_HANDLER_DECLARATION(ShipDefeatedEvent);
 
 			void PrepareDamageDeck();
 		};

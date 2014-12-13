@@ -31,8 +31,8 @@ namespace PinnedDownGameplay
 
 			void OnEvent(Event & event);
 
-			void OnEntityInitialized(EntityInitializedEvent& entityInitializedEvent);
-			void OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent);
+			EVENT_HANDLER_DECLARATION(EntityInitializedEvent);
+			EVENT_HANDLER_DECLARATION(TurnPhaseChangedEvent);
 		};
 	}
 }

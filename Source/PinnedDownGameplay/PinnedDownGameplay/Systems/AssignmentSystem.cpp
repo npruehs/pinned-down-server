@@ -39,54 +39,18 @@ void AssignmentSystem::InitSystem(Game* game)
 
 void AssignmentSystem::OnEvent(Event & newEvent)
 {
-	if (newEvent.GetEventType() == AssignCardAction::AssignCardActionType)
-	{
-		auto assignCardAction = static_cast<AssignCardAction&>(newEvent);
-		this->OnAssignCard(assignCardAction);
-	}
-	else if (newEvent.GetEventType() == EndTurnAction::EndTurnActionType)
-	{
-		auto endTurnAction = static_cast<EndTurnAction&>(newEvent);
-		this->OnEndTurn(endTurnAction);
-	}
-	else if (newEvent.GetEventType() == EnemyCardPlayedEvent::EnemyCardPlayedEventType)
-	{
-		auto enemyCardPlayedEvent = static_cast<EnemyCardPlayedEvent&>(newEvent);
-		this->OnEnemyCardPlayed(enemyCardPlayedEvent);
-	}
-	else if (newEvent.GetEventType() == EntityRemovedEvent::EntityRemovedEventType)
-	{
-		auto entityRemovedEvent = static_cast<EntityRemovedEvent&>(newEvent);
-		this->OnEntityRemoved(entityRemovedEvent);
-	}
-	else if (newEvent.GetEventType() == FightResolvedEvent::FightResolvedEventType)
-	{
-		auto fightResolvedEvent = static_cast<FightResolvedEvent&>(newEvent);
-		this->OnFightResolved(fightResolvedEvent);
-	}
-	else if (newEvent.GetEventType() == FlagshipPlayedEvent::FlagshipPlayedEventType)
-	{
-		auto flagshipPlayedEvent = static_cast<FlagshipPlayedEvent&>(newEvent);
-		this->OnFlagshipPlayed(flagshipPlayedEvent);
-	}
-	else if (newEvent.GetEventType() == ResolveFightAction::ResolveFightActionType)
-	{
-		auto resolveFightAction = static_cast<ResolveFightAction&>(newEvent);
-		this->OnResolveFight(resolveFightAction);
-	}
-	else if (newEvent.GetEventType() == StarshipPlayedEvent::StarshipPlayedEventType)
-	{
-		auto starshipPlayedEvent = static_cast<StarshipPlayedEvent&>(newEvent);
-		this->OnStarshipPlayed(starshipPlayedEvent);
-	}
-	else if (newEvent.GetEventType() == TurnPhaseChangedEvent::TurnPhaseChangedEventType)
-	{
-		auto turnPhaseChangedEvent = static_cast<TurnPhaseChangedEvent&>(newEvent);
-		this->OnTurnPhaseChanged(turnPhaseChangedEvent);
-	}
+	CALL_EVENT_HANDLER(AssignCardAction);
+	CALL_EVENT_HANDLER(EndTurnAction);
+	CALL_EVENT_HANDLER(EnemyCardPlayedEvent);
+	CALL_EVENT_HANDLER(EntityRemovedEvent);
+	CALL_EVENT_HANDLER(FightResolvedEvent);
+	CALL_EVENT_HANDLER(FlagshipPlayedEvent);
+	CALL_EVENT_HANDLER(ResolveFightAction);
+	CALL_EVENT_HANDLER(StarshipPlayedEvent);
+	CALL_EVENT_HANDLER(TurnPhaseChangedEvent);
 }
 
-void AssignmentSystem::OnAssignCard(AssignCardAction& assignCardAction)
+EVENT_HANDLER_DEFINITION(AssignmentSystem, AssignCardAction)
 {
 	if (this->currentTurnPhase != TurnPhase::Assignment)
 	{
@@ -94,13 +58,13 @@ void AssignmentSystem::OnAssignCard(AssignCardAction& assignCardAction)
 	}
 
 	// Check owners.
-	auto assignedCardOwner = this->game->entityManager->GetComponent<OwnerComponent>(assignCardAction.assignedCard, OwnerComponent::OwnerComponentType);
-	auto targetCardOwner = this->game->entityManager->GetComponent<OwnerComponent>(assignCardAction.targetCard, OwnerComponent::OwnerComponentType);
+	auto assignedCardOwner = this->game->entityManager->GetComponent<OwnerComponent>(data.assignedCard, OwnerComponent::OwnerComponentType);
+	auto targetCardOwner = this->game->entityManager->GetComponent<OwnerComponent>(data.targetCard, OwnerComponent::OwnerComponentType);
 
 	if (assignedCardOwner != nullptr && assignedCardOwner->owner != INVALID_ENTITY_ID && targetCardOwner != nullptr && targetCardOwner->owner == INVALID_ENTITY_ID)
 	{
 		// Check for previous assignment of source card.
-		auto assignment = this->currentAssignments.find(assignCardAction.assignedCard);
+		auto assignment = this->currentAssignments.find(data.assignedCard);
 
 		if (assignment != this->currentAssignments.end())
 		{
@@ -117,7 +81,7 @@ void AssignmentSystem::OnAssignCard(AssignCardAction& assignCardAction)
 		for (auto it = this->currentAssignments.begin(); it != this->currentAssignments.end(); ++it)
 		{
 			auto targetCards = it->second;
-			auto targetCard = std::find(targetCards->begin(), targetCards->end(), assignCardAction.targetCard);
+			auto targetCard = std::find(targetCards->begin(), targetCards->end(), data.targetCard);
 
 			if (targetCard != targetCards->end())
 			{
@@ -136,16 +100,16 @@ void AssignmentSystem::OnAssignCard(AssignCardAction& assignCardAction)
 
 		// Assign card.
 		auto enemies = std::make_shared<std::list<Entity>>();
-		enemies->push_back(assignCardAction.targetCard);
-		this->currentAssignments.insert(std::pair<Entity, std::shared_ptr<std::list<Entity>>>(assignCardAction.assignedCard, enemies));
+		enemies->push_back(data.targetCard);
+		this->currentAssignments.insert(std::pair<Entity, std::shared_ptr<std::list<Entity>>>(data.assignedCard, enemies));
 
 		// Notify listeners.
-		auto cardAssignedEvent = std::make_shared<CardAssignedEvent>(assignCardAction.assignedCard, assignCardAction.targetCard);
+		auto cardAssignedEvent = std::make_shared<CardAssignedEvent>(data.assignedCard, data.targetCard);
 		this->game->eventManager->QueueEvent(cardAssignedEvent);
 	}
 }
 
-void AssignmentSystem::OnEndTurn(EndTurnAction& endTurnAction)
+EVENT_HANDLER_DEFINITION(AssignmentSystem, EndTurnAction)
 {
 	if (this->currentTurnPhase == TurnPhase::Assignment)
 	{
@@ -173,20 +137,20 @@ void AssignmentSystem::OnEndTurn(EndTurnAction& endTurnAction)
 	}
 }
 
-void AssignmentSystem::OnEnemyCardPlayed(EnemyCardPlayedEvent& enemyCardPlayedEvent)
+EVENT_HANDLER_DEFINITION(AssignmentSystem, EnemyCardPlayedEvent)
 {
-	auto cardComponent = this->game->entityManager->GetComponent<CardComponent>(enemyCardPlayedEvent.cardEntity, CardComponent::CardComponentType);
+	auto cardComponent = this->game->entityManager->GetComponent<CardComponent>(data.cardEntity, CardComponent::CardComponentType);
 
 	if (cardComponent->cardType == CardType::Starship)
 	{
-		this->enemyCards.push_back(enemyCardPlayedEvent.cardEntity);
+		this->enemyCards.push_back(data.cardEntity);
 	}
 }
 
-void AssignmentSystem::OnFightResolved(FightResolvedEvent& fightResolvedEvent)
+EVENT_HANDLER_DEFINITION(AssignmentSystem, FightResolvedEvent)
 {
 	// Remove assignment.
-	auto itAssignment = this->currentAssignments.find(fightResolvedEvent.assignedCard);
+	auto itAssignment = this->currentAssignments.find(data.assignedCard);
 
 	if (itAssignment != this->currentAssignments.end())
 	{
@@ -202,19 +166,19 @@ void AssignmentSystem::OnFightResolved(FightResolvedEvent& fightResolvedEvent)
 	}
 }
 
-void AssignmentSystem::OnFlagshipPlayed(FlagshipPlayedEvent& flagshipPlayedEvent)
+EVENT_HANDLER_DEFINITION(AssignmentSystem, FlagshipPlayedEvent)
 {
-	this->playerCards.push_back(flagshipPlayedEvent.shipEntity);
+	this->playerCards.push_back(data.shipEntity);
 }
 
-void AssignmentSystem::OnResolveFight(ResolveFightAction& resolveFightAction)
+EVENT_HANDLER_DEFINITION(AssignmentSystem, ResolveFightAction)
 {
 	// Get assignment.
-	auto assignedCardOwner = this->game->entityManager->GetComponent<OwnerComponent>(resolveFightAction.assignedCard, OwnerComponent::OwnerComponentType);
+	auto assignedCardOwner = this->game->entityManager->GetComponent<OwnerComponent>(data.assignedCard, OwnerComponent::OwnerComponentType);
 
 	if (assignedCardOwner != nullptr && assignedCardOwner->owner != INVALID_ENTITY_ID)
 	{
-		auto assignment = this->currentAssignments.find(resolveFightAction.assignedCard);
+		auto assignment = this->currentAssignments.find(data.assignedCard);
 
 		if (assignment != this->currentAssignments.end())
 		{
@@ -225,40 +189,40 @@ void AssignmentSystem::OnResolveFight(ResolveFightAction& resolveFightAction)
 	}
 }
 
-void AssignmentSystem::OnStarshipPlayed(StarshipPlayedEvent& starshipPlayedEvent)
+EVENT_HANDLER_DEFINITION(AssignmentSystem, StarshipPlayedEvent)
 {
-	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(starshipPlayedEvent.shipEntity, OwnerComponent::OwnerComponentType);
+	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(data.shipEntity, OwnerComponent::OwnerComponentType);
 
 	if (ownerComponent->owner != INVALID_ENTITY_ID)
 	{
-		this->playerCards.push_back(starshipPlayedEvent.shipEntity);
+		this->playerCards.push_back(data.shipEntity);
 	}
 }
 
-void AssignmentSystem::OnEntityRemoved(EntityRemovedEvent& entityRemovedEvent)
+EVENT_HANDLER_DEFINITION(AssignmentSystem, EntityRemovedEvent)
 {
-	auto cardComponent = this->game->entityManager->GetComponent<CardComponent>(entityRemovedEvent.entity, CardComponent::CardComponentType);
+	auto cardComponent = this->game->entityManager->GetComponent<CardComponent>(data.entity, CardComponent::CardComponentType);
 
 	if (cardComponent == nullptr || cardComponent->cardType != CardType::Starship)
 	{
 		return;
 	}
 
-	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(entityRemovedEvent.entity, OwnerComponent::OwnerComponentType);
+	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(data.entity, OwnerComponent::OwnerComponentType);
 
 	if (ownerComponent->owner != INVALID_ENTITY_ID)
 	{
-		this->playerCards.remove(entityRemovedEvent.entity);
+		this->playerCards.remove(data.entity);
 	}
 	else
 	{
-		this->enemyCards.remove(entityRemovedEvent.entity);
+		this->enemyCards.remove(data.entity);
 	}
 }
 
-void AssignmentSystem::OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent)
+EVENT_HANDLER_DEFINITION(AssignmentSystem, TurnPhaseChangedEvent)
 {
-	this->currentTurnPhase = turnPhaseChangedEvent.newTurnPhase;
+	this->currentTurnPhase = data.newTurnPhase;
 
 	if (this->currentTurnPhase == TurnPhase::Assignment)
 	{

@@ -24,19 +24,11 @@ void TurnPhaseSystem::InitSystem(Game* game)
 
 void TurnPhaseSystem::OnEvent(Event & newEvent)
 {
-	if (newEvent.GetEventType() == EndTurnAction::EndTurnActionType)
-	{
-		auto endTurnAction = static_cast<EndTurnAction&>(newEvent);
-		this->OnEndTurn(endTurnAction);
-	}
-	else if (newEvent.GetEventType() == TurnPhaseChangedEvent::TurnPhaseChangedEventType)
-	{
-		auto turnPhaseChangedEvent = static_cast<TurnPhaseChangedEvent&>(newEvent);
-		this->OnTurnPhaseChanged(turnPhaseChangedEvent);
-	}
+	CALL_EVENT_HANDLER(EndTurnAction);
+	CALL_EVENT_HANDLER(TurnPhaseChangedEvent);
 }
 
-void TurnPhaseSystem::OnEndTurn(EndTurnAction& endTurnAction)
+EVENT_HANDLER_DEFINITION(TurnPhaseSystem, EndTurnAction)
 {
 	// Set next turn phase.
 	switch (this->currentPhase)
@@ -47,9 +39,9 @@ void TurnPhaseSystem::OnEndTurn(EndTurnAction& endTurnAction)
 	}
 }
 
-void TurnPhaseSystem::OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent)
+EVENT_HANDLER_DEFINITION(TurnPhaseSystem, TurnPhaseChangedEvent)
 {
-	this->currentPhase = turnPhaseChangedEvent.newTurnPhase;
+	this->currentPhase = data.newTurnPhase;
 }
 
 void TurnPhaseSystem::SetTurnPhase(TurnPhase turnPhase)

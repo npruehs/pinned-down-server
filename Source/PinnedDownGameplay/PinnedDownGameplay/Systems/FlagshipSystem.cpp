@@ -25,17 +25,13 @@ void FlagshipSystem::InitSystem(Game* game)
 
 void FlagshipSystem::OnEvent(Event & newEvent)
 {
-	if (newEvent.GetEventType() == PlayerAddedEvent::PlayerAddedEventType)
-	{
-		auto playerAddedEvent = static_cast<PlayerAddedEvent&>(newEvent);
-		this->OnPlayerAdded(playerAddedEvent);
-	}
+	CALL_EVENT_HANDLER(PlayerAddedEvent);
 }
 
-void FlagshipSystem::OnPlayerAdded(PlayerAddedEvent& playerAddedEvent)
+EVENT_HANDLER_DEFINITION(FlagshipSystem, PlayerAddedEvent)
 {
 	// Play flagship.
-	auto owner = playerAddedEvent.serverEntity;
+	auto owner = data.serverEntity;
 	auto shipEntity = this->cardFactory->CreateCard(owner, 0, 56, CardState::InPlay);
 
 	// Notify listeners.

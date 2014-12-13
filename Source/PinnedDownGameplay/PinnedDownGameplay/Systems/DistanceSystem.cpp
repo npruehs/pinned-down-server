@@ -27,16 +27,12 @@ void DistanceSystem::InitSystem(Game* game)
 
 void DistanceSystem::OnEvent(Event & newEvent)
 {
-	if (newEvent.GetEventType() == TurnPhaseChangedEvent::TurnPhaseChangedEventType)
-	{
-		auto turnPhaseChangedEvent = static_cast<TurnPhaseChangedEvent&>(newEvent);
-		this->OnTurnPhaseChanged(turnPhaseChangedEvent);
-	}
+	CALL_EVENT_HANDLER(TurnPhaseChangedEvent);
 }
 
-void DistanceSystem::OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent)
+EVENT_HANDLER_DEFINITION(DistanceSystem, TurnPhaseChangedEvent)
 {
-	if (turnPhaseChangedEvent.newTurnPhase == TurnPhase::Jump)
+	if (data.newTurnPhase == TurnPhase::Jump)
 	{
 		this->SetDistanceCovered(this->distanceCovered + 1);
 	}

@@ -23,22 +23,14 @@ void JumpEnemyRemovalSystem::InitSystem(Game* game)
 
 void JumpEnemyRemovalSystem::OnEvent(Event & newEvent)
 {
-	if (newEvent.GetEventType() == EntityInitializedEvent::EntityInitializedEventType)
-	{
-		auto entityInitializedEvent = static_cast<EntityInitializedEvent&>(newEvent);
-		this->OnEntityInitialized(entityInitializedEvent);
-	}
-	else if (newEvent.GetEventType() == TurnPhaseChangedEvent::TurnPhaseChangedEventType)
-	{
-		auto turnPhaseChangedEvent = static_cast<TurnPhaseChangedEvent&>(newEvent);
-		this->OnTurnPhaseChanged(turnPhaseChangedEvent);
-	}
+	CALL_EVENT_HANDLER(EntityInitializedEvent);
+	CALL_EVENT_HANDLER(TurnPhaseChangedEvent);
 }
 
-void JumpEnemyRemovalSystem::OnEntityInitialized(EntityInitializedEvent& entityInitializedEvent)
+EVENT_HANDLER_DEFINITION(JumpEnemyRemovalSystem, EntityInitializedEvent)
 {
 	// Check for enemy starship.
-	auto entity = entityInitializedEvent.entity;
+	auto entity = data.entity;
 
 	auto cardComponent = this->game->entityManager->GetComponent<CardComponent>(entity, CardComponent::CardComponentType);
 	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(entity, OwnerComponent::OwnerComponentType);
@@ -54,9 +46,9 @@ void JumpEnemyRemovalSystem::OnEntityInitialized(EntityInitializedEvent& entityI
 	}
 }
 
-void JumpEnemyRemovalSystem::OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent)
+EVENT_HANDLER_DEFINITION(JumpEnemyRemovalSystem, TurnPhaseChangedEvent)
 {
-	if (turnPhaseChangedEvent.newTurnPhase == TurnPhase::Jump)
+	if (data.newTurnPhase == TurnPhase::Jump)
 	{
 		// Remove all enemy starships.
 		for (auto iterator = this->enemyShips.begin(); iterator != this->enemyShips.end(); ++iterator)

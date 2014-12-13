@@ -37,45 +37,25 @@ void ThreatSystem::InitSystem(Game* game)
 
 void ThreatSystem::OnEvent(Event & newEvent)
 {
-	if (newEvent.GetEventType() == EnemyCardPlayedEvent::EnemyCardPlayedEventType)
-	{
-		auto enemyCardPlayedEvent = static_cast<EnemyCardPlayedEvent&>(newEvent);
-		this->OnEnemyCardPlayed(enemyCardPlayedEvent);
-	}
-	else if (newEvent.GetEventType() == EntityRemovedEvent::EntityRemovedEventType)
-	{
-		auto entityRemovedEvent = static_cast<EntityRemovedEvent&>(newEvent);
-		this->OnEntityRemoved(entityRemovedEvent);
-	}
-	else if (newEvent.GetEventType() == FlagshipPlayedEvent::FlagshipPlayedEventType)
-	{
-		auto flagshipPlayedEvent = static_cast<FlagshipPlayedEvent&>(newEvent);
-		this->OnFlagshipPlayed(flagshipPlayedEvent);
-	}
-	else if (newEvent.GetEventType() == StarshipPlayedEvent::StarshipPlayedEventType)
-	{
-		auto starshipPlayedEvent = static_cast<StarshipPlayedEvent&>(newEvent);
-		this->OnStarshipPlayed(starshipPlayedEvent);
-	}
-	else if (newEvent.GetEventType() == TurnPhaseChangedEvent::TurnPhaseChangedEventType)
-	{
-		auto turnPhaseChangedEvent = static_cast<TurnPhaseChangedEvent&>(newEvent);
-		this->OnTurnPhaseChanged(turnPhaseChangedEvent);
-	}
+	CALL_EVENT_HANDLER(EnemyCardPlayedEvent);
+	CALL_EVENT_HANDLER(EntityRemovedEvent);
+	CALL_EVENT_HANDLER(FlagshipPlayedEvent);
+	CALL_EVENT_HANDLER(StarshipPlayedEvent);
+	CALL_EVENT_HANDLER(TurnPhaseChangedEvent);
 }
 
-void ThreatSystem::OnEnemyCardPlayed(EnemyCardPlayedEvent& enemyCardPlayedEvent)
+EVENT_HANDLER_DEFINITION(ThreatSystem, EnemyCardPlayedEvent)
 {
-	auto threatComponent = this->game->entityManager->GetComponent<ThreatComponent>(enemyCardPlayedEvent.cardEntity, ThreatComponent::ThreatComponentType);
+	auto threatComponent = this->game->entityManager->GetComponent<ThreatComponent>(data.cardEntity, ThreatComponent::ThreatComponentType);
 	auto newThreat = this->threat - threatComponent->threat;
 	newThreat = newThreat < 0 ? 0 : newThreat;
 	this->SetThreat(newThreat);
 }
 
-void ThreatSystem::OnEntityRemoved(EntityRemovedEvent& entityRemovedEvent)
+EVENT_HANDLER_DEFINITION(ThreatSystem, EntityRemovedEvent)
 {
-	auto cardComponent = this->game->entityManager->GetComponent<CardComponent>(entityRemovedEvent.entity, CardComponent::CardComponentType);
-	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(entityRemovedEvent.entity, OwnerComponent::OwnerComponentType);
+	auto cardComponent = this->game->entityManager->GetComponent<CardComponent>(data.entity, CardComponent::CardComponentType);
+	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(data.entity, OwnerComponent::OwnerComponentType);
 
 	if (cardComponent == nullptr || ownerComponent == nullptr || cardComponent->cardType != CardType::Starship || ownerComponent->owner == INVALID_ENTITY_ID)
 	{
@@ -86,13 +66,13 @@ void ThreatSystem::OnEntityRemoved(EntityRemovedEvent& entityRemovedEvent)
 	--this->playerShips;
 }
 
-void ThreatSystem::OnFlagshipPlayed(FlagshipPlayedEvent& flagshipPlayedEvent)
+EVENT_HANDLER_DEFINITION(ThreatSystem, FlagshipPlayedEvent)
 {
 	// Count player ships.
 	++this->playerShips;
 }
 
-void ThreatSystem::OnStarshipPlayed(StarshipPlayedEvent& starshipPlayedEvent)
+EVENT_HANDLER_DEFINITION(ThreatSystem, StarshipPlayedEvent)
 {
 	if (this->currentTurnPhase != TurnPhase::Main)
 	{
@@ -100,7 +80,7 @@ void ThreatSystem::OnStarshipPlayed(StarshipPlayedEvent& starshipPlayedEvent)
 	}
 
 	// Increase threat.
-	auto threatComponent = this->game->entityManager->GetComponent<ThreatComponent>(starshipPlayedEvent.shipEntity, ThreatComponent::ThreatComponentType);
+	auto threatComponent = this->game->entityManager->GetComponent<ThreatComponent>(data.shipEntity, ThreatComponent::ThreatComponentType);
 	auto newThreat = this->threat + threatComponent->threat;
 	this->SetThreat(newThreat);
 
@@ -108,11 +88,11 @@ void ThreatSystem::OnStarshipPlayed(StarshipPlayedEvent& starshipPlayedEvent)
 	++this->playerShips;
 }
 
-void ThreatSystem::OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent)
+EVENT_HANDLER_DEFINITION(ThreatSystem, TurnPhaseChangedEvent)
 {
-	this->currentTurnPhase = turnPhaseChangedEvent.newTurnPhase;
+	this->currentTurnPhase = data.newTurnPhase;
 
-	if (turnPhaseChangedEvent.newTurnPhase == TurnPhase::Jump)
+	if (data.newTurnPhase == TurnPhase::Jump)
 	{
 		// Increase threat.
 		++this->locationThreat;

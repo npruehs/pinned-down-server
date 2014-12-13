@@ -28,8 +28,8 @@ namespace PinnedDownGameplay
 
 			void OnEvent(Event & event);
 
-			void OnEndTurn(EndTurnAction& endTurnAction);
-			void OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent);
+			EVENT_HANDLER_DECLARATION(EndTurnAction);
+			EVENT_HANDLER_DECLARATION(TurnPhaseChangedEvent);
 
 			void SetTurnPhase(TurnPhase turnPhase);
 		};

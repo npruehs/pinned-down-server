@@ -43,15 +43,15 @@ namespace PinnedDownGameplay
 
 			void OnEvent(Event & event);
 
-			void OnAssignCard(AssignCardAction& assignCardAction);
-			void OnEndTurn(EndTurnAction& endTurnAction);
-			void OnEnemyCardPlayed(EnemyCardPlayedEvent& enemyCardPlayedEvent);
-			void OnEntityRemoved(EntityRemovedEvent& entityRemovedEvent);
-			void OnFlagshipPlayed(FlagshipPlayedEvent& flagshipPlayedEvent);
-			void OnFightResolved(FightResolvedEvent& fightResolvedEvent);
-			void OnResolveFight(ResolveFightAction& resolveFightAction);
-			void OnStarshipPlayed(StarshipPlayedEvent& starshipPlayedEvent);
-			void OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent);
+			EVENT_HANDLER_DECLARATION(AssignCardAction);
+			EVENT_HANDLER_DECLARATION(EndTurnAction);
+			EVENT_HANDLER_DECLARATION(EnemyCardPlayedEvent);
+			EVENT_HANDLER_DECLARATION(EntityRemovedEvent);
+			EVENT_HANDLER_DECLARATION(FlagshipPlayedEvent);
+			EVENT_HANDLER_DECLARATION(FightResolvedEvent);
+			EVENT_HANDLER_DECLARATION(ResolveFightAction);
+			EVENT_HANDLER_DECLARATION(StarshipPlayedEvent);
+			EVENT_HANDLER_DECLARATION(TurnPhaseChangedEvent);
 		};
 	}
 }

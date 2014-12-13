@@ -22,7 +22,7 @@ namespace PinnedDownGameplay
 		private:
 			void OnEvent(Event & event);
 
-			void OnEntityRemoved(EntityRemovedEvent& entityRemovedEvent);
+			EVENT_HANDLER_DECLARATION(EntityRemovedEvent);
 		};
 	}
 }

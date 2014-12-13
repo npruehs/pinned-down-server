@@ -30,19 +30,11 @@ void StarshipPlayingSystem::InitSystem(Game* game)
 
 void StarshipPlayingSystem::OnEvent(Event & newEvent)
 {
-	if (newEvent.GetEventType() == StarshipPlayedEvent::StarshipPlayedEventType)
-	{
-		auto starshipPlayedEvent = static_cast<StarshipPlayedEvent&>(newEvent);
-		this->OnStarshipPlayed(starshipPlayedEvent);
-	}
-	else if (newEvent.GetEventType() == TurnPhaseChangedEvent::TurnPhaseChangedEventType)
-	{
-		auto turnPhaseChangedEvent = static_cast<TurnPhaseChangedEvent&>(newEvent);
-		this->OnTurnPhaseChanged(turnPhaseChangedEvent);
-	}
+	CALL_EVENT_HANDLER(StarshipPlayedEvent);
+	CALL_EVENT_HANDLER(TurnPhaseChangedEvent);
 }
 
-void StarshipPlayingSystem::OnStarshipPlayed(StarshipPlayedEvent& starshipPlayedEvent)
+EVENT_HANDLER_DEFINITION(StarshipPlayingSystem, StarshipPlayedEvent)
 {
 	if (this->currentTurnPhase != TurnPhase::Main)
 	{
@@ -50,20 +42,20 @@ void StarshipPlayingSystem::OnStarshipPlayed(StarshipPlayedEvent& starshipPlayed
 	}
 
 	// Put card in play.
-	auto cardStateComponent = this->game->entityManager->GetComponent<CardStateComponent>(starshipPlayedEvent.shipEntity, CardStateComponent::CardStateComponentType);
+	auto cardStateComponent = this->game->entityManager->GetComponent<CardStateComponent>(data.shipEntity, CardStateComponent::CardStateComponentType);
 	cardStateComponent->cardState = CardState::InPlay;
 
 	// Remove from player hand.
-	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(starshipPlayedEvent.shipEntity, OwnerComponent::OwnerComponentType);
+	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(data.shipEntity, OwnerComponent::OwnerComponentType);
 	auto playerDeckComponent = this->game->entityManager->GetComponent<PlayerDeckComponent>(ownerComponent->owner, PlayerDeckComponent::PlayerDeckComponentType);
-	playerDeckComponent->hand.remove(starshipPlayedEvent.shipEntity);
+	playerDeckComponent->hand.remove(data.shipEntity);
 
 	// Notify listeners.
-	auto cardStateChangedEvent = std::make_shared<CardStateChangedEvent>(starshipPlayedEvent.shipEntity, cardStateComponent->cardState);
+	auto cardStateChangedEvent = std::make_shared<CardStateChangedEvent>(data.shipEntity, cardStateComponent->cardState);
 	this->game->eventManager->QueueEvent(cardStateChangedEvent);
 }
 
-void StarshipPlayingSystem::OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent)
+EVENT_HANDLER_DEFINITION(StarshipPlayingSystem, TurnPhaseChangedEvent)
 {
-	this->currentTurnPhase = turnPhaseChangedEvent.newTurnPhase;
+	this->currentTurnPhase = data.newTurnPhase;
 }

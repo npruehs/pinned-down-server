@@ -26,7 +26,7 @@ namespace PinnedDownGameplay
 
 			void OnEvent(Event & event);
 
-			void OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent);
+			EVENT_HANDLER_DECLARATION(TurnPhaseChangedEvent);
 
 			void SetDistanceCovered(int distanceCovered);
 		};

@@ -37,8 +37,8 @@ namespace PinnedDownGameplay
 
 			void OnEvent(Event & event);
 
-			void OnPlayerAdded(PlayerAddedEvent& playerAddedEvent);
-			void OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent);
+			EVENT_HANDLER_DECLARATION(PlayerAddedEvent);
+			EVENT_HANDLER_DECLARATION(TurnPhaseChangedEvent);
 
 			void DrawToHandLimit(Entity playerEntity);
 		};

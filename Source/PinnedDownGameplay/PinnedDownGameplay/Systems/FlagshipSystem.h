@@ -27,7 +27,7 @@ namespace PinnedDownGameplay
 
 			void OnEvent(Event & event);
 
-			void OnPlayerAdded(PlayerAddedEvent& playerAddedEvent);
+			EVENT_HANDLER_DECLARATION(PlayerAddedEvent);
 		};
 	}
 }

@@ -25,7 +25,7 @@ namespace PinnedDownGameplay
 
 			void OnEvent(Event & event);
 
-			void OnCoveredDistanceChanged(CoveredDistanceChangedEvent& coveredDistanceChangedEvent);
+			EVENT_HANDLER_DECLARATION(CoveredDistanceChangedEvent);
 		};
 	}
 }

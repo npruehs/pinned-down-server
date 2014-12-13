@@ -36,26 +36,18 @@ void EnemyAttackSystem::InitSystem(Game* game)
 
 void EnemyAttackSystem::OnEvent(Event & newEvent)
 {
-	if (newEvent.GetEventType() == ThreatChangedEvent::ThreatChangedEventType)
-	{
-		auto threatChangedEvent = static_cast<ThreatChangedEvent&>(newEvent);
-		this->OnThreatChanged(threatChangedEvent);
-	}
-	else if (newEvent.GetEventType() == TurnPhaseChangedEvent::TurnPhaseChangedEventType)
-	{
-		auto turnPhaseChangedEvent = static_cast<TurnPhaseChangedEvent&>(newEvent);
-		this->OnTurnPhaseChanged(turnPhaseChangedEvent);
-	}
+	CALL_EVENT_HANDLER(ThreatChangedEvent);
+	CALL_EVENT_HANDLER(TurnPhaseChangedEvent);
 }
 
-void EnemyAttackSystem::OnThreatChanged(ThreatChangedEvent& threatChangedEvent)
+EVENT_HANDLER_DEFINITION(EnemyAttackSystem, ThreatChangedEvent)
 {
-	this->currentThreat = threatChangedEvent.newThreat;
+	this->currentThreat = data.newThreat;
 }
 
-void EnemyAttackSystem::OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent)
+EVENT_HANDLER_DEFINITION(EnemyAttackSystem, TurnPhaseChangedEvent)
 {
-	if (turnPhaseChangedEvent.newTurnPhase == TurnPhase::Attack)
+	if (data.newTurnPhase == TurnPhase::Attack)
 	{
 		this->PlayEnemyCards();
 	}

@@ -32,8 +32,8 @@ namespace PinnedDownGameplay
 
 			void OnEvent(Event & event);
 
-			void OnBonusPowerChanged(BonusPowerChangedEvent& bonusPowerChangedEvent);
-			void OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent);
+			EVENT_HANDLER_DECLARATION(BonusPowerChangedEvent);
+			EVENT_HANDLER_DECLARATION(TurnPhaseChangedEvent);
 		};
 	}
 }

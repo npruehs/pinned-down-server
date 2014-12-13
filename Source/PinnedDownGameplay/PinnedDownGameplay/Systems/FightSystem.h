@@ -23,7 +23,7 @@ namespace PinnedDownGameplay
 		private:
 			void OnEvent(Event & event);
 
-			void OnFightStarted(FightStartedEvent& fightStartedEvent);
+			EVENT_HANDLER_DECLARATION(FightStartedEvent);
 		};
 	}
 }

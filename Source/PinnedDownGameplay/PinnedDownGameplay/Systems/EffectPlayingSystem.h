@@ -33,10 +33,10 @@ namespace PinnedDownGameplay
 
 			std::list<Entity> damagedShips;
 
-			void OnEffectPlayed(EffectPlayedEvent& effectPlayedEvent);
-			void OnEntityRemoved(EntityRemovedEvent& entityRemovedEvent);
-			void OnShipDamaged(ShipDamagedEvent& shipDamagedEvent);
-			void OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent);
+			EVENT_HANDLER_DECLARATION(EffectPlayedEvent);
+			EVENT_HANDLER_DECLARATION(EntityRemovedEvent);
+			EVENT_HANDLER_DECLARATION(ShipDamagedEvent);
+			EVENT_HANDLER_DECLARATION(TurnPhaseChangedEvent);
 		};
 	}
 }

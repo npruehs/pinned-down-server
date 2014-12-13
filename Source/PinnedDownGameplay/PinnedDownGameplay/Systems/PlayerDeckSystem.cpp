@@ -29,22 +29,14 @@ void PlayerDeckSystem::InitSystem(Game* game)
 
 void PlayerDeckSystem::OnEvent(Event & newEvent)
 {
-	if (newEvent.GetEventType() == PlayerAddedEvent::PlayerAddedEventType)
-	{
-		auto playerAddedEvent = static_cast<PlayerAddedEvent&>(newEvent);
-		this->OnPlayerAdded(playerAddedEvent);
-	}
-	else if (newEvent.GetEventType() == TurnPhaseChangedEvent::TurnPhaseChangedEventType)
-	{
-		auto turnPhaseChangedEvent = static_cast<TurnPhaseChangedEvent&>(newEvent);
-		this->OnTurnPhaseChanged(turnPhaseChangedEvent);
-	}
+	CALL_EVENT_HANDLER(PlayerAddedEvent);
+	CALL_EVENT_HANDLER(TurnPhaseChangedEvent);
 }
 
-void PlayerDeckSystem::OnPlayerAdded(PlayerAddedEvent& playerAddedEvent)
+EVENT_HANDLER_DEFINITION(PlayerDeckSystem, PlayerAddedEvent)
 {
 	// Setup player deck.
-	auto playerEntity = playerAddedEvent.serverEntity;
+	auto playerEntity = data.serverEntity;
 	this->players.push_back(playerEntity);
 
 	auto playerDeckComponent = std::make_shared<PlayerDeckComponent>();
@@ -73,9 +65,9 @@ void PlayerDeckSystem::OnPlayerAdded(PlayerAddedEvent& playerAddedEvent)
 	this->DrawToHandLimit(playerEntity);
 }
 
-void PlayerDeckSystem::OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent)
+EVENT_HANDLER_DEFINITION(PlayerDeckSystem, TurnPhaseChangedEvent)
 {
-	if (turnPhaseChangedEvent.newTurnPhase != TurnPhase::Jump)
+	if (data.newTurnPhase != TurnPhase::Jump)
 	{
 		return;
 	}

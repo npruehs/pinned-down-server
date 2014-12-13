@@ -23,16 +23,12 @@ void FlagshipDefeatSystem::InitSystem(Game* game)
 
 void FlagshipDefeatSystem::OnEvent(Event & newEvent)
 {
-	if (newEvent.GetEventType() == EntityRemovedEvent::EntityRemovedEventType)
-	{
-		auto entityRemovedEvent = static_cast<EntityRemovedEvent&>(newEvent);
-		this->OnEntityRemoved(entityRemovedEvent);
-	}
+	CALL_EVENT_HANDLER(EntityRemovedEvent);
 }
 
-void FlagshipDefeatSystem::OnEntityRemoved(EntityRemovedEvent& entityRemovedEvent)
+EVENT_HANDLER_DEFINITION(FlagshipDefeatSystem, EntityRemovedEvent)
 {
-	auto flagshipComponent = this->game->entityManager->GetComponent<FlagshipComponent>(entityRemovedEvent.entity, FlagshipComponent::FlagshipComponentType);
+	auto flagshipComponent = this->game->entityManager->GetComponent<FlagshipComponent>(data.entity, FlagshipComponent::FlagshipComponentType);
 
 	if (flagshipComponent != nullptr)
 	{

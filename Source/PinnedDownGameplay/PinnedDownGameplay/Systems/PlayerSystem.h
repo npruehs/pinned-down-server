@@ -29,7 +29,7 @@ namespace PinnedDownGameplay
 
 			void OnEvent(Event & event);
 
-			void OnClientConnected(ClientConnectedEvent& clientConnectedEvent);
+			EVENT_HANDLER_DECLARATION(ClientConnectedEvent);
 		};
 	}
 }

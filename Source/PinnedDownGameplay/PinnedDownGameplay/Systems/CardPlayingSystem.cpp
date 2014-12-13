@@ -19,7 +19,6 @@ using namespace PinnedDownNet::Data;
 using namespace PinnedDownNet::Events;
 
 
-
 CardPlayingSystem::CardPlayingSystem()
 {
 }
@@ -33,17 +32,13 @@ void CardPlayingSystem::InitSystem(Game* game)
 
 void CardPlayingSystem::OnEvent(Event & newEvent)
 {
-	if (newEvent.GetEventType() == PlayCardAction::PlayCardActionType)
-	{
-		auto playCardAction = static_cast<PlayCardAction&>(newEvent);
-		this->OnPlayCard(playCardAction);
-	}
+	CALL_EVENT_HANDLER(PlayCardAction);
 }
 
-void CardPlayingSystem::OnPlayCard(PlayCardAction& playCardAction)
+EVENT_HANDLER_DEFINITION(CardPlayingSystem, PlayCardAction)
 {
 	// Can only play cards from hand.
-	auto cardStateComponent = this->game->entityManager->GetComponent<CardStateComponent>(playCardAction.cardToPlay, CardStateComponent::CardStateComponentType);
+	auto cardStateComponent = this->game->entityManager->GetComponent<CardStateComponent>(data.cardToPlay, CardStateComponent::CardStateComponentType);
 
 	if (cardStateComponent == nullptr || cardStateComponent->cardState != CardState::Hand)
 	{
@@ -51,7 +46,7 @@ void CardPlayingSystem::OnPlayCard(PlayCardAction& playCardAction)
 	}
 
 	// Only play own cards.
-	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(playCardAction.cardToPlay, OwnerComponent::OwnerComponentType);
+	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(data.cardToPlay, OwnerComponent::OwnerComponentType);
 
 	if (ownerComponent == nullptr || ownerComponent->owner == INVALID_ENTITY_ID)
 	{
@@ -59,21 +54,21 @@ void CardPlayingSystem::OnPlayCard(PlayCardAction& playCardAction)
 	}
 
 	// Check card type.
-	auto cardComponent = this->game->entityManager->GetComponent<CardComponent>(playCardAction.cardToPlay, CardComponent::CardComponentType);
+	auto cardComponent = this->game->entityManager->GetComponent<CardComponent>(data.cardToPlay, CardComponent::CardComponentType);
 
-	auto cardPlayedEvent = std::make_shared<CardPlayedEvent>(playCardAction.cardToPlay);
+	auto cardPlayedEvent = std::make_shared<CardPlayedEvent>(data.cardToPlay);
 	this->game->eventManager->QueueEvent(cardPlayedEvent);
 
 	if (cardComponent->cardType == CardType::Starship)
 	{
 		// Notify listeners.
-		auto starshipPlayedEvent = std::make_shared<StarshipPlayedEvent>(playCardAction.cardToPlay);
+		auto starshipPlayedEvent = std::make_shared<StarshipPlayedEvent>(data.cardToPlay);
 		this->game->eventManager->QueueEvent(starshipPlayedEvent);
 	}
 	else if (cardComponent->cardType == CardType::Effect)
 	{
 		// Notify listeners.
-		auto effectPlayedEvent = std::make_shared<EffectPlayedEvent>(playCardAction.cardToPlay, playCardAction.targetCard);
+		auto effectPlayedEvent = std::make_shared<EffectPlayedEvent>(data.cardToPlay, data.targetCard);
 		this->game->eventManager->QueueEvent(effectPlayedEvent);
 	}
 }

@@ -28,21 +28,13 @@ void CardStateSystem::InitSystem(Game* game)
 
 void CardStateSystem::OnEvent(Event & newEvent)
 {
-	if (newEvent.GetEventType() == EntityInitializedEvent::EntityInitializedEventType)
-	{
-		auto entityInitializedEvent = static_cast<EntityInitializedEvent&>(newEvent);
-		this->OnEntityInitialized(entityInitializedEvent);
-	}
-	else if (newEvent.GetEventType() == EntityRemovedEvent::EntityRemovedEventType)
-	{
-		auto entityRemovedEvent = static_cast<EntityRemovedEvent&>(newEvent);
-		this->OnEntityRemoved(entityRemovedEvent);
-	}
+	CALL_EVENT_HANDLER(EntityInitializedEvent);
+	CALL_EVENT_HANDLER(EntityRemovedEvent);
 }
 
-void CardStateSystem::OnEntityInitialized(EntityInitializedEvent& entityInitializedEvent)
+EVENT_HANDLER_DEFINITION(CardStateSystem, EntityInitializedEvent)
 {
-	auto entity = entityInitializedEvent.entity;
+	auto entity = data.entity;
 	auto cardComponent = this->game->entityManager->GetComponent<CardComponent>(entity, CardComponent::CardComponentType);
 	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(entity, OwnerComponent::OwnerComponentType);
 	auto cardStateComponent = this->game->entityManager->GetComponent<CardStateComponent>(entity, CardStateComponent::CardStateComponentType);
@@ -55,9 +47,9 @@ void CardStateSystem::OnEntityInitialized(EntityInitializedEvent& entityInitiali
 	}
 }
 
-void CardStateSystem::OnEntityRemoved(EntityRemovedEvent& entityRemovedEvent)
+EVENT_HANDLER_DEFINITION(CardStateSystem, EntityRemovedEvent)
 {
-	auto entity = entityRemovedEvent.entity;
+	auto entity = data.entity;
 	auto cardComponent = this->game->entityManager->GetComponent<CardComponent>(entity, CardComponent::CardComponentType);
 
 	if (cardComponent != nullptr)

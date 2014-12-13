@@ -26,16 +26,12 @@ void PlayerSystem::InitSystem(Game* game)
 
 void PlayerSystem::OnEvent(Event & newEvent)
 {
-	if (newEvent.GetEventType() == ClientConnectedEvent::ClientConnectedEventType)
-	{
-		auto clientConnectedEvent = static_cast<ClientConnectedEvent&>(newEvent);
-		this->OnClientConnected(clientConnectedEvent);
-	}
+	CALL_EVENT_HANDLER(ClientConnectedEvent);
 }
 
-void PlayerSystem::OnClientConnected(ClientConnectedEvent& clientConnectedEvent)
+EVENT_HANDLER_DEFINITION(PlayerSystem, ClientConnectedEvent)
 {
-	auto clientId = clientConnectedEvent.clientId;
+	auto clientId = data.clientId;
 	auto playerName = "Player" + std::to_string(++this->players);
 
 	// Create player entity.

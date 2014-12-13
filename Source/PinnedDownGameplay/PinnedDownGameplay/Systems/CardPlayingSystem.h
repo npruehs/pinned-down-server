@@ -23,7 +23,7 @@ namespace PinnedDownGameplay
 		private:
 			void OnEvent(Event & event);
 
-			void OnPlayCard(PlayCardAction& playCardAction);
+			EVENT_HANDLER_DECLARATION(PlayCardAction);
 		};
 	}
 }

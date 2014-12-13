@@ -29,8 +29,8 @@ namespace PinnedDownGameplay
 
 			void OnEvent(Event & event);
 
-			void OnStarshipPlayed(StarshipPlayedEvent& starshipPlayedEvent);
-			void OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent);
+			EVENT_HANDLER_DECLARATION(StarshipPlayedEvent);
+			EVENT_HANDLER_DECLARATION(TurnPhaseChangedEvent);
 		};
 	}
 }

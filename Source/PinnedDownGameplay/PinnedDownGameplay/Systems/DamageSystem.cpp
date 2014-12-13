@@ -35,21 +35,13 @@ void DamageSystem::InitSystem(Game* game)
 
 void DamageSystem::OnEvent(Event & newEvent)
 {
-	if (newEvent.GetEventType() == EntityRemovedEvent::EntityRemovedEventType)
-	{
-		auto entityRemovedEvent = static_cast<EntityRemovedEvent&>(newEvent);
-		this->OnEntityRemoved(entityRemovedEvent);
-	}
-	else if (newEvent.GetEventType() == ShipDefeatedEvent::ShipDefeatedEventType)
-	{
-		auto shipDefeatedEvent = static_cast<ShipDefeatedEvent&>(newEvent);
-		this->OnShipDefeated(shipDefeatedEvent);
-	}
+	CALL_EVENT_HANDLER(EntityRemovedEvent);
+	CALL_EVENT_HANDLER(ShipDefeatedEvent);
 }
 
-void DamageSystem::OnEntityRemoved(EntityRemovedEvent& entityRemovedEvent)
+EVENT_HANDLER_DEFINITION(DamageSystem, EntityRemovedEvent)
 {
-	auto entity = entityRemovedEvent.entity;
+	auto entity = data.entity;
 
 	// Remove all damage attached to removed ship.
 	for (auto iterator = this->damageList.begin(); iterator != this->damageList.end();)
@@ -66,9 +58,9 @@ void DamageSystem::OnEntityRemoved(EntityRemovedEvent& entityRemovedEvent)
 	}
 }
 
-void DamageSystem::OnShipDefeated(ShipDefeatedEvent& shipDefeatedEvent)
+EVENT_HANDLER_DEFINITION(DamageSystem, ShipDefeatedEvent)
 {
-	auto damagedShipEntity = shipDefeatedEvent.shipEntity;
+	auto damagedShipEntity = data.shipEntity;
 
 	// Get top damage card.
 	if (this->damageDeck->IsEmpty())

@@ -33,8 +33,8 @@ namespace PinnedDownGameplay
 
 			void OnEvent(Event & event);
 
-			void OnThreatChanged(ThreatChangedEvent& threatChangedEvent);
-			void OnTurnPhaseChanged(TurnPhaseChangedEvent& turnPhaseChangedEvent);
+			EVENT_HANDLER_DECLARATION(ThreatChangedEvent);
+			EVENT_HANDLER_DECLARATION(TurnPhaseChangedEvent);
 			
 			void PrepareAttackDeck();
 			void PlayEnemyCards();
