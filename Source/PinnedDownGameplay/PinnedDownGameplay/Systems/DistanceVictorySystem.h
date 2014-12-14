@@ -5,6 +5,7 @@
 #include "IEventListener.h"
 
 #include "Events\CoveredDistanceChangedEvent.h"
+#include "Events\DefeatEvent.h"
 
 using namespace PinnedDownCore;
 using namespace PinnedDownNet::Events;
@@ -21,11 +22,12 @@ namespace PinnedDownGameplay
 			void InitSystem(PinnedDownCore::Game* game);
 
 		private:
-			bool lastTurn = false;
+			bool defeat;
 
 			void OnEvent(Event & event);
 
 			EVENT_HANDLER_DECLARATION(CoveredDistanceChangedEvent);
+			EVENT_HANDLER_DECLARATION(DefeatEvent);
 		};
 	}
 }
