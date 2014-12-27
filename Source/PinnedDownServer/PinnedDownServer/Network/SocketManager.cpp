@@ -24,6 +24,8 @@ SocketManager::SocketManager(MasterServer* masterServer)
 
 void SocketManager::InitSocketManager()
 {
+	printf("Initializing Winsock... ");
+
 	// Initialize Winsock.
 	WSADATA wsaData;
 
@@ -36,10 +38,12 @@ void SocketManager::InitSocketManager()
 	}
 	else
 	{
-		printf("Winsock initialized.\n");
+		printf("Done.\n");
 	}
 
 	// Resolve the local address and port to be used by the server
+	printf("Resolving local address and port... ");
+
 	addrinfo hints;
 	addrinfo* addressInfo;
 
@@ -58,10 +62,12 @@ void SocketManager::InitSocketManager()
 	}
 	else
 	{
-		printf("Local address and port resolved.\n");
+		printf("Done.\n");
 	}
 
 	// Create a SOCKET for the server to listen for client connections.
+	printf("Creating TCP listening socket... ");
+
 	listenSocket = INVALID_SOCKET;
 	listenSocket = socket(addressInfo->ai_family, addressInfo->ai_socktype, addressInfo->ai_protocol);
 
@@ -74,10 +80,12 @@ void SocketManager::InitSocketManager()
 	}
 	else
 	{
-		printf("Socket created.\n");
+		printf("Done.\n");
 	}
 
 	// Setup the TCP listening socket.
+	printf("Binding TCP listening socket... ");
+
     result = bind(listenSocket, addressInfo->ai_addr, (int)addressInfo->ai_addrlen);
 
     if (result == SOCKET_ERROR)
@@ -90,11 +98,13 @@ void SocketManager::InitSocketManager()
     }
 	else
 	{
-		printf("TCP socket bound.\n");
+		printf("Done.\n");
 		freeaddrinfo(addressInfo);
 	}
 
 	// Listen for maximum number of connections.
+	printf("Listening for incoming connections... ");
+
 	result = listen(listenSocket, SOMAXCONN);
 
 	if (result == SOCKET_ERROR)
@@ -106,7 +116,7 @@ void SocketManager::InitSocketManager()
 	}
 	else
 	{
-		printf("Listening for %d connections.\n", SOMAXCONN);
+		printf("Done.\n");
 	}
 
 	// Clear client sockets.

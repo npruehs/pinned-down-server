@@ -9,6 +9,7 @@ bool MasterServer::running = false;
 MasterServer::MasterServer()
 {
 	this->socketManager = std::make_shared<SocketManager>(this);
+	this->httpClient = std::make_shared<HTTPClient>();
 
 	SetConsoleCtrlHandler(&PinnedDownServer::MasterServer::OnConsoleCtrlSignal, TRUE);
 }

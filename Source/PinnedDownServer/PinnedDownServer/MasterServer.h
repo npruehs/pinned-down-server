@@ -6,6 +6,7 @@
 #include "PinnedDownNet.h"
 
 #include "ServerGame.h"
+#include "Network\HTTPClient.h"
 #include "Network\SocketManager.h"
 
 using namespace PinnedDownServer::Network;
@@ -29,7 +30,8 @@ namespace PinnedDownServer
 		static BOOL WINAPI OnConsoleCtrlSignal(DWORD signal);
 
 		std::shared_ptr<SocketManager> socketManager;
-		
+		std::shared_ptr<HTTPClient> httpClient;
+
 		std::map<int, std::shared_ptr<ServerGame>> runningGames;
 	};
 }
