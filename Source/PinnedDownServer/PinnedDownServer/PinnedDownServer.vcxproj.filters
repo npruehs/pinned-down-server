@@ -4,6 +4,12 @@
     <Filter Include="Network">
       <UniqueIdentifier>{f718dceb-1184-4e71-8fd1-4ebd05b3a580}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{926b2e3b-1fb9-404a-a08b-f91be9fe6009}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util\MD5">
+      <UniqueIdentifier>{3673eb1a-b8f7-4ef8-af41-0dee78dcfbb5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -20,6 +26,12 @@
     <ClCompile Include="ServerGame.cpp" />
     <ClCompile Include="ServerEventDispatcher.cpp" />
     <ClCompile Include="Network\HTTPClient.cpp" />
+    <ClCompile Include="Util\MD5\MD5.cpp">
+      <Filter>Util\MD5</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\MD5\MD5String.cpp">
+      <Filter>Util\MD5</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Network\ServerEventWriter.h">
@@ -35,5 +47,11 @@
     <ClInclude Include="ServerGame.h" />
     <ClInclude Include="ServerEventDispatcher.h" />
     <ClInclude Include="Network\HTTPClient.h" />
+    <ClInclude Include="Util\MD5\MD5.h">
+      <Filter>Util\MD5</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\MD5\MD5String.h">
+      <Filter>Util\MD5</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

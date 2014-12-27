@@ -93,6 +93,8 @@
     <ClCompile Include="MasterServer.cpp" />
     <ClCompile Include="ServerEventDispatcher.cpp" />
     <ClCompile Include="ServerGame.cpp" />
+    <ClCompile Include="Util\MD5\MD5.cpp" />
+    <ClCompile Include="Util\MD5\MD5String.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\pinned-down-core\Source\PinnedDownCore\PinnedDownCore\PinnedDownCore.vcxproj">
@@ -113,6 +115,8 @@
     <ClInclude Include="MasterServer.h" />
     <ClInclude Include="ServerEventDispatcher.h" />
     <ClInclude Include="ServerGame.h" />
+    <ClInclude Include="Util\MD5\MD5.h" />
+    <ClInclude Include="Util\MD5\MD5String.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
