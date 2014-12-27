@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 namespace PinnedDownServer
 {
 	namespace Network
@@ -10,7 +12,7 @@ namespace PinnedDownServer
 			HTTPClient();
 			~HTTPClient();
 
-			void SendRequest();
+			std::string SendRequest(std::string host, std::string port, std::string method, std::string url);
 
 		private:
 		};

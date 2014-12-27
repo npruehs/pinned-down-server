@@ -19,11 +19,9 @@ HTTPClient::~HTTPClient()
 {
 }
 
-void HTTPClient::SendRequest()
+std::string HTTPClient::SendRequest(std::string host, std::string port, std::string method, std::string url)
 {
-	// Resolve GameAnalytics URL.
-	printf("Resolving GameAnalytics address and port... ");
-
+	// Resolve host.
 	addrinfo hints;
 	addrinfo* addressInfo;
 
@@ -32,108 +30,89 @@ void HTTPClient::SendRequest()
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
 
-	auto result = getaddrinfo("www.google.com", "80", &hints, &addressInfo);
+	auto result = getaddrinfo(host.c_str(), port.c_str(), &hints, &addressInfo);
 	if (result != 0)
 	{
-		printf("Error: %d\n", result);
-		return;
-	}
-	else
-	{
-		printf("Success.\n");
+		printf("Error resolving host %s:%s: %d\n", host, port, result);
+		return std::string();
 	}
 
 	// Setup TCP socket.
-	printf("Setting up GameAnalytics socket... ");
+	SOCKET tcpSocket = INVALID_SOCKET;
+	tcpSocket = socket(addressInfo->ai_family, addressInfo->ai_socktype, addressInfo->ai_protocol);
 
-	SOCKET gameAnalyticsSocket = INVALID_SOCKET;
-	gameAnalyticsSocket = socket(addressInfo->ai_family, addressInfo->ai_socktype, addressInfo->ai_protocol);
-
-	if (gameAnalyticsSocket == INVALID_SOCKET)
+	if (tcpSocket == INVALID_SOCKET)
 	{
-		printf("Error: %ld\n", WSAGetLastError());
+		printf("Error creating TCP socket: %ld\n", WSAGetLastError());
 		freeaddrinfo(addressInfo);
-		return;
-	}
-	else
-	{
-		printf("Success.\n");
+		return std::string();
 	}
 
-	// Connect to GameAnalytics server.
-	printf("Connecting to GameAnalytics server... ");
-
-	result = connect(gameAnalyticsSocket, addressInfo->ai_addr, (int)addressInfo->ai_addrlen);
+	// Connect to server.
+	result = connect(tcpSocket, addressInfo->ai_addr, (int)addressInfo->ai_addrlen);
 	if (result == SOCKET_ERROR)
 	{
-		printf("Error: %ld\n", WSAGetLastError());
+		printf("Error connecting to server %s:%s: %ld\n", host, port, WSAGetLastError());
 		freeaddrinfo(addressInfo);
-		closesocket(gameAnalyticsSocket);
-		gameAnalyticsSocket = INVALID_SOCKET;
+		closesocket(tcpSocket);
+		return std::string();
 	}
 	else
 	{
 		freeaddrinfo(addressInfo);
-		printf("Success.\n");
 	}
 
-	// Send GameAnalytics message.
-	printf("Sending GameAnalytics event... ");
+	// Send request.
+	std::string request;
+	request.append(method + " " + url + " HTTP/1.1\r\n");
+	request.append("Host: " + host + "\r\n");
+	request.append("Connection: close\r\n\r\n");
 
-	char *sendbuf = "GET / HTTP/1.1\r\nHost: www.google.com\r\nConnection: close\r\n\r\n";
-
-	result = send(gameAnalyticsSocket, sendbuf, (int)strlen(sendbuf), 0);
+	result = send(tcpSocket, request.c_str(), (int)strlen(request.c_str()), 0);
 	if (result == SOCKET_ERROR)
 	{
-		printf("Error: %d\n", WSAGetLastError());
-		closesocket(gameAnalyticsSocket);
-		return;
-	}
-	else
-	{
-		printf("Bytes sent: %ld\n", result);
+		printf("Error sending HTTP request: %d\n", WSAGetLastError());
+		closesocket(tcpSocket);
+		return std::string();
 	}
 
-	// Receive data until the server closes the connection
-	printf("Waiting for GameAnalytics server answer... ");
-
+	// Receive data until the server closes the connection.
 	int recvbuflen = 2048;
 	char recvbuf[2048];
+	int responseLength = 0;
 
 	do
 	{
-		result = recv(gameAnalyticsSocket, recvbuf, recvbuflen, 0);
+		result = recv(tcpSocket, recvbuf, recvbuflen, 0);
 
 		if (result > 0)
 		{
-			printf("Bytes received: %d\n", result);
-			printf(recvbuf);
-			printf("\n");
+			// Content received.
+			responseLength = result;
 		}
 		else if (result == 0)
 		{
-			printf("Connection to GameAnalytics server closed.\n");
+			// Connection closed.
 		}
 		else
 		{
-			printf("Error: %d\n", WSAGetLastError());
+			// Error occurred.
+			printf("Error receiving server response: %d\n", WSAGetLastError());
 		}
 	} while (result > 0);
 
 	// Shutdown the send half of the connection since no more data will be sent.
-	printf("Shutting down GameAnalytics socket... ");
-
-	result = shutdown(gameAnalyticsSocket, SD_SEND);
+	result = shutdown(tcpSocket, SD_SEND);
 	if (result == SOCKET_ERROR)
 	{
-		printf("Error: %d\n", WSAGetLastError());
-		closesocket(gameAnalyticsSocket);
-		return;
-	}
-	else
-	{
-		printf("Success.\n");
+		printf("Error shuttung down socket: %d\n", WSAGetLastError());
+		closesocket(tcpSocket);
+		return std::string();
 	}
 
-	closesocket(gameAnalyticsSocket);
+	closesocket(tcpSocket);
+
+	// Return response.
+	std::string response(recvbuf, responseLength);
+	return response;
 }
