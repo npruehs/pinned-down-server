@@ -60,5 +60,6 @@
     <ClInclude Include="Network\HTTPRequest.h">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="Util\GUID\GUID.h" />
   </ItemGroup>
 </Project>
