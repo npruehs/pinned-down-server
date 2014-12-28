@@ -61,5 +61,6 @@
       <Filter>Network</Filter>
     </ClInclude>
     <ClInclude Include="Util\GUID\GUID.h" />
+    <ClInclude Include="PinnedDownClientData.h" />
   </ItemGroup>
 </Project>

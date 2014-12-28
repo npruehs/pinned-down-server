@@ -2,7 +2,9 @@
 
 #include "MasterServer.h"
 
+#include "Util\GUID\GUID.h"
 using namespace PinnedDownServer;
+using namespace PinnedDownServer::Util::GUID;
 
 bool MasterServer::running = false;
 
@@ -33,9 +35,17 @@ void MasterServer::OnClientConnected(int clientId)
 {
 	printf("Client added: %d\n", clientId);
 
+	// Create new client data object.
+	PinnedDownClientData client = PinnedDownClientData();
+	client.clientId = clientId;
+	client.clientGUID = NewGUID();
+
 	// Start new game.
 	std::shared_ptr<ServerGame> newGame = std::make_shared<ServerGame>(this, clientId);
-	this->runningGames.insert(std::pair<int, std::shared_ptr<ServerGame>>(clientId, newGame));
+	client.game = newGame;
+
+	// Add to client list.
+	this->connectedClients.insert(std::pair<int, PinnedDownClientData>(clientId, client));
 }
 
 void MasterServer::OnClientDisconnected(int clientId)
@@ -43,11 +53,11 @@ void MasterServer::OnClientDisconnected(int clientId)
 	printf("Client removed: %d\n", clientId);
 
 	// Stop game.
-	auto iterator = this->runningGames.find(clientId);
+	auto iterator = this->connectedClients.find(clientId);
 
-	if (iterator != this->runningGames.end())
+	if (iterator != this->connectedClients.end())
 	{
-		this->runningGames.erase(iterator);
+		this->connectedClients.erase(iterator);
 	}
 }
 
@@ -56,12 +66,12 @@ void MasterServer::OnClientAction(int clientId, std::shared_ptr<Event> clientAct
 	printf("Client %d sent action %s.\n", clientId, clientAction->GetEventType().GetString());
 
 	// Pass to game.
-	auto iterator = this->runningGames.find(clientId);
+	auto iterator = this->connectedClients.find(clientId);
 
-	if (iterator != this->runningGames.end())
+	if (iterator != this->connectedClients.end())
 	{
-		auto game = iterator->second;
-		game->OnClientAction(clientAction);
+		auto client = iterator->second;
+		client.game->OnClientAction(clientAction);
 	}
 }
 

@@ -118,6 +118,7 @@
     <ClInclude Include="ServerEventDispatcher.h" />
     <ClInclude Include="ServerGame.h" />
     <ClInclude Include="Util\GUID\GUID.h" />
+    <ClInclude Include="PinnedDownClientData.h" />
     <ClInclude Include="Util\MD5\MD5.h" />
     <ClInclude Include="Util\MD5\MD5String.h" />
   </ItemGroup>

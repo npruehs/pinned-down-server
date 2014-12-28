@@ -5,7 +5,7 @@
 
 #include "PinnedDownNet.h"
 
-#include "ServerGame.h"
+#include "PinnedDownClientData.h"
 #include "Network\HTTPClient.h"
 #include "Network\SocketManager.h"
 
@@ -32,6 +32,6 @@ namespace PinnedDownServer
 		std::shared_ptr<SocketManager> socketManager;
 		std::shared_ptr<HTTPClient> httpClient;
 
-		std::map<int, std::shared_ptr<ServerGame>> runningGames;
+		std::map<int, PinnedDownClientData> connectedClients;
 	};
 }
