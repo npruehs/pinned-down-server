@@ -2,15 +2,30 @@
 
 std::string MD5String(std::string string)
 {
+	return MD5String(1, string);
+}
+
+std::string MD5String(int stringCount, ...)
+{
 	MD5_CTX context;
 	unsigned char digest[16];
+	va_list arguments;
 
-	const char* stringContent = string.c_str();
-	unsigned int len = strlen(stringContent);
-
-	// Create hash.
+	// Prepare hash.
 	MD5Init(&context);
-	MD5Update(&context, (unsigned char *)stringContent, len);
+
+	// Hash all strings.
+	va_start(arguments, stringCount);
+	for (int x = 0; x < stringCount; x++)
+	{
+		auto nextString = va_arg(arguments, std::string);
+		const char* stringContent = nextString.c_str();
+		unsigned int len = strlen(stringContent);
+		MD5Update(&context, (unsigned char *)stringContent, len);
+	}
+	va_end(arguments);
+
+	// Finalize hash.
 	MD5Final(digest, &context);
 
 	// Convert from binary to hex.
