@@ -25,12 +25,14 @@
     <ClCompile Include="MasterServer.cpp" />
     <ClCompile Include="ServerGame.cpp" />
     <ClCompile Include="ServerEventDispatcher.cpp" />
-    <ClCompile Include="Network\HTTPClient.cpp" />
     <ClCompile Include="Util\MD5\MD5.cpp">
       <Filter>Util\MD5</Filter>
     </ClCompile>
     <ClCompile Include="Util\MD5\MD5String.cpp">
       <Filter>Util\MD5</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\HTTPClient.cpp">
+      <Filter>Network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -46,12 +48,17 @@
     <ClInclude Include="MasterServer.h" />
     <ClInclude Include="ServerGame.h" />
     <ClInclude Include="ServerEventDispatcher.h" />
-    <ClInclude Include="Network\HTTPClient.h" />
     <ClInclude Include="Util\MD5\MD5.h">
       <Filter>Util\MD5</Filter>
     </ClInclude>
     <ClInclude Include="Util\MD5\MD5String.h">
       <Filter>Util\MD5</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\HTTPClient.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\HTTPRequest.h">
+      <Filter>Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

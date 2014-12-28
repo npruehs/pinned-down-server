@@ -108,6 +108,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Network\HTTPRequest.h" />
     <ClInclude Include="Network\ClientActionReader.h" />
     <ClInclude Include="Network\HTTPClient.h" />
     <ClInclude Include="Network\ServerEventWriter.h" />

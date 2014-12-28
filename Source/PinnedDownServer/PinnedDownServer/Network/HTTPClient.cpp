@@ -19,7 +19,7 @@ HTTPClient::~HTTPClient()
 {
 }
 
-std::string HTTPClient::SendRequest(std::string host, std::string port, std::string method, std::string url)
+std::string HTTPClient::SendRequest(HTTPRequest request)
 {
 	// Resolve host.
 	addrinfo hints;
@@ -30,10 +30,10 @@ std::string HTTPClient::SendRequest(std::string host, std::string port, std::str
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
 
-	auto result = getaddrinfo(host.c_str(), port.c_str(), &hints, &addressInfo);
+	auto result = getaddrinfo(request.host.c_str(), request.port.c_str(), &hints, &addressInfo);
 	if (result != 0)
 	{
-		printf("Error resolving host %s:%s: %d\n", host, port, result);
+		printf("Error resolving host %s:%s: %d\n", request.host, request.port, result);
 		return std::string();
 	}
 
@@ -52,7 +52,7 @@ std::string HTTPClient::SendRequest(std::string host, std::string port, std::str
 	result = connect(tcpSocket, addressInfo->ai_addr, (int)addressInfo->ai_addrlen);
 	if (result == SOCKET_ERROR)
 	{
-		printf("Error connecting to server %s:%s: %ld\n", host, port, WSAGetLastError());
+		printf("Error connecting to server %s:%s: %ld\n", request.host, request.port, WSAGetLastError());
 		freeaddrinfo(addressInfo);
 		closesocket(tcpSocket);
 		return std::string();
@@ -62,13 +62,28 @@ std::string HTTPClient::SendRequest(std::string host, std::string port, std::str
 		freeaddrinfo(addressInfo);
 	}
 
-	// Send request.
-	std::string request;
-	request.append(method + " " + url + " HTTP/1.1\r\n");
-	request.append("Host: " + host + "\r\n");
-	request.append("Connection: close\r\n\r\n");
+	// Build request string.
+	std::string requestString;
+	requestString.append(request.method + " " + request.url + " HTTP/1.1\r\n");
+	requestString.append("Host: " + request.host + "\r\n");
+	requestString.append("Connection: close\r\n");
+	requestString.append("Content-Type: " + request.contentType + "\r\n");
+	requestString.append("Content-Length: " + std::to_string(request.content.length()) + "\r\n");
+	
+	if (!request.authorization.empty())
+	{
+		requestString.append("Authorization: " + request.authorization + "\r\n");
+	}
+	
+	requestString.append("\r\n");
 
-	result = send(tcpSocket, request.c_str(), (int)strlen(request.c_str()), 0);
+	if (!request.content.empty())
+	{
+		requestString.append(request.content);
+	}
+
+	// Send request.
+	result = send(tcpSocket, requestString.c_str(), (int)strlen(requestString.c_str()), 0);
 	if (result == SOCKET_ERROR)
 	{
 		printf("Error sending HTTP request: %d\n", WSAGetLastError());

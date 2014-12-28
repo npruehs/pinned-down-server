@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include "HTTPRequest.h"
+
 namespace PinnedDownServer
 {
 	namespace Network
@@ -12,8 +14,7 @@ namespace PinnedDownServer
 			HTTPClient();
 			~HTTPClient();
 
-			std::string SendRequest(std::string host, std::string port, std::string method, std::string url);
-
+			std::string SendRequest(HTTPRequest request);
 		private:
 		};
 	}
