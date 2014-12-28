@@ -62,5 +62,6 @@
     </ClInclude>
     <ClInclude Include="Util\GUID\GUID.h" />
     <ClInclude Include="PinnedDownClientData.h" />
+    <ClInclude Include="PinnedDownServerVersion.h" />
   </ItemGroup>
 </Project>

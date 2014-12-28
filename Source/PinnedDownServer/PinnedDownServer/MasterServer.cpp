@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "MasterServer.h"
+#include "PinnedDownServerVersion.h"
 
 #include "Util\GUID\GUID.h"
 using namespace PinnedDownServer;
@@ -18,10 +19,15 @@ MasterServer::MasterServer()
 
 void MasterServer::Start()
 {
+	// Log server version.
+	printf("Pinned Down Server %s\r\n", PINNED_DOWN_SERVER_VERSION);
+
+	// Init socket manager.
 	this->socketManager->InitSocketManager();
 	
 	if (this->socketManager->IsInitialized())
 	{
+		// Start receive loop.
 		MasterServer::running = true;
 
 		while (MasterServer::running)
