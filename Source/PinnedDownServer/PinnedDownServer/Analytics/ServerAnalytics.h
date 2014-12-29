@@ -21,10 +21,11 @@ namespace PinnedDownServer
 		class ServerAnalytics : public IEventListener
 		{
 		public:
-			ServerAnalytics(std::shared_ptr<Game> game, std::shared_ptr<HTTPClient> httpClient, std::string clientGUID);
+			ServerAnalytics(std::shared_ptr<Game> game, std::shared_ptr<HTTPClient> httpClient, std::shared_ptr<ServerLogger> logger, std::string clientGUID);
 
 		private:
 			std::shared_ptr<HTTPClient> httpClient;
+			std::shared_ptr<ServerLogger> logger;
 			std::string clientGUID;
 			
 

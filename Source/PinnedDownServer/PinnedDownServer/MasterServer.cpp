@@ -57,7 +57,7 @@ void MasterServer::OnClientConnected(int clientId)
 	pinnedDownClient->clientGUID = NewGUID();
 
 	// Start new game.
-	std::shared_ptr<ServerGame> newGame = std::make_shared<ServerGame>(this, this->httpClient, pinnedDownClient);
+	std::shared_ptr<ServerGame> newGame = std::make_shared<ServerGame>(this, this->httpClient, this->logger, pinnedDownClient);
 	pinnedDownClient->game = newGame;
 
 	// Add to client list.

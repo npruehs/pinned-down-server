@@ -9,8 +9,9 @@
 using namespace PinnedDownServer::Analytics;
 
 
-ServerAnalytics::ServerAnalytics(std::shared_ptr<Game> game, std::shared_ptr<HTTPClient> httpClient, std::string clientGUID)
+ServerAnalytics::ServerAnalytics(std::shared_ptr<Game> game, std::shared_ptr<HTTPClient> httpClient, std::shared_ptr<ServerLogger> logger, std::string clientGUID)
 	: httpClient(httpClient),
+	logger(logger),
 	clientGUID(clientGUID)
 {
 	game->eventManager->AddListener(this, CoveredDistanceChangedEvent::CoveredDistanceChangedEventType);
@@ -73,5 +74,15 @@ void ServerAnalytics::SendGameAnalyticsEvent(std::string clientGUID, std::string
 	request.port = "80";
 	request.url = url;
 
+	std::wstring eventIdW(eventId.begin(), eventId.end());
+
+	this->logger->LogInfo(L"Sending analytics event " + eventIdW);
 	auto response = this->httpClient->SendRequest(request);
+
+	// Verify response.
+	if (response.find("{\"status\":\"ok\"}") == std::string::npos)
+	{
+		std::wstring responseW(response.begin(), response.end());
+		this->logger->LogError(L"Error sending analytics event " + eventIdW + L": " + responseW);
+	}
 }

@@ -31,9 +31,10 @@ using namespace PinnedDownGameplay::Systems;
 using namespace PinnedDownServer;
 
 
-ServerGame::ServerGame(MasterServer* masterServer, std::shared_ptr<HTTPClient> httpClient, PinnedDownClientData* pinnedDownClient)
+ServerGame::ServerGame(MasterServer* masterServer, std::shared_ptr<HTTPClient> httpClient, std::shared_ptr<ServerLogger> logger, PinnedDownClientData* pinnedDownClient)
 	: masterServer(masterServer),
 	httpClient(httpClient),
+	logger(logger),
 	pinnedDownClient(pinnedDownClient),
 	game(std::make_shared<Game>())
 {
@@ -41,7 +42,7 @@ ServerGame::ServerGame(MasterServer* masterServer, std::shared_ptr<HTTPClient> h
 	this->serverEventDispatcher = std::make_shared<ServerEventDispatcher>(this, this->game);
 
 	// Setup analytics.
-	this->analytics = std::make_shared<ServerAnalytics>(this->game, this->httpClient, this->pinnedDownClient->clientGUID);
+	this->analytics = std::make_shared<ServerAnalytics>(this->game, this->httpClient, this->logger, this->pinnedDownClient->clientGUID);
 
 	// Init systems.
 	this->game->systemManager->AddSystem(std::make_shared<CardStateSystem>());
