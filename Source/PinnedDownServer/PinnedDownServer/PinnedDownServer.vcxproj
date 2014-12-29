@@ -62,6 +62,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -87,11 +88,14 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Network\ClientActionReader.cpp" />
+    <ClCompile Include="Network\HTTPClient.cpp" />
     <ClCompile Include="Network\ServerEventWriter.cpp" />
     <ClCompile Include="Network\SocketManager.cpp" />
     <ClCompile Include="MasterServer.cpp" />
     <ClCompile Include="ServerEventDispatcher.cpp" />
     <ClCompile Include="ServerGame.cpp" />
+    <ClCompile Include="Util\MD5\MD5.cpp" />
+    <ClCompile Include="Util\MD5\MD5String.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\pinned-down-core\Source\PinnedDownCore\PinnedDownCore\PinnedDownCore.vcxproj">
@@ -105,12 +109,20 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Network\HTTPRequest.h" />
     <ClInclude Include="Network\ClientActionReader.h" />
+    <ClInclude Include="Network\HTTPClient.h" />
     <ClInclude Include="Network\ServerEventWriter.h" />
     <ClInclude Include="Network\SocketManager.h" />
     <ClInclude Include="MasterServer.h" />
+    <ClInclude Include="PinnedDownServerAnalytics.h" />
+    <ClInclude Include="PinnedDownServerVersion.h" />
     <ClInclude Include="ServerEventDispatcher.h" />
     <ClInclude Include="ServerGame.h" />
+    <ClInclude Include="Util\GUID\GUID.h" />
+    <ClInclude Include="PinnedDownClientData.h" />
+    <ClInclude Include="Util\MD5\MD5.h" />
+    <ClInclude Include="Util\MD5\MD5String.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
