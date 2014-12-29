@@ -44,8 +44,7 @@ std::string HTTPClient::SendRequest(HTTPRequest request)
 	}
 
 	// Setup TCP socket.
-	SOCKET tcpSocket = INVALID_SOCKET;
-	tcpSocket = socket(addressInfo->ai_family, addressInfo->ai_socktype, addressInfo->ai_protocol);
+	SOCKET tcpSocket = socket(addressInfo->ai_family, addressInfo->ai_socktype, addressInfo->ai_protocol);
 
 	if (tcpSocket == INVALID_SOCKET)
 	{

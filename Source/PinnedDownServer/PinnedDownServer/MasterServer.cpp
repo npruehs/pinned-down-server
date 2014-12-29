@@ -17,8 +17,8 @@ using namespace PinnedDownServer::Util::GUID;
 bool MasterServer::running = false;
 
 MasterServer::MasterServer()
+	: logger(std::make_shared<ServerLogger>(LogLevel::Debug))
 {
-	this->logger = std::make_shared<ServerLogger>(LogLevel::Debug);
 	this->socketManager = std::make_shared<SocketManager>(this, this->logger);
 	this->httpClient = std::make_shared<HTTPClient>(this->logger);
 
