@@ -94,6 +94,7 @@
     <ClCompile Include="MasterServer.cpp" />
     <ClCompile Include="ServerEventDispatcher.cpp" />
     <ClCompile Include="ServerGame.cpp" />
+    <ClCompile Include="Diagnotics\ServerLogger.cpp" />
     <ClCompile Include="Util\MD5\MD5.cpp" />
     <ClCompile Include="Util\MD5\MD5String.cpp" />
   </ItemGroup>
@@ -119,6 +120,7 @@
     <ClInclude Include="PinnedDownServerVersion.h" />
     <ClInclude Include="ServerEventDispatcher.h" />
     <ClInclude Include="ServerGame.h" />
+    <ClInclude Include="Diagnotics\ServerLogger.h" />
     <ClInclude Include="Util\GUID\GUID.h" />
     <ClInclude Include="PinnedDownClientData.h" />
     <ClInclude Include="Util\MD5\MD5.h" />

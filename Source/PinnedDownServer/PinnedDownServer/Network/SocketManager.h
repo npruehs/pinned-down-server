@@ -3,8 +3,14 @@
 #include "ServerEventWriter.h"
 #include "ClientActionReader.h"
 
+#include "..\Diagnotics\ServerLogger.h"
+
 #define DEFAULT_BUFLEN 512
 #define MAX_CLIENTS 32
+
+
+using namespace PinnedDownServer::Diagnostics;
+
 
 namespace PinnedDownServer
 {
@@ -15,7 +21,7 @@ namespace PinnedDownServer
 		class SocketManager
 		{
 		public:
-			SocketManager(MasterServer* masterServer);
+			SocketManager(MasterServer* masterServer, std::shared_ptr<ServerLogger> logger);
 			~SocketManager();
 
 			void InitSocketManager();
@@ -44,6 +50,8 @@ namespace PinnedDownServer
 
 			ServerEventWriter serverEventWriter;
 			ClientActionReader clientActionReader;
+
+			std::shared_ptr<ServerLogger> logger;
 		};
 	}
 }

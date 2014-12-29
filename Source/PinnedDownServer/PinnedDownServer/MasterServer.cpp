@@ -7,7 +7,9 @@
 #include "Util\GUID\GUID.h"
 #include "Util\MD5\MD5String.h"
 
+#include "Logger.h"
 
+using namespace PinnedDownCore;
 using namespace PinnedDownServer;
 using namespace PinnedDownServer::Util::GUID;
 
@@ -15,8 +17,9 @@ bool MasterServer::running = false;
 
 MasterServer::MasterServer()
 {
-	this->socketManager = std::make_shared<SocketManager>(this);
-	this->httpClient = std::make_shared<HTTPClient>();
+	this->logger = std::make_shared<ServerLogger>(LogLevel::Debug);
+	this->socketManager = std::make_shared<SocketManager>(this, this->logger);
+	this->httpClient = std::make_shared<HTTPClient>(this->logger);
 
 	SetConsoleCtrlHandler(&PinnedDownServer::MasterServer::OnConsoleCtrlSignal, TRUE);
 }
@@ -24,7 +27,9 @@ MasterServer::MasterServer()
 void MasterServer::Start()
 {
 	// Log server version.
-	printf("Pinned Down Server %s\r\n", PINNED_DOWN_SERVER_VERSION);
+	std::string versionString(PINNED_DOWN_SERVER_VERSION);
+	std::wstring versionStringW(versionString.begin(), versionString.end());
+	this->logger->LogInfo(L"Pinned Down Server " + versionStringW);
 
 	// Init socket manager.
 	this->socketManager->InitSocketManager();
@@ -43,7 +48,7 @@ void MasterServer::Start()
 
 void MasterServer::OnClientConnected(int clientId)
 {
-	printf("Client added: %d\n", clientId);
+	this->logger->LogInfo(L"Client added: " + std::to_wstring(clientId));
 
 	// Create new client data object.
 	PinnedDownClientData client = PinnedDownClientData();
@@ -63,7 +68,7 @@ void MasterServer::OnClientConnected(int clientId)
 
 void MasterServer::OnClientDisconnected(int clientId)
 {
-	printf("Client removed: %d\n", clientId);
+	this->logger->LogInfo(L"Client removed: " + std::to_wstring(clientId));
 
 	// Stop game.
 	auto iterator = this->connectedClients.find(clientId);
@@ -76,7 +81,8 @@ void MasterServer::OnClientDisconnected(int clientId)
 
 void MasterServer::OnClientAction(int clientId, std::shared_ptr<Event> clientAction)
 {
-	printf("Client %d sent action %s.\n", clientId, clientAction->GetEventType().GetString());
+	// Log action.
+	this->logger->LogDebug(L"FROM client " + std::to_wstring(clientId) + L": " + clientAction->ToString());
 
 	// Pass to game.
 	auto iterator = this->connectedClients.find(clientId);
@@ -90,7 +96,8 @@ void MasterServer::OnClientAction(int clientId, std::shared_ptr<Event> clientAct
 
 void MasterServer::OnServerEvent(int clientId, Event& serverEvent)
 {
-	printf("Sending event %s to client %d.\n", serverEvent.GetEventType().GetString(), clientId);
+	// Log event.
+	this->logger->LogDebug(L"TO client " + std::to_wstring(clientId) + L": " + serverEvent.ToString());
 
 	// Pass to socket manager.
 	this->socketManager->SendServerEvent(clientId, serverEvent);
@@ -101,7 +108,6 @@ BOOL WINAPI MasterServer::OnConsoleCtrlSignal(DWORD signal) {
 	if (signal == CTRL_C_EVENT)
 	{
 		MasterServer::running = false;
-		printf("Shutting down server...");
 	}		
 
 	return true;

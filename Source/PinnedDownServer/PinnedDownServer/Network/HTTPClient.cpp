@@ -8,10 +8,13 @@
 
 #pragma comment(lib, "Ws2_32.lib")
 
+
+using namespace PinnedDownServer::Diagnostics;
 using namespace PinnedDownServer::Network;
 
 
-HTTPClient::HTTPClient()
+HTTPClient::HTTPClient(std::shared_ptr<ServerLogger> logger)
+	: logger(logger)
 {
 }
 
@@ -33,7 +36,10 @@ std::string HTTPClient::SendRequest(HTTPRequest request)
 	auto result = getaddrinfo(request.host.c_str(), request.port.c_str(), &hints, &addressInfo);
 	if (result != 0)
 	{
-		printf("Error resolving host %s:%s: %d\n", request.host, request.port, result);
+		std::wstring host(request.host.begin(), request.host.end());
+		std::wstring port(request.port.begin(), request.port.end());
+
+		this->logger->LogError(L"Error resolving host " + host + L":" + port + L": " + std::to_wstring(result));
 		return std::string();
 	}
 
@@ -43,7 +49,9 @@ std::string HTTPClient::SendRequest(HTTPRequest request)
 
 	if (tcpSocket == INVALID_SOCKET)
 	{
-		printf("Error creating TCP socket: %ld\n", WSAGetLastError());
+		int error = WSAGetLastError();
+		this->logger->LogError(L"Error creating TCP socket: " + std::to_wstring(error));
+
 		freeaddrinfo(addressInfo);
 		return std::string();
 	}
@@ -52,7 +60,12 @@ std::string HTTPClient::SendRequest(HTTPRequest request)
 	result = connect(tcpSocket, addressInfo->ai_addr, (int)addressInfo->ai_addrlen);
 	if (result == SOCKET_ERROR)
 	{
-		printf("Error connecting to server %s:%s: %ld\n", request.host, request.port, WSAGetLastError());
+		std::wstring host(request.host.begin(), request.host.end());
+		std::wstring port(request.port.begin(), request.port.end());
+		int error = WSAGetLastError();
+
+		this->logger->LogError(L"Error connecting to server " + host + L":" + port + L": " + std::to_wstring(error));
+
 		freeaddrinfo(addressInfo);
 		closesocket(tcpSocket);
 		return std::string();
@@ -86,7 +99,9 @@ std::string HTTPClient::SendRequest(HTTPRequest request)
 	result = send(tcpSocket, requestString.c_str(), (int)strlen(requestString.c_str()), 0);
 	if (result == SOCKET_ERROR)
 	{
-		printf("Error sending HTTP request: %d\n", WSAGetLastError());
+		int error = WSAGetLastError();
+		this->logger->LogError(L"Error sending HTTP request: " + std::to_wstring(error));
+
 		closesocket(tcpSocket);
 		return std::string();
 	}
@@ -112,15 +127,19 @@ std::string HTTPClient::SendRequest(HTTPRequest request)
 		else
 		{
 			// Error occurred.
-			printf("Error receiving server response: %d\n", WSAGetLastError());
+			int error = WSAGetLastError();
+			this->logger->LogError(L"Error receiving server response: " + std::to_wstring(error));
 		}
-	} while (result > 0);
+	}
+	while (result > 0);
 
 	// Shutdown the send half of the connection since no more data will be sent.
 	result = shutdown(tcpSocket, SD_SEND);
 	if (result == SOCKET_ERROR)
 	{
-		printf("Error shuttung down socket: %d\n", WSAGetLastError());
+		int error = WSAGetLastError();
+		this->logger->LogError(L"Error shuttung down socket: " + std::to_wstring(error));
+
 		closesocket(tcpSocket);
 		return std::string();
 	}
