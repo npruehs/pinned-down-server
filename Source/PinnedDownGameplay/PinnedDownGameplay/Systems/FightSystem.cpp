@@ -3,6 +3,8 @@
 
 #include "Components\PowerComponent.h"
 
+#include "Data\FightOutcome.h"
+
 #include "Events\FightResolvedEvent.h"
 #include "..\Events\ShipDefeatedEvent.h"
 #include "..\Events\ShipVictoriousEvent.h"
@@ -10,6 +12,7 @@
 using namespace PinnedDownGameplay::Events;
 using namespace PinnedDownGameplay::Systems;
 using namespace PinnedDownNet::Components;
+using namespace PinnedDownNet::Data;
 using namespace PinnedDownNet::Events;
 
 
@@ -56,6 +59,10 @@ EVENT_HANDLER_DEFINITION(FightSystem, FightStartedEvent)
 
 		auto shipDefeatedEvent = std::make_shared<ShipDefeatedEvent>(data.playerShip);
 		this->game->eventManager->QueueEvent(shipDefeatedEvent);
+
+		// Notify client.
+		auto fightResolvedEvent = std::make_shared<FightResolvedEvent>(data.playerShip, FightOutcome::EnemyVictory);
+		this->game->eventManager->QueueEvent(fightResolvedEvent);
 	}
 	else
 	{
@@ -68,9 +75,9 @@ EVENT_HANDLER_DEFINITION(FightSystem, FightStartedEvent)
 			auto shipDefeatedEvent = std::make_shared<ShipDefeatedEvent>(*it);
 			this->game->eventManager->QueueEvent(shipDefeatedEvent);
 		}
-	}
 
-	// Notify client.
-	auto fightResolvedEvent = std::make_shared<FightResolvedEvent>(data.playerShip);
-	this->game->eventManager->QueueEvent(fightResolvedEvent);
+		// Notify client.
+		auto fightResolvedEvent = std::make_shared<FightResolvedEvent>(data.playerShip, FightOutcome::PlayerVictory);
+		this->game->eventManager->QueueEvent(fightResolvedEvent);
+	}
 }
