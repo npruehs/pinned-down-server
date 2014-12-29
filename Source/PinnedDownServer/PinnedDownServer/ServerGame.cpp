@@ -31,14 +31,17 @@ using namespace PinnedDownGameplay::Systems;
 using namespace PinnedDownServer;
 
 
-ServerGame::ServerGame(MasterServer* masterServer, int clientId)
-	: game(std::make_shared<Game>())
+ServerGame::ServerGame(MasterServer* masterServer, std::shared_ptr<HTTPClient> httpClient, PinnedDownClientData* pinnedDownClient)
+	: masterServer(masterServer),
+	httpClient(httpClient),
+	pinnedDownClient(pinnedDownClient),
+	game(std::make_shared<Game>())
 {
-	this->masterServer = masterServer;
-	this->clientId = clientId;
-
 	// Setup game infrastructure.
 	this->serverEventDispatcher = std::make_shared<ServerEventDispatcher>(this, this->game);
+
+	// Setup analytics.
+	this->analytics = std::make_shared<ServerAnalytics>(this->game, this->httpClient, this->pinnedDownClient->clientGUID);
 
 	// Init systems.
 	this->game->systemManager->AddSystem(std::make_shared<CardStateSystem>());
@@ -64,7 +67,7 @@ ServerGame::ServerGame(MasterServer* masterServer, int clientId)
 	this->Update();
 
 	// Add first player.
-	auto clientConnectedEvent = std::make_shared<ClientConnectedEvent>(this->clientId);
+	auto clientConnectedEvent = std::make_shared<ClientConnectedEvent>(this->pinnedDownClient->clientId);
 	this->game->eventManager->QueueEvent(clientConnectedEvent);
 	this->Update();
 }
@@ -77,7 +80,7 @@ void ServerGame::OnClientAction(std::shared_ptr<Event> clientAction)
 
 void ServerGame::OnServerEvent(Event& serverEvent)
 {
-	this->masterServer->OnServerEvent(this->clientId, serverEvent);
+	this->masterServer->OnServerEvent(this->pinnedDownClient->clientId, serverEvent);
 }
 
 void ServerGame::Update()

@@ -35,11 +35,9 @@ namespace PinnedDownServer
 		static BOOL WINAPI OnConsoleCtrlSignal(DWORD signal);
 
 		std::shared_ptr<ServerLogger> logger;
-		std::shared_ptr<SocketManager> socketManager;
 		std::shared_ptr<HTTPClient> httpClient;
-
-		std::map<int, PinnedDownClientData> connectedClients;
-
-		void SendGameAnalyticsEvent(PinnedDownClientData client, std::string eventId);
+		std::shared_ptr<SocketManager> socketManager;
+		
+		std::map<int, PinnedDownClientData*> connectedClients;
 	};
 }

@@ -86,6 +86,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Analytics\ServerAnalytics.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Network\ClientActionReader.cpp" />
     <ClCompile Include="Network\HTTPClient.cpp" />
@@ -110,6 +111,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Analytics\ServerAnalytics.h" />
     <ClInclude Include="Network\HTTPRequest.h" />
     <ClInclude Include="Network\ClientActionReader.h" />
     <ClInclude Include="Network\HTTPClient.h" />
