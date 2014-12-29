@@ -11,7 +11,7 @@
 #include "..\Events\EnemyCardPlayedEvent.h"
 #include "EntityRemovedEvent.h"
 #include "..\Events\FlagshipPlayedEvent.h"
-#include "..\Events\StarshipPlayedEvent.h"
+#include "Events\StarshipPlayedEvent.h"
 
 using namespace PinnedDownCore;
 using namespace PinnedDownNet::Events;

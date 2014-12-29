@@ -17,7 +17,7 @@
 #include "EntityRemovedEvent.h"
 #include "Events\FightResolvedEvent.h"
 #include "..\Events\FlagshipPlayedEvent.h"
-#include "..\Events\StarshipPlayedEvent.h"
+#include "Events\StarshipPlayedEvent.h"
 #include "Events\TurnPhaseChangedEvent.h"
 
 using namespace PinnedDownCore;

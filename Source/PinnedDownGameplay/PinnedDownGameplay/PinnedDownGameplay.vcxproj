@@ -88,17 +88,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Actions\PlayEffectAction.cpp" />
+    <ClCompile Include="Actions\PlayStarshipAction.cpp" />
     <ClCompile Include="Components\PlayerDeckComponent.cpp" />
     <ClCompile Include="Data\Deck.cpp" />
     <ClCompile Include="Events\BonusPowerChangedEvent.cpp" />
     <ClCompile Include="Events\ClientConnectedEvent.cpp" />
-    <ClCompile Include="Events\EffectPlayedEvent.cpp" />
     <ClCompile Include="Events\EnemyCardPlayedEvent.cpp" />
     <ClCompile Include="Events\FightStartedEvent.cpp" />
     <ClCompile Include="Events\FlagshipPlayedEvent.cpp" />
     <ClCompile Include="Events\ShipDefeatedEvent.cpp" />
     <ClCompile Include="Events\ShipVictoriousEvent.cpp" />
-    <ClCompile Include="Events\StarshipPlayedEvent.cpp" />
     <ClCompile Include="Systems\AssignmentSystem.cpp" />
     <ClCompile Include="Systems\CardPlayingSystem.cpp" />
     <ClCompile Include="Systems\CardStateSystem.cpp" />
@@ -120,18 +120,18 @@
     <ClCompile Include="Util\Random.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actions\PlayEffectAction.h" />
+    <ClInclude Include="Actions\PlayStarshipAction.h" />
     <ClInclude Include="Components\PlayerDeckComponent.h" />
     <ClInclude Include="Data\CardData.h" />
     <ClInclude Include="Data\Deck.h" />
     <ClInclude Include="Events\BonusPowerChangedEvent.h" />
     <ClInclude Include="Events\ClientConnectedEvent.h" />
     <ClInclude Include="Events\EnemyCardPlayedEvent.h" />
-    <ClInclude Include="Events\EffectPlayedEvent.h" />
     <ClInclude Include="Events\FightStartedEvent.h" />
     <ClInclude Include="Events\FlagshipPlayedEvent.h" />
     <ClInclude Include="Events\ShipDefeatedEvent.h" />
     <ClInclude Include="Events\ShipVictoriousEvent.h" />
-    <ClInclude Include="Events\StarshipPlayedEvent.h" />
     <ClInclude Include="Systems\AssignmentSystem.h" />
     <ClInclude Include="Systems\CardPlayingSystem.h" />
     <ClInclude Include="Systems\CardStateSystem.h" />

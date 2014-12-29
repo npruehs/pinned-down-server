@@ -90,14 +90,8 @@
     <ClCompile Include="Systems\CardPlayingSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Events\StarshipPlayedEvent.cpp">
-      <Filter>Events</Filter>
-    </ClCompile>
     <ClCompile Include="Systems\StarshipPlayingSystem.cpp">
       <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="Events\EffectPlayedEvent.cpp">
-      <Filter>Events</Filter>
     </ClCompile>
     <ClCompile Include="Systems\EffectPlayingSystem.cpp">
       <Filter>Systems</Filter>
@@ -111,6 +105,8 @@
     <ClCompile Include="Events\FlagshipPlayedEvent.cpp">
       <Filter>Events</Filter>
     </ClCompile>
+    <ClCompile Include="Actions\PlayStarshipAction.cpp" />
+    <ClCompile Include="Actions\PlayEffectAction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\DistanceSystem.h">
@@ -188,14 +184,8 @@
     <ClInclude Include="Systems\CardPlayingSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
-    <ClInclude Include="Events\StarshipPlayedEvent.h">
-      <Filter>Events</Filter>
-    </ClInclude>
     <ClInclude Include="Systems\StarshipPlayingSystem.h">
       <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="Events\EffectPlayedEvent.h">
-      <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="Systems\EffectPlayingSystem.h">
       <Filter>Systems</Filter>
@@ -209,5 +199,7 @@
     <ClInclude Include="Events\FlagshipPlayedEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
+    <ClInclude Include="Actions\PlayStarshipAction.h" />
+    <ClInclude Include="Actions\PlayEffectAction.h" />
   </ItemGroup>
 </Project>

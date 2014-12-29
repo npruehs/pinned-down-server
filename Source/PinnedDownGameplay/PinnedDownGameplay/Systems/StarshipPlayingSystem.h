@@ -6,7 +6,7 @@
 
 #include "Data\TurnPhase.h"
 
-#include "..\Events\StarshipPlayedEvent.h"
+#include "..\Actions\PlayStarshipAction.h"
 #include "Events\TurnPhaseChangedEvent.h"
 
 using namespace PinnedDownCore;
@@ -29,7 +29,7 @@ namespace PinnedDownGameplay
 
 			void OnEvent(Event & event);
 
-			EVENT_HANDLER_DECLARATION(StarshipPlayedEvent);
+			EVENT_HANDLER_DECLARATION(PlayStarshipAction);
 			EVENT_HANDLER_DECLARATION(TurnPhaseChangedEvent);
 		};
 	}
