@@ -15,18 +15,27 @@ ServerAnalytics::ServerAnalytics(std::shared_ptr<Game> game, std::shared_ptr<HTT
 	clientGUID(clientGUID)
 {
 	game->eventManager->AddListener(this, CoveredDistanceChangedEvent::CoveredDistanceChangedEventType);
+	game->eventManager->AddListener(this, DefeatEvent::DefeatEventType);
 	game->eventManager->AddListener(this, FightResolvedEvent::FightResolvedEventType);
+	game->eventManager->AddListener(this, VictoryEvent::VictoryEventType);
 }
 
 void ServerAnalytics::OnEvent(Event & newEvent)
 {
 	CALL_EVENT_HANDLER(CoveredDistanceChangedEvent);
+	CALL_EVENT_HANDLER(DefeatEvent);
 	CALL_EVENT_HANDLER(FightResolvedEvent);
+	CALL_EVENT_HANDLER(VictoryEvent);
 }
 
 EVENT_HANDLER_DEFINITION(ServerAnalytics, CoveredDistanceChangedEvent)
 {
 	this->SendGameAnalyticsEvent(this->clientGUID, "DistanceCovered:" + std::to_string(data.distanceCovered));
+}
+
+EVENT_HANDLER_DEFINITION(ServerAnalytics, DefeatEvent)
+{
+	this->SendGameAnalyticsEvent(this->clientGUID, "Match:Defeat");
 }
 
 EVENT_HANDLER_DEFINITION(ServerAnalytics, FightResolvedEvent)
@@ -39,6 +48,11 @@ EVENT_HANDLER_DEFINITION(ServerAnalytics, FightResolvedEvent)
 	{
 		this->SendGameAnalyticsEvent(this->clientGUID, "Fight:Defeat");
 	}
+}
+
+EVENT_HANDLER_DEFINITION(ServerAnalytics, VictoryEvent)
+{
+	this->SendGameAnalyticsEvent(this->clientGUID, "Match:Victory");
 }
 
 void ServerAnalytics::SendGameAnalyticsEvent(std::string clientGUID, std::string eventId)
