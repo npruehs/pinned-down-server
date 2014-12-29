@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EventListenerMock.h" />
+    <ClInclude Include="PinnedDownTests.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
