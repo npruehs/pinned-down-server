@@ -4,6 +4,7 @@
 #include "IEventListener.h"
 
 #include "Events\CoveredDistanceChangedEvent.h"
+#include "Events\FightResolvedEvent.h"
 
 #include "../Network/HTTPClient.h"
 
@@ -32,6 +33,7 @@ namespace PinnedDownServer
 			void OnEvent(Event & newEvent);
 
 			EVENT_HANDLER_DECLARATION(CoveredDistanceChangedEvent);
+			EVENT_HANDLER_DECLARATION(FightResolvedEvent);
 
 			void SendGameAnalyticsEvent(std::string clientGUID, std::string eventId);
 		};
