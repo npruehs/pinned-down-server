@@ -28,3 +28,4 @@ Source/PinnedDownServer/PinnedDownServer/PinnedDownServer.vcxproj.user
 Source/PinnedDownGameplay/PinnedDownGameplay/PinnedDownGameplay.vcxproj.user
 Source/PinnedDownTests/PinnedDownTests/PinnedDownTests.vcxproj.user
 Obj/
+Source/PinnedDownServer/PinnedDownServer/PinnedDownServerAnalytics.h
