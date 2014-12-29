@@ -2,6 +2,7 @@
 
 #include <map>
 #include <memory>
+#include <string>
 
 #include "PinnedDownNet.h"
 
@@ -31,7 +32,9 @@ namespace PinnedDownServer
 
 		std::shared_ptr<SocketManager> socketManager;
 		std::shared_ptr<HTTPClient> httpClient;
-
+		
 		std::map<int, PinnedDownClientData> connectedClients;
+
+		void SendGameAnalyticsEvent(PinnedDownClientData client, std::string eventId);
 	};
 }
