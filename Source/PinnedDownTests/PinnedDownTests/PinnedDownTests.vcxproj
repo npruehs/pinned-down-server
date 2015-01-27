@@ -18,12 +18,6 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\pinned-down-core\Source\PinnedDownCore\PinnedDownCore\PinnedDownCore.vcxproj">
-      <Project>{51037f52-f903-4bb2-90cd-70b5bde869de}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\pinned-down-net\Source\PinnedDownNet\PinnedDownNet\PinnedDownNet.vcxproj">
-      <Project>{2c645185-98f4-4398-9cf2-319cf875e6d1}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\..\PinnedDownGameplay\PinnedDownGameplay\PinnedDownGameplay.vcxproj">
       <Project>{8f6d95e2-ec35-42c0-bb4f-1cff5973c5bb}</Project>
     </ProjectReference>

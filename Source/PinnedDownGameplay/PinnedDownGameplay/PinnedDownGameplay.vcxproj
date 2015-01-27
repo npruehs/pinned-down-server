@@ -71,7 +71,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\..\..\pinned-down-core\Source\PinnedDownCore\PinnedDownCore;..\..\..\..\pinned-down-net\Source\PinnedDownNet\PinnedDownNet;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -80,14 +80,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\pinned-down-core\Source\PinnedDownCore\PinnedDownCore\PinnedDownCore.vcxproj">
-      <Project>{51037f52-f903-4bb2-90cd-70b5bde869de}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\pinned-down-net\Source\PinnedDownNet\PinnedDownNet\PinnedDownNet.vcxproj">
-      <Project>{2c645185-98f4-4398-9cf2-319cf875e6d1}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actions\PlayEffectAction.cpp" />
     <ClCompile Include="Actions\PlayStarshipAction.cpp" />

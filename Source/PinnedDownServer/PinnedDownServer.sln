@@ -5,13 +5,13 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PinnedDownServer", "PinnedDownServer\PinnedDownServer.vcxproj", "{3248A54D-83B8-41FF-BFBC-F13B3D64C9CE}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PinnedDownNet", "..\..\..\pinned-down-net\Source\PinnedDownNet\PinnedDownNet\PinnedDownNet.vcxproj", "{2C645185-98F4-4398-9CF2-319CF875E6D1}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PinnedDownCore", "..\..\..\pinned-down-core\Source\PinnedDownCore\PinnedDownCore\PinnedDownCore.vcxproj", "{51037F52-F903-4BB2-90CD-70B5BDE869DE}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PinnedDownGameplay", "..\PinnedDownGameplay\PinnedDownGameplay\PinnedDownGameplay.vcxproj", "{8F6D95E2-EC35-42C0-BB4F-1CFF5973C5BB}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PinnedDownTests", "..\PinnedDownTests\PinnedDownTests\PinnedDownTests.vcxproj", "{3E5A5DD5-969B-49D4-905C-BD69C34D7BCC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PinnedDownCoreServer", "..\..\..\pinned-down-core\Source\PinnedDownCore\PinnedDownCore\PinnedDownCoreServer.vcxproj", "{51037F52-F903-4BB2-90CD-70B5BDE869DE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PinnedDownNetServer", "..\..\..\pinned-down-net\Source\PinnedDownNet\PinnedDownNet\PinnedDownNetServer.vcxproj", "{2C645185-98F4-4398-9CF2-319CF875E6D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,14 +23,6 @@ Global
 		{3248A54D-83B8-41FF-BFBC-F13B3D64C9CE}.Debug|Win32.Build.0 = Debug|Win32
 		{3248A54D-83B8-41FF-BFBC-F13B3D64C9CE}.Release|Win32.ActiveCfg = Release|Win32
 		{3248A54D-83B8-41FF-BFBC-F13B3D64C9CE}.Release|Win32.Build.0 = Release|Win32
-		{2C645185-98F4-4398-9CF2-319CF875E6D1}.Debug|Win32.ActiveCfg = Debug|Win32
-		{2C645185-98F4-4398-9CF2-319CF875E6D1}.Debug|Win32.Build.0 = Debug|Win32
-		{2C645185-98F4-4398-9CF2-319CF875E6D1}.Release|Win32.ActiveCfg = Release|Win32
-		{2C645185-98F4-4398-9CF2-319CF875E6D1}.Release|Win32.Build.0 = Release|Win32
-		{51037F52-F903-4BB2-90CD-70B5BDE869DE}.Debug|Win32.ActiveCfg = Debug|Win32
-		{51037F52-F903-4BB2-90CD-70B5BDE869DE}.Debug|Win32.Build.0 = Debug|Win32
-		{51037F52-F903-4BB2-90CD-70B5BDE869DE}.Release|Win32.ActiveCfg = Release|Win32
-		{51037F52-F903-4BB2-90CD-70B5BDE869DE}.Release|Win32.Build.0 = Release|Win32
 		{8F6D95E2-EC35-42C0-BB4F-1CFF5973C5BB}.Debug|Win32.ActiveCfg = Debug|Win32
 		{8F6D95E2-EC35-42C0-BB4F-1CFF5973C5BB}.Debug|Win32.Build.0 = Debug|Win32
 		{8F6D95E2-EC35-42C0-BB4F-1CFF5973C5BB}.Release|Win32.ActiveCfg = Release|Win32
@@ -39,6 +31,14 @@ Global
 		{3E5A5DD5-969B-49D4-905C-BD69C34D7BCC}.Debug|Win32.Build.0 = Debug|Win32
 		{3E5A5DD5-969B-49D4-905C-BD69C34D7BCC}.Release|Win32.ActiveCfg = Release|Win32
 		{3E5A5DD5-969B-49D4-905C-BD69C34D7BCC}.Release|Win32.Build.0 = Release|Win32
+		{51037F52-F903-4BB2-90CD-70B5BDE869DE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{51037F52-F903-4BB2-90CD-70B5BDE869DE}.Debug|Win32.Build.0 = Debug|Win32
+		{51037F52-F903-4BB2-90CD-70B5BDE869DE}.Release|Win32.ActiveCfg = Release|Win32
+		{51037F52-F903-4BB2-90CD-70B5BDE869DE}.Release|Win32.Build.0 = Release|Win32
+		{2C645185-98F4-4398-9CF2-319CF875E6D1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2C645185-98F4-4398-9CF2-319CF875E6D1}.Debug|Win32.Build.0 = Debug|Win32
+		{2C645185-98F4-4398-9CF2-319CF875E6D1}.Release|Win32.ActiveCfg = Release|Win32
+		{2C645185-98F4-4398-9CF2-319CF875E6D1}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

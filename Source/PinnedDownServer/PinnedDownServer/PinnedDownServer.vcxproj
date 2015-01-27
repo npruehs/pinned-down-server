@@ -76,7 +76,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\..\..\..\pinned-down-core\Source\PinnedDownCore\PinnedDownCore;..\..\..\..\pinned-down-net\Source\PinnedDownNet\PinnedDownNet;..\..\..\..\pinned-down-server\Source\PinnedDownGameplay\PinnedDownGameplay;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -101,10 +101,10 @@
     <ClCompile Include="Util\MD5\MD5String.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\pinned-down-core\Source\PinnedDownCore\PinnedDownCore\PinnedDownCore.vcxproj">
+    <ProjectReference Include="..\..\..\..\pinned-down-core\Source\PinnedDownCore\PinnedDownCore\PinnedDownCoreServer.vcxproj">
       <Project>{51037f52-f903-4bb2-90cd-70b5bde869de}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\pinned-down-net\Source\PinnedDownNet\PinnedDownNet\PinnedDownNet.vcxproj">
+    <ProjectReference Include="..\..\..\..\pinned-down-net\Source\PinnedDownNet\PinnedDownNet\PinnedDownNetServer.vcxproj">
       <Project>{2c645185-98f4-4398-9cf2-319cf875e6d1}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\PinnedDownGameplay\PinnedDownGameplay\PinnedDownGameplay.vcxproj">
