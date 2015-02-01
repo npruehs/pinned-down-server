@@ -2,6 +2,8 @@
 
 #include "MasterServer.h"
 
+#include "Actions\DisconnectClientAction.h"
+
 #include "Logger.h"
 
 #include "PinnedDownServerVersion.h"
@@ -88,8 +90,18 @@ void MasterServer::OnClientAction(int clientId, std::shared_ptr<Event> clientAct
 
 	if (iterator != this->connectedClients.end())
 	{
-		auto client = iterator->second;
-		client->game->OnClientAction(clientAction);
+		// Check for willing to disconnect.
+		if (clientAction->GetEventType() == DisconnectClientAction::DisconnectClientActionType)
+		{
+			// Remove client.
+			this->socketManager->RemoveClient(clientId);
+		}
+		else
+		{
+			// Pass action to game.
+			auto client = iterator->second;
+			client->game->OnClientAction(clientAction);
+		}
 	}
 }
 
