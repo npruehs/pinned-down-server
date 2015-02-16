@@ -1,15 +1,15 @@
-#include <winsock2.h>
-#include <ws2tcpip.h>
-#include <stdio.h>
 #include <iostream>
+#include <memory>
 
-using namespace std;
+#include "MasterServer.h"
 
-#pragma comment(lib, "Ws2_32.lib")
+using namespace PinnedDownServer;
 
 int main()
 {
-	int i;
-	cin >> i;
+	// Start server.
+	std::shared_ptr<MasterServer> masterServer = std::make_shared<MasterServer>();
+	masterServer->Start();
+
 	return 0;
 }

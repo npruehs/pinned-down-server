@@ -19,8 +19,13 @@
 *.exe
 *.out
 *.app
-Source/PinnedDownServer/PinnedDownServer/Debug/
 Bin/
 Source/PinnedDownServer/PinnedDownServer.opensdf
 Source/PinnedDownServer/PinnedDownServer.sdf
 Source/PinnedDownServer/PinnedDownServer.v11.suo
+Source/PinnedDownServer/PinnedDownServer.v12.suo
+Source/PinnedDownServer/PinnedDownServer/PinnedDownServer.vcxproj.user
+Source/PinnedDownGameplay/PinnedDownGameplay/PinnedDownGameplay.vcxproj.user
+Source/PinnedDownTests/PinnedDownTests/PinnedDownTests.vcxproj.user
+Obj/
+Source/PinnedDownServer/PinnedDownServer/PinnedDownServerAnalytics.h

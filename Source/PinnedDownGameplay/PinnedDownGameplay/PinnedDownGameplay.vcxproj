@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8F6D95E2-EC35-42C0-BB4F-1CFF5973C5BB}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>PinnedDownGameplay</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\..\Bin\$(Configuration)\$(MSBuildProjectName)\</OutDir>
+    <IntDir>..\..\..\Obj\$(Configuration)\$(MSBuildProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\..\Bin\$(Configuration)\$(MSBuildProjectName)\</OutDir>
+    <IntDir>..\..\..\Obj\$(Configuration)\$(MSBuildProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\..\pinned-down-core\Source\PinnedDownCore\PinnedDownCore;..\..\..\..\pinned-down-net\Source\PinnedDownNet\PinnedDownNet;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\..\pinned-down-core\Source\PinnedDownCore\PinnedDownCore;..\..\..\..\pinned-down-net\Source\PinnedDownNet\PinnedDownNet;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Actions\PlayEffectAction.cpp" />
+    <ClCompile Include="Actions\PlayStarshipAction.cpp" />
+    <ClCompile Include="Components\PlayerDeckComponent.cpp" />
+    <ClCompile Include="Data\Deck.cpp" />
+    <ClCompile Include="Events\BonusPowerChangedEvent.cpp" />
+    <ClCompile Include="Events\ClientConnectedEvent.cpp" />
+    <ClCompile Include="Events\EnemyCardPlayedEvent.cpp" />
+    <ClCompile Include="Events\FightStartedEvent.cpp" />
+    <ClCompile Include="Events\FlagshipPlayedEvent.cpp" />
+    <ClCompile Include="Events\ShipDefeatedEvent.cpp" />
+    <ClCompile Include="Events\ShipVictoriousEvent.cpp" />
+    <ClCompile Include="Systems\AssignmentSystem.cpp" />
+    <ClCompile Include="Systems\CardPlayingSystem.cpp" />
+    <ClCompile Include="Systems\CardStateSystem.cpp" />
+    <ClCompile Include="Systems\DamageSystem.cpp" />
+    <ClCompile Include="Systems\DistanceSystem.cpp" />
+    <ClCompile Include="Systems\DistanceVictorySystem.cpp" />
+    <ClCompile Include="Systems\EffectPlayingSystem.cpp" />
+    <ClCompile Include="Systems\EnemyAttackSystem.cpp" />
+    <ClCompile Include="Systems\FightSystem.cpp" />
+    <ClCompile Include="Systems\FlagshipDefeatSystem.cpp" />
+    <ClCompile Include="Systems\FlagshipSystem.cpp" />
+    <ClCompile Include="Systems\JumpEnemyRemovalSystem.cpp" />
+    <ClCompile Include="Systems\PlayerDeckSystem.cpp" />
+    <ClCompile Include="Systems\PlayerSystem.cpp" />
+    <ClCompile Include="Systems\StarshipPlayingSystem.cpp" />
+    <ClCompile Include="Systems\TemporaryEffectSystem.cpp" />
+    <ClCompile Include="Systems\ThreatSystem.cpp" />
+    <ClCompile Include="Systems\TurnPhaseSystem.cpp" />
+    <ClCompile Include="Util\Random.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Actions\PlayEffectAction.h" />
+    <ClInclude Include="Actions\PlayStarshipAction.h" />
+    <ClInclude Include="Components\PlayerDeckComponent.h" />
+    <ClInclude Include="Data\CardData.h" />
+    <ClInclude Include="Data\Deck.h" />
+    <ClInclude Include="Events\BonusPowerChangedEvent.h" />
+    <ClInclude Include="Events\ClientConnectedEvent.h" />
+    <ClInclude Include="Events\EnemyCardPlayedEvent.h" />
+    <ClInclude Include="Events\FightStartedEvent.h" />
+    <ClInclude Include="Events\FlagshipPlayedEvent.h" />
+    <ClInclude Include="Events\ShipDefeatedEvent.h" />
+    <ClInclude Include="Events\ShipVictoriousEvent.h" />
+    <ClInclude Include="Systems\AssignmentSystem.h" />
+    <ClInclude Include="Systems\CardPlayingSystem.h" />
+    <ClInclude Include="Systems\CardStateSystem.h" />
+    <ClInclude Include="Systems\DamageSystem.h" />
+    <ClInclude Include="Systems\Damage\DamageData.h" />
+    <ClInclude Include="Systems\DistanceSystem.h" />
+    <ClInclude Include="Systems\DistanceVictorySystem.h" />
+    <ClInclude Include="Systems\EnemyAttackSystem.h" />
+    <ClInclude Include="Systems\EffectPlayingSystem.h" />
+    <ClInclude Include="Systems\FightSystem.h" />
+    <ClInclude Include="Systems\FlagshipDefeatSystem.h" />
+    <ClInclude Include="Systems\FlagshipSystem.h" />
+    <ClInclude Include="Systems\JumpEnemyRemovalSystem.h" />
+    <ClInclude Include="Systems\PlayerDeckSystem.h" />
+    <ClInclude Include="Systems\PlayerSystem.h" />
+    <ClInclude Include="Systems\StarshipPlayingSystem.h" />
+    <ClInclude Include="Systems\TemporaryEffectSystem.h" />
+    <ClInclude Include="Systems\ThreatSystem.h" />
+    <ClInclude Include="Systems\TurnPhaseSystem.h" />
+    <ClInclude Include="Util\Random.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
