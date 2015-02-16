@@ -9,13 +9,13 @@ namespace PinnedDownGameplay
 {
 	namespace Events
 	{
-		struct StarshipPlayedEvent : public Event
+		struct PlayStarshipAction : public Event
 		{
-			static const HashedString StarshipPlayedEventType;
+			static const HashedString PlayStarshipActionType;
 
 			const HashedString & GetEventType() const
 			{
-				return StarshipPlayedEventType;
+				return PlayStarshipActionType;
 			}
 
 			const NetRole GetNetRole() const
@@ -25,7 +25,7 @@ namespace PinnedDownGameplay
 
 			Entity shipEntity;
 
-			explicit StarshipPlayedEvent(Entity shipEntity)
+			explicit PlayStarshipAction(Entity shipEntity)
 			{
 				this->shipEntity = shipEntity;
 			}

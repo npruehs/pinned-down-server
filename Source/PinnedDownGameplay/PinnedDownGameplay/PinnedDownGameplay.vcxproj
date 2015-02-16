@@ -71,6 +71,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\..\..\pinned-down-core\Source\PinnedDownCore\PinnedDownCore;..\..\..\..\pinned-down-net\Source\PinnedDownNet\PinnedDownNet;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -80,25 +81,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\pinned-down-core\Source\PinnedDownCore\PinnedDownCore\PinnedDownCore.vcxproj">
-      <Project>{51037f52-f903-4bb2-90cd-70b5bde869de}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\pinned-down-net\Source\PinnedDownNet\PinnedDownNet\PinnedDownNet.vcxproj">
-      <Project>{2c645185-98f4-4398-9cf2-319cf875e6d1}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
+    <ClCompile Include="Actions\PlayEffectAction.cpp" />
+    <ClCompile Include="Actions\PlayStarshipAction.cpp" />
     <ClCompile Include="Components\PlayerDeckComponent.cpp" />
     <ClCompile Include="Data\Deck.cpp" />
     <ClCompile Include="Events\BonusPowerChangedEvent.cpp" />
     <ClCompile Include="Events\ClientConnectedEvent.cpp" />
-    <ClCompile Include="Events\EffectPlayedEvent.cpp" />
     <ClCompile Include="Events\EnemyCardPlayedEvent.cpp" />
     <ClCompile Include="Events\FightStartedEvent.cpp" />
     <ClCompile Include="Events\FlagshipPlayedEvent.cpp" />
     <ClCompile Include="Events\ShipDefeatedEvent.cpp" />
     <ClCompile Include="Events\ShipVictoriousEvent.cpp" />
-    <ClCompile Include="Events\StarshipPlayedEvent.cpp" />
     <ClCompile Include="Systems\AssignmentSystem.cpp" />
     <ClCompile Include="Systems\CardPlayingSystem.cpp" />
     <ClCompile Include="Systems\CardStateSystem.cpp" />
@@ -120,18 +113,18 @@
     <ClCompile Include="Util\Random.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actions\PlayEffectAction.h" />
+    <ClInclude Include="Actions\PlayStarshipAction.h" />
     <ClInclude Include="Components\PlayerDeckComponent.h" />
     <ClInclude Include="Data\CardData.h" />
     <ClInclude Include="Data\Deck.h" />
     <ClInclude Include="Events\BonusPowerChangedEvent.h" />
     <ClInclude Include="Events\ClientConnectedEvent.h" />
     <ClInclude Include="Events\EnemyCardPlayedEvent.h" />
-    <ClInclude Include="Events\EffectPlayedEvent.h" />
     <ClInclude Include="Events\FightStartedEvent.h" />
     <ClInclude Include="Events\FlagshipPlayedEvent.h" />
     <ClInclude Include="Events\ShipDefeatedEvent.h" />
     <ClInclude Include="Events\ShipVictoriousEvent.h" />
-    <ClInclude Include="Events\StarshipPlayedEvent.h" />
     <ClInclude Include="Systems\AssignmentSystem.h" />
     <ClInclude Include="Systems\CardPlayingSystem.h" />
     <ClInclude Include="Systems\CardStateSystem.h" />

@@ -4,7 +4,7 @@
 
 namespace PinnedDownServer
 {
-	struct PinnedDownClientData
+	class PinnedDownClientData
 	{
 	public:
 		int clientId;

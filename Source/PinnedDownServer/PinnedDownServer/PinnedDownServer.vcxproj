@@ -83,9 +83,11 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>Rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Analytics\ServerAnalytics.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Network\ClientActionReader.cpp" />
     <ClCompile Include="Network\HTTPClient.cpp" />
@@ -94,14 +96,15 @@
     <ClCompile Include="MasterServer.cpp" />
     <ClCompile Include="ServerEventDispatcher.cpp" />
     <ClCompile Include="ServerGame.cpp" />
+    <ClCompile Include="Diagnotics\ServerLogger.cpp" />
     <ClCompile Include="Util\MD5\MD5.cpp" />
     <ClCompile Include="Util\MD5\MD5String.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\pinned-down-core\Source\PinnedDownCore\PinnedDownCore\PinnedDownCore.vcxproj">
+    <ProjectReference Include="..\..\..\..\pinned-down-core\Source\PinnedDownCore\PinnedDownCore\PinnedDownCoreServer.vcxproj">
       <Project>{51037f52-f903-4bb2-90cd-70b5bde869de}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\pinned-down-net\Source\PinnedDownNet\PinnedDownNet\PinnedDownNet.vcxproj">
+    <ProjectReference Include="..\..\..\..\pinned-down-net\Source\PinnedDownNet\PinnedDownNet\PinnedDownNetServer.vcxproj">
       <Project>{2c645185-98f4-4398-9cf2-319cf875e6d1}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\PinnedDownGameplay\PinnedDownGameplay\PinnedDownGameplay.vcxproj">
@@ -109,6 +112,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Analytics\ServerAnalytics.h" />
     <ClInclude Include="Network\HTTPRequest.h" />
     <ClInclude Include="Network\ClientActionReader.h" />
     <ClInclude Include="Network\HTTPClient.h" />
@@ -119,6 +123,7 @@
     <ClInclude Include="PinnedDownServerVersion.h" />
     <ClInclude Include="ServerEventDispatcher.h" />
     <ClInclude Include="ServerGame.h" />
+    <ClInclude Include="Diagnotics\ServerLogger.h" />
     <ClInclude Include="Util\GUID\GUID.h" />
     <ClInclude Include="PinnedDownClientData.h" />
     <ClInclude Include="Util\MD5\MD5.h" />

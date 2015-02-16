@@ -6,8 +6,9 @@
 
 #include "Data\TurnPhase.h"
 
-#include "..\Events\EffectPlayedEvent.h"
 #include "EntityRemovedEvent.h"
+
+#include "..\Actions\PlayEffectAction.h"
 #include "Events\ShipDamagedEvent.h"
 #include "Events\TurnPhaseChangedEvent.h"
 
@@ -33,7 +34,7 @@ namespace PinnedDownGameplay
 
 			std::list<Entity> damagedShips;
 
-			EVENT_HANDLER_DECLARATION(EffectPlayedEvent);
+			EVENT_HANDLER_DECLARATION(PlayEffectAction);
 			EVENT_HANDLER_DECLARATION(EntityRemovedEvent);
 			EVENT_HANDLER_DECLARATION(ShipDamagedEvent);
 			EVENT_HANDLER_DECLARATION(TurnPhaseChangedEvent);

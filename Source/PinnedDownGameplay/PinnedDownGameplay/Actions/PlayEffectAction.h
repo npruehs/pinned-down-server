@@ -9,13 +9,13 @@ namespace PinnedDownGameplay
 {
 	namespace Events
 	{
-		struct EffectPlayedEvent : public Event
+		struct PlayEffectAction : public Event
 		{
-			static const HashedString EffectPlayedEventType;
+			static const HashedString PlayEffectActionType;
 
 			const HashedString & GetEventType() const
 			{
-				return EffectPlayedEventType;
+				return PlayEffectActionType;
 			}
 
 			const NetRole GetNetRole() const
@@ -26,7 +26,7 @@ namespace PinnedDownGameplay
 			Entity effectEntity;
 			Entity targetEntity;
 
-			explicit EffectPlayedEvent(Entity effectEntity, Entity targetEntity)
+			explicit PlayEffectAction(Entity effectEntity, Entity targetEntity)
 			{
 				this->effectEntity = effectEntity;
 				this->targetEntity = targetEntity;

@@ -7,9 +7,8 @@
 #include "..\Components\PlayerDeckComponent.h"
 #include "Components\ThreatComponent.h"
 
-#include "Events\CardPlayedEvent.h"
-#include "..\Events\EffectPlayedEvent.h"
-#include "..\Events\StarshipPlayedEvent.h"
+#include "..\Actions\PlayEffectAction.h"
+#include "..\Actions\PlayStarshipAction.h"
 
 using namespace PinnedDownGameplay::Components;
 using namespace PinnedDownGameplay::Events;
@@ -56,19 +55,16 @@ EVENT_HANDLER_DEFINITION(CardPlayingSystem, PlayCardAction)
 	// Check card type.
 	auto cardComponent = this->game->entityManager->GetComponent<CardComponent>(data.cardToPlay, CardComponent::CardComponentType);
 
-	auto cardPlayedEvent = std::make_shared<CardPlayedEvent>(data.cardToPlay);
-	this->game->eventManager->QueueEvent(cardPlayedEvent);
-
 	if (cardComponent->cardType == CardType::Starship)
 	{
 		// Notify listeners.
-		auto starshipPlayedEvent = std::make_shared<StarshipPlayedEvent>(data.cardToPlay);
-		this->game->eventManager->QueueEvent(starshipPlayedEvent);
+		auto playStarshipAction = std::make_shared<PlayStarshipAction>(data.cardToPlay);
+		this->game->eventManager->QueueEvent(playStarshipAction);
 	}
 	else if (cardComponent->cardType == CardType::Effect)
 	{
 		// Notify listeners.
-		auto effectPlayedEvent = std::make_shared<EffectPlayedEvent>(data.cardToPlay, data.targetCard);
-		this->game->eventManager->QueueEvent(effectPlayedEvent);
+		auto playEffectAction = std::make_shared<PlayEffectAction>(data.cardToPlay, data.targetCard);
+		this->game->eventManager->QueueEvent(playEffectAction);
 	}
 }

@@ -16,6 +16,7 @@ using namespace PinnedDownGameplay::Systems;
 
 
 EnemyAttackSystem::EnemyAttackSystem()
+	: currentThreat(0)
 {
 }
 

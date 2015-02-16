@@ -29,10 +29,9 @@ namespace PinnedDownGameplay
 			std::shared_ptr<std::list<Entity>> enemyShips;
 
 			explicit FightStartedEvent(Entity playerShip, std::shared_ptr<std::list<Entity>> enemyShips)
+				: playerShip(playerShip),
+				enemyShips(enemyShips)
 			{
-				this->playerShip = playerShip;
-				this->enemyShips = enemyShips;
-
 			}
 		};
 	}

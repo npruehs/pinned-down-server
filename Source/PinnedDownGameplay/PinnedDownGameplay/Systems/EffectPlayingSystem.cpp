@@ -10,6 +10,7 @@
 #include "Components\ThreatComponent.h"
 
 #include "..\Events\BonusPowerChangedEvent.h"
+#include "Events\EffectPlayedEvent.h"
 #include "Events\PowerChangedEvent.h"
 
 using namespace PinnedDownGameplay::Components;
@@ -28,7 +29,7 @@ void EffectPlayingSystem::InitSystem(Game* game)
 {
 	GameSystem::InitSystem(game);
 
-	this->game->eventManager->AddListener(this, EffectPlayedEvent::EffectPlayedEventType);
+	this->game->eventManager->AddListener(this, PlayEffectAction::PlayEffectActionType);
 	this->game->eventManager->AddListener(this, EntityRemovedEvent::EntityRemovedEventType);
 	this->game->eventManager->AddListener(this, ShipDamagedEvent::ShipDamagedEventType);
 	this->game->eventManager->AddListener(this, TurnPhaseChangedEvent::TurnPhaseChangedEventType);
@@ -36,13 +37,13 @@ void EffectPlayingSystem::InitSystem(Game* game)
 
 void EffectPlayingSystem::OnEvent(Event & newEvent)
 {
-	CALL_EVENT_HANDLER(EffectPlayedEvent);
+	CALL_EVENT_HANDLER(PlayEffectAction);
 	CALL_EVENT_HANDLER(EntityRemovedEvent);
 	CALL_EVENT_HANDLER(ShipDamagedEvent);
 	CALL_EVENT_HANDLER(TurnPhaseChangedEvent);
 }
 
-EVENT_HANDLER_DEFINITION(EffectPlayingSystem, EffectPlayedEvent)
+EVENT_HANDLER_DEFINITION(EffectPlayingSystem, PlayEffectAction)
 {
 	if (this->currentTurnPhase != TurnPhase::Fight)
 	{
@@ -99,6 +100,10 @@ EVENT_HANDLER_DEFINITION(EffectPlayingSystem, EffectPlayedEvent)
 	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(data.effectEntity, OwnerComponent::OwnerComponentType);
 	auto playerDeckComponent = this->game->entityManager->GetComponent<PlayerDeckComponent>(ownerComponent->owner, PlayerDeckComponent::PlayerDeckComponentType);
 	playerDeckComponent->hand.remove(data.effectEntity);
+
+	// Notify listeners.
+	auto effectPlayedEvent = std::make_shared<EffectPlayedEvent>(data.effectEntity, data.targetEntity);
+	this->game->eventManager->QueueEvent(effectPlayedEvent);
 
 	// Remove card.
 	this->game->entityManager->RemoveEntity(data.effectEntity);

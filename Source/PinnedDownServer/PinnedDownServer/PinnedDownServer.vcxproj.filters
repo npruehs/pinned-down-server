@@ -34,6 +34,8 @@
     <ClCompile Include="Network\HTTPClient.cpp">
       <Filter>Network</Filter>
     </ClCompile>
+    <ClCompile Include="Diagnotics\ServerLogger.cpp" />
+    <ClCompile Include="Analytics\ServerAnalytics.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Network\ServerEventWriter.h">
@@ -64,5 +66,7 @@
     <ClInclude Include="PinnedDownClientData.h" />
     <ClInclude Include="PinnedDownServerVersion.h" />
     <ClInclude Include="PinnedDownServerAnalytics.h" />
+    <ClInclude Include="Diagnotics\ServerLogger.h" />
+    <ClInclude Include="Analytics\ServerAnalytics.h" />
   </ItemGroup>
 </Project>

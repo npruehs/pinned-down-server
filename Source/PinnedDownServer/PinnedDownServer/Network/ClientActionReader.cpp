@@ -3,6 +3,7 @@
 #include "ClientActionReader.h"
 
 #include "Actions\AssignCardAction.h"
+#include "Actions\DisconnectClientAction.h"
 #include "Actions\EndTurnAction.h"
 #include "Actions\PlayCardAction.h"
 #include "Actions\ResolveFightAction.h"
@@ -25,6 +26,12 @@ std::shared_ptr<Event> ClientActionReader::ReadClientAction(char* buffer)
 		auto assignCardAction = std::make_shared<AssignCardAction>();
 		assignCardAction->Deserialize(in);
 		return assignCardAction;
+	}
+	else if (hashedEventType == DisconnectClientAction::DisconnectClientActionType)
+	{
+		auto disconnectClientAction = std::make_shared<DisconnectClientAction>();
+		disconnectClientAction->Deserialize(in);
+		return disconnectClientAction;
 	}
 	else if (hashedEventType == EndTurnAction::EndTurnActionType)
 	{

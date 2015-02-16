@@ -4,6 +4,12 @@
 
 #include "HTTPRequest.h"
 
+#include "..\Diagnotics\ServerLogger.h"
+
+
+using namespace PinnedDownServer::Diagnostics;
+
+
 namespace PinnedDownServer
 {
 	namespace Network
@@ -11,11 +17,13 @@ namespace PinnedDownServer
 		class HTTPClient
 		{
 		public:
-			HTTPClient();
+			HTTPClient(std::shared_ptr<ServerLogger> logger);
 			~HTTPClient();
 
 			std::string SendRequest(HTTPRequest request);
+
 		private:
+			std::shared_ptr<ServerLogger> logger;
 		};
 	}
 }
