@@ -24,7 +24,7 @@ namespace PinnedDownGameplay
 			void Shuffle(std::shared_ptr<Random> random);
 
 		private:
-			int current;
+			size_t current;
 			std::vector<CardData> cards;
 		};
 	}
