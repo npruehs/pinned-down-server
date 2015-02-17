@@ -31,8 +31,7 @@ void MasterServer::Start()
 {
 	// Log server version.
 	std::string versionString(PINNED_DOWN_SERVER_VERSION);
-	std::wstring versionStringW(versionString.begin(), versionString.end());
-	this->logger->LogInfo(L"Pinned Down Server " + versionStringW);
+	this->logger->LogInfo("Pinned Down Server " + versionString);
 
 	// Init socket manager.
 	this->socketManager->InitSocketManager();
@@ -51,7 +50,7 @@ void MasterServer::Start()
 
 void MasterServer::OnClientConnected(int clientId)
 {
-	this->logger->LogInfo(L"Client added: " + std::to_wstring(clientId));
+	this->logger->LogInfo("Client added: " + std::to_string(clientId));
 
 	// Create new client data object.
 	PinnedDownClientData* pinnedDownClient = new PinnedDownClientData();
@@ -68,7 +67,7 @@ void MasterServer::OnClientConnected(int clientId)
 
 void MasterServer::OnClientDisconnected(int clientId)
 {
-	this->logger->LogInfo(L"Client removed: " + std::to_wstring(clientId));
+	this->logger->LogInfo("Client removed: " + std::to_string(clientId));
 
 	// Stop game.
 	auto iterator = this->connectedClients.find(clientId);
@@ -83,7 +82,7 @@ void MasterServer::OnClientDisconnected(int clientId)
 void MasterServer::OnClientAction(int clientId, std::shared_ptr<Event> clientAction)
 {
 	// Log action.
-	this->logger->LogDebug(L"FROM client " + std::to_wstring(clientId) + L": " + clientAction->ToString());
+	this->logger->LogDebug("FROM client " + std::to_string(clientId) + ": " + clientAction->ToString());
 
 	// Pass to game.
 	auto iterator = this->connectedClients.find(clientId);
@@ -108,7 +107,7 @@ void MasterServer::OnClientAction(int clientId, std::shared_ptr<Event> clientAct
 void MasterServer::OnServerEvent(int clientId, Event& serverEvent)
 {
 	// Log event.
-	this->logger->LogDebug(L"TO client " + std::to_wstring(clientId) + L": " + serverEvent.ToString());
+	this->logger->LogDebug("TO client " + std::to_string(clientId) + ": " + serverEvent.ToString());
 
 	// Pass to socket manager.
 	this->socketManager->SendServerEvent(clientId, serverEvent);

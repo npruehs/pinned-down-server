@@ -25,7 +25,7 @@ SocketManager::SocketManager(MasterServer* masterServer, std::shared_ptr<ServerL
 
 void SocketManager::InitSocketManager()
 {
-	this->logger->LogInfo(L"Initializing Winsock");
+	this->logger->LogInfo("Initializing Winsock");
 
 	// Initialize Winsock.
 	WSADATA wsaData;
@@ -34,12 +34,12 @@ void SocketManager::InitSocketManager()
 
 	if (result != 0)
 	{
-		this->logger->LogError(L"Failed to initialize Winsock: " + std::to_wstring(result));
+		this->logger->LogError("Failed to initialize Winsock: " + std::to_string(result));
 		return;
 	}
 
 	// Resolve the local address and port to be used by the server.
-	this->logger->LogInfo(L"Resolving local address and port");
+	this->logger->LogInfo("Resolving local address and port");
 
 	addrinfo hints;
 	addrinfo* addressInfo;
@@ -53,14 +53,14 @@ void SocketManager::InitSocketManager()
 	result = getaddrinfo(NULL, PINNED_DOWN_SERVER_PORT, &hints, &addressInfo);
 	if (result != 0)
 	{
-		this->logger->LogError(L"Failed to resolve local address and port: " + std::to_wstring(result));
+		this->logger->LogError("Failed to resolve local address and port: " + std::to_string(result));
 
 		WSACleanup();
 		return;
 	}
 
 	// Create a SOCKET for the server to listen for client connections.
-	this->logger->LogInfo(L"Creating TCP listening socket");
+	this->logger->LogInfo("Creating TCP listening socket");
 
 	listenSocket = INVALID_SOCKET;
 	listenSocket = socket(addressInfo->ai_family, addressInfo->ai_socktype, addressInfo->ai_protocol);
@@ -68,7 +68,7 @@ void SocketManager::InitSocketManager()
 	if (listenSocket == INVALID_SOCKET)
 	{
 		int error = WSAGetLastError();
-		this->logger->LogError(L"Failed to create socket: " + std::to_wstring(error));
+		this->logger->LogError("Failed to create socket: " + std::to_string(error));
 
 		freeaddrinfo(addressInfo);
 		WSACleanup();
@@ -76,14 +76,14 @@ void SocketManager::InitSocketManager()
 	}
 
 	// Setup the TCP listening socket.
-	this->logger->LogInfo(L"Binding TCP listening socket");
+	this->logger->LogInfo("Binding TCP listening socket");
 
     result = bind(listenSocket, addressInfo->ai_addr, (int)addressInfo->ai_addrlen);
 
     if (result == SOCKET_ERROR)
 	{
 		int error = WSAGetLastError();
-		this->logger->LogError(L"Failed to bind TCP listening socket: " + std::to_wstring(error));
+		this->logger->LogError("Failed to bind TCP listening socket: " + std::to_string(error));
 
         freeaddrinfo(addressInfo);
         closesocket(listenSocket);
@@ -94,14 +94,14 @@ void SocketManager::InitSocketManager()
 	freeaddrinfo(addressInfo);
 
 	// Listen for maximum number of connections.
-	this->logger->LogInfo(L"Listening for incoming connections");
+	this->logger->LogInfo("Listening for incoming connections");
 
 	result = listen(listenSocket, SOMAXCONN);
 
 	if (result == SOCKET_ERROR)
 	{
 		int error = WSAGetLastError();
-		this->logger->LogError(L"Failed to listen for incoming connections: " + std::to_wstring(error));
+		this->logger->LogError("Failed to listen for incoming connections: " + std::to_string(error));
 
 		closesocket(listenSocket);
 		WSACleanup();
@@ -146,7 +146,7 @@ void SocketManager::Select(int milliseconds)
 	if (result == SOCKET_ERROR) 
 	{
 		int error = WSAGetLastError();
-		this->logger->LogError(L"Error selecting sockets: " + std::to_wstring(error));
+		this->logger->LogError("Error selecting sockets: " + std::to_string(error));
 
 		return;
 	}
@@ -169,8 +169,7 @@ void SocketManager::Select(int milliseconds)
 				inet_ntop(AF_INET, &sockaddr.sin_addr, buffer, sizeof(buffer));
 
 				std::string ipString(buffer);
-				std::wstring ipStringW(ipString.begin(), ipString.end());
-				this->logger->LogInfo(L"Client connected: " + ipStringW);
+				this->logger->LogInfo("Client connected: " + ipString);
 
 				// Send login ACK.
 				auto serverEvent = std::make_shared<LoginSuccessEvent>(i);
@@ -206,11 +205,11 @@ void SocketManager::Select(int milliseconds)
 			{
 				if (result == 0)
 				{
-					this->logger->LogInfo(L"Client disconnected: " + std::to_wstring(i));
+					this->logger->LogInfo("Client disconnected: " + std::to_string(i));
 				}
 				else
 				{
-					this->logger->LogInfo(L"Client disconnected unexpectedly: " + std::to_wstring(i));
+					this->logger->LogInfo("Client disconnected unexpectedly: " + std::to_string(i));
 				}
 
 				// Close socket.
@@ -247,7 +246,7 @@ void SocketManager::SendServerEvent(int clientId, Event& serverEvent)
 	if (result == SOCKET_ERROR)
 	{
 		int error = WSAGetLastError();
-		this->logger->LogError(L"Error " + std::to_wstring(error) + L" sending packet to client: " + std::to_wstring(clientId));
+		this->logger->LogError("Error " + std::to_string(error) + " sending packet to client: " + std::to_string(clientId));
 
 		this->RemoveClient(clientId);
 	}
@@ -276,11 +275,11 @@ SocketManager::~SocketManager()
 			if (result == SOCKET_ERROR)
 			{
 				int error = WSAGetLastError();
-				this->logger->LogInfo(L"Error " + std::to_wstring(error) + L" shutting down client socket: " + std::to_wstring(i));
+				this->logger->LogInfo("Error " + std::to_string(error) + " shutting down client socket: " + std::to_string(i));
 			}
 			else
 			{
-				this->logger->LogInfo(L"Client socket shut down: " + std::to_wstring(i));
+				this->logger->LogInfo("Client socket shut down: " + std::to_string(i));
 			}
 
 			this->RemoveClient(i);

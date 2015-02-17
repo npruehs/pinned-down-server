@@ -36,10 +36,7 @@ std::string HTTPClient::SendRequest(HTTPRequest request)
 	auto result = getaddrinfo(request.host.c_str(), request.port.c_str(), &hints, &addressInfo);
 	if (result != 0)
 	{
-		std::wstring host(request.host.begin(), request.host.end());
-		std::wstring port(request.port.begin(), request.port.end());
-
-		this->logger->LogError(L"Error resolving host " + host + L":" + port + L": " + std::to_wstring(result));
+		this->logger->LogError("Error resolving host " + request.host + ":" + request.port + ": " + std::to_string(result));
 		return std::string();
 	}
 
@@ -49,7 +46,7 @@ std::string HTTPClient::SendRequest(HTTPRequest request)
 	if (tcpSocket == INVALID_SOCKET)
 	{
 		int error = WSAGetLastError();
-		this->logger->LogError(L"Error creating TCP socket: " + std::to_wstring(error));
+		this->logger->LogError("Error creating TCP socket: " + std::to_string(error));
 
 		freeaddrinfo(addressInfo);
 		return std::string();
@@ -59,11 +56,9 @@ std::string HTTPClient::SendRequest(HTTPRequest request)
 	result = connect(tcpSocket, addressInfo->ai_addr, (int)addressInfo->ai_addrlen);
 	if (result == SOCKET_ERROR)
 	{
-		std::wstring host(request.host.begin(), request.host.end());
-		std::wstring port(request.port.begin(), request.port.end());
 		int error = WSAGetLastError();
 
-		this->logger->LogError(L"Error connecting to server " + host + L":" + port + L": " + std::to_wstring(error));
+		this->logger->LogError("Error connecting to server " + request.host + ":" + request.port + ": " + std::to_string(error));
 
 		freeaddrinfo(addressInfo);
 		closesocket(tcpSocket);
@@ -99,7 +94,7 @@ std::string HTTPClient::SendRequest(HTTPRequest request)
 	if (result == SOCKET_ERROR)
 	{
 		int error = WSAGetLastError();
-		this->logger->LogError(L"Error sending HTTP request: " + std::to_wstring(error));
+		this->logger->LogError("Error sending HTTP request: " + std::to_string(error));
 
 		closesocket(tcpSocket);
 		return std::string();
@@ -127,7 +122,7 @@ std::string HTTPClient::SendRequest(HTTPRequest request)
 		{
 			// Error occurred.
 			int error = WSAGetLastError();
-			this->logger->LogError(L"Error receiving server response: " + std::to_wstring(error));
+			this->logger->LogError("Error receiving server response: " + std::to_string(error));
 		}
 	}
 	while (result > 0);
@@ -137,7 +132,7 @@ std::string HTTPClient::SendRequest(HTTPRequest request)
 	if (result == SOCKET_ERROR)
 	{
 		int error = WSAGetLastError();
-		this->logger->LogError(L"Error shuttung down socket: " + std::to_wstring(error));
+		this->logger->LogError("Error shuttung down socket: " + std::to_string(error));
 
 		closesocket(tcpSocket);
 		return std::string();

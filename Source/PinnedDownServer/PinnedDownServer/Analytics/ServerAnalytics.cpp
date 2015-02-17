@@ -103,15 +103,12 @@ void ServerAnalytics::SendGameAnalyticsEvent(std::string clientGUID, std::string
 	request.port = "80";
 	request.url = url;
 
-	std::wstring eventIdW(eventId.begin(), eventId.end());
-
-	this->logger->LogInfo(L"Sending analytics event " + eventIdW);
+	this->logger->LogInfo("Sending analytics event " + eventId);
 	auto response = this->httpClient->SendRequest(request);
 
 	// Verify response.
 	if (response.find("{\"status\":\"ok\"}") == std::string::npos)
 	{
-		std::wstring responseW(response.begin(), response.end());
-		this->logger->LogError(L"Error sending analytics event " + eventIdW + L": " + responseW);
+		this->logger->LogError("Error sending analytics event " + eventId + ": " + response);
 	}
 }

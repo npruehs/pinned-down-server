@@ -16,7 +16,7 @@ namespace PinnedDownServer
 			ServerLogger(LogLevel logLevel);
 			~ServerLogger();
 
-			void WriteLog(LogLevel logLevel, const wchar_t* const message);
+			void WriteLog(LogLevel logLevel, const char* const message);
 		};
 	}
 }
