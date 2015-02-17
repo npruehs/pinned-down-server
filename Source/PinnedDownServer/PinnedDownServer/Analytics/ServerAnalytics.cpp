@@ -14,10 +14,11 @@ ServerAnalytics::ServerAnalytics(std::shared_ptr<Game> game, std::shared_ptr<HTT
 	logger(logger),
 	clientGUID(clientGUID)
 {
-	game->eventManager->AddListener(this, CoveredDistanceChangedEvent::CoveredDistanceChangedEventType);
-	game->eventManager->AddListener(this, DefeatEvent::DefeatEventType);
-	game->eventManager->AddListener(this, FightResolvedEvent::FightResolvedEventType);
-	game->eventManager->AddListener(this, VictoryEvent::VictoryEventType);
+	// Will be done via database in the future, in order to allow players to review their data as well.
+	//game->eventManager->AddListener(this, CoveredDistanceChangedEvent::CoveredDistanceChangedEventType);
+	//game->eventManager->AddListener(this, DefeatEvent::DefeatEventType);
+	//game->eventManager->AddListener(this, FightResolvedEvent::FightResolvedEventType);
+	//game->eventManager->AddListener(this, VictoryEvent::VictoryEventType);
 }
 
 void ServerAnalytics::OnEvent(Event & newEvent)
