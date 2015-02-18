@@ -24,22 +24,22 @@ namespace PinnedDownServer
 	class ServerGame
     {
     public:
-		ServerGame(MasterServer* masterServer, std::shared_ptr<HTTPClient> httpClient, std::shared_ptr<ServerLogger> logger, PinnedDownClientData* pinnedDownClient);
+		ServerGame(MasterServer* masterServer, std::shared_ptr<HTTPClient> httpClient, std::shared_ptr<ServerLogger> logger);
 
+		void AddClient(PinnedDownClientData* client);
+		int GetClientCount();
+		std::shared_ptr<Game> GetGame();
 		void OnClientAction(std::shared_ptr<Event> clientAction);
 		void OnServerEvent(Event& serverEvent);
-
-		std::shared_ptr<Game> GetGame() { return std::shared_ptr<Game>(this->game); }
 
     private:
 		MasterServer* masterServer;
 
-		PinnedDownClientData* pinnedDownClient;
+		std::list<PinnedDownClientData*> clients;
 
 		std::shared_ptr<Game> game;
 		std::shared_ptr<ServerEventDispatcher> serverEventDispatcher;
 		std::shared_ptr<HTTPClient> httpClient;
-		std::shared_ptr<ServerAnalytics> analytics;
 		std::shared_ptr<ServerLogger> logger;
 
 		void Update();

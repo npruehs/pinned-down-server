@@ -57,9 +57,28 @@ void MasterServer::OnClientConnected(int clientId)
 	pinnedDownClient->clientId = clientId;
 	pinnedDownClient->clientGUID = NewGUID();
 
-	// Start new game.
-	std::shared_ptr<ServerGame> newGame = std::make_shared<ServerGame>(this, this->httpClient, this->logger, pinnedDownClient);
-	pinnedDownClient->game = newGame;
+	// Check for running game.
+	std::shared_ptr<ServerGame> runningGame;
+
+	for (auto it = this->runningGames.begin(); it != this->runningGames.end(); ++it)
+	{
+		auto game = *it;
+
+		if (game->GetClientCount() < CLIENTS_PER_GAME)
+		{
+			runningGame = game;
+		}
+	}
+
+	if (runningGame == nullptr)
+	{
+		// Start new game.
+		runningGame = std::make_shared<ServerGame>(this, this->httpClient, this->logger);
+	}
+
+	// Assign client.
+	runningGame->AddClient(pinnedDownClient);
+	pinnedDownClient->game = runningGame;
 
 	// Add to client list.
 	this->connectedClients.insert(std::pair<int, PinnedDownClientData*>(clientId, pinnedDownClient));
@@ -69,12 +88,21 @@ void MasterServer::OnClientDisconnected(int clientId)
 {
 	this->logger->LogInfo("Client removed: " + std::to_string(clientId));
 
-	// Stop game.
 	auto iterator = this->connectedClients.find(clientId);
 
 	if (iterator != this->connectedClients.end())
 	{
-		delete iterator->second;
+		// Check if last player.
+		auto client = iterator->second;
+
+		if (client->game->GetClientCount() == 1)
+		{
+			// Stop game.
+			this->runningGames.remove(client->game);
+		}
+
+		// Remove client.
+		delete client;
 		this->connectedClients.erase(iterator);
 	}
 }

@@ -31,18 +31,14 @@ using namespace PinnedDownGameplay::Systems;
 using namespace PinnedDownServer;
 
 
-ServerGame::ServerGame(MasterServer* masterServer, std::shared_ptr<HTTPClient> httpClient, std::shared_ptr<ServerLogger> logger, PinnedDownClientData* pinnedDownClient)
+ServerGame::ServerGame(MasterServer* masterServer, std::shared_ptr<HTTPClient> httpClient, std::shared_ptr<ServerLogger> logger)
 	: masterServer(masterServer),
 	httpClient(httpClient),
 	logger(logger),
-	pinnedDownClient(pinnedDownClient),
 	game(std::make_shared<Game>())
 {
 	// Setup game infrastructure.
 	this->serverEventDispatcher = std::make_shared<ServerEventDispatcher>(this, this->game);
-
-	// Setup analytics.
-	this->analytics = std::make_shared<ServerAnalytics>(this->game, this->httpClient, this->logger, this->pinnedDownClient->clientGUID);
 
 	// Init systems.
 	this->game->systemManager->AddSystem(std::make_shared<CardStateSystem>());
@@ -66,11 +62,27 @@ ServerGame::ServerGame(MasterServer* masterServer, std::shared_ptr<HTTPClient> h
 	
 	this->game->systemManager->InitSystems();
 	this->Update();
+}
 
-	// Add first player.
-	auto clientConnectedEvent = std::make_shared<ClientConnectedEvent>(this->pinnedDownClient->clientId);
+void ServerGame::AddClient(PinnedDownClientData* client)
+{
+	// Add client.
+	this->clients.push_back(client);
+
+	// Add player.
+	auto clientConnectedEvent = std::make_shared<ClientConnectedEvent>(client->clientId);
 	this->game->eventManager->QueueEvent(clientConnectedEvent);
 	this->Update();
+}
+
+int ServerGame::GetClientCount()
+{
+	return this->clients.size();
+}
+
+std::shared_ptr<Game> ServerGame::GetGame()
+{
+	return std::shared_ptr<Game>(this->game);
 }
 
 void ServerGame::OnClientAction(std::shared_ptr<Event> clientAction)
@@ -81,7 +93,12 @@ void ServerGame::OnClientAction(std::shared_ptr<Event> clientAction)
 
 void ServerGame::OnServerEvent(Event& serverEvent)
 {
-	this->masterServer->OnServerEvent(this->pinnedDownClient->clientId, serverEvent);
+	for (auto it = this->clients.begin(); it != this->clients.end(); ++it)
+	{
+		// Notify all clients.
+		auto client = *it;
+		this->masterServer->OnServerEvent(client->clientId, serverEvent);
+	}
 }
 
 void ServerGame::Update()

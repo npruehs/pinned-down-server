@@ -13,6 +13,8 @@
 #include "Network\HTTPClient.h"
 #include "Network\SocketManager.h"
 
+#define CLIENTS_PER_GAME 1
+
 using namespace PinnedDownServer::Diagnostics;
 using namespace PinnedDownServer::Network;
 
@@ -39,5 +41,6 @@ namespace PinnedDownServer
 		std::shared_ptr<SocketManager> socketManager;
 		
 		std::map<int, PinnedDownClientData*> connectedClients;
+		std::list<std::shared_ptr<ServerGame>> runningGames;
 	};
 }
