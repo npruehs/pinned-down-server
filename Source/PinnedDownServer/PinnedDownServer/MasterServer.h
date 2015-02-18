@@ -36,6 +36,8 @@ namespace PinnedDownServer
 		static bool running;
 		static BOOL WINAPI OnConsoleCtrlSignal(DWORD signal);
 
+		int nextGameId;
+
 		std::shared_ptr<ServerLogger> logger;
 		std::shared_ptr<HTTPClient> httpClient;
 		std::shared_ptr<SocketManager> socketManager;

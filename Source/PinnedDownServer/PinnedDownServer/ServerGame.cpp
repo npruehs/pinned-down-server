@@ -4,6 +4,7 @@
 #include "ServerGame.h"
 
 #include "Events\ClientConnectedEvent.h"
+#include "Events\GameStartedEvent.h"
 
 #include "Systems\AssignmentSystem.h"
 #include "Systems\CardPlayingSystem.h"
@@ -31,8 +32,9 @@ using namespace PinnedDownGameplay::Systems;
 using namespace PinnedDownServer;
 
 
-ServerGame::ServerGame(MasterServer* masterServer, std::shared_ptr<HTTPClient> httpClient, std::shared_ptr<ServerLogger> logger)
+ServerGame::ServerGame(MasterServer* masterServer, int gameId, std::shared_ptr<HTTPClient> httpClient, std::shared_ptr<ServerLogger> logger)
 	: masterServer(masterServer),
+	gameId(gameId),
 	httpClient(httpClient),
 	logger(logger),
 	game(std::make_shared<Game>())
@@ -68,16 +70,16 @@ void ServerGame::AddClient(PinnedDownClientData* client)
 {
 	// Add client.
 	this->clients.push_back(client);
-
-	// Add player.
-	auto clientConnectedEvent = std::make_shared<ClientConnectedEvent>(client->clientId);
-	this->game->eventManager->QueueEvent(clientConnectedEvent);
-	this->Update();
 }
 
 int ServerGame::GetClientCount()
 {
 	return this->clients.size();
+}
+
+int ServerGame::GetGameId()
+{
+	return this->gameId;
 }
 
 std::shared_ptr<Game> ServerGame::GetGame()
@@ -99,6 +101,23 @@ void ServerGame::OnServerEvent(Event& serverEvent)
 		auto client = *it;
 		this->masterServer->OnServerEvent(client->clientId, serverEvent);
 	}
+}
+
+void ServerGame::StartGame()
+{
+	// Add players.
+	for (auto it = this->clients.begin(); it != this->clients.end(); ++it)
+	{
+		auto client = *it;
+		auto clientConnectedEvent = std::make_shared<ClientConnectedEvent>(client->clientId);
+		this->game->eventManager->QueueEvent(clientConnectedEvent);
+	}
+
+	// Start game.
+	auto gameStartedEvent = std::make_shared<GameStartedEvent>();
+	this->game->eventManager->QueueEvent(gameStartedEvent);
+
+	this->Update();
 }
 
 void ServerGame::Update()

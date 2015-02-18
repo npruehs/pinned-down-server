@@ -19,7 +19,8 @@ using namespace PinnedDownServer::Util::GUID;
 bool MasterServer::running = false;
 
 MasterServer::MasterServer()
-	: logger(std::make_shared<ServerLogger>(LogLevel::Debug))
+	: logger(std::make_shared<ServerLogger>(LogLevel::Debug)),
+	nextGameId(0)
 {
 	this->socketManager = std::make_shared<SocketManager>(this, this->logger);
 	this->httpClient = std::make_shared<HTTPClient>(this->logger);
@@ -73,15 +74,23 @@ void MasterServer::OnClientConnected(int clientId)
 	if (runningGame == nullptr)
 	{
 		// Start new game.
-		runningGame = std::make_shared<ServerGame>(this, this->httpClient, this->logger);
+		runningGame = std::make_shared<ServerGame>(this, ++this->nextGameId, this->httpClient, this->logger);
 	}
 
 	// Assign client.
 	runningGame->AddClient(pinnedDownClient);
 	pinnedDownClient->game = runningGame;
 
+	this->logger->LogInfo("Client added to game " + std::to_string(runningGame->GetGameId()));
+
 	// Add to client list.
 	this->connectedClients.insert(std::pair<int, PinnedDownClientData*>(clientId, pinnedDownClient));
+
+	// Check if game full.
+	if (runningGame->GetClientCount() == CLIENTS_PER_GAME)
+	{
+		runningGame->StartGame();
+	}
 }
 
 void MasterServer::OnClientDisconnected(int clientId)
@@ -97,6 +106,8 @@ void MasterServer::OnClientDisconnected(int clientId)
 
 		if (client->game->GetClientCount() == 1)
 		{
+			this->logger->LogInfo("Shutting down game " + std::to_string(client->game->GetGameId()));
+
 			// Stop game.
 			this->runningGames.remove(client->game);
 		}
