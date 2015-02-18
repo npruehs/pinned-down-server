@@ -95,7 +95,7 @@ void MasterServer::OnClientConnected(int clientId)
 
 void MasterServer::OnClientDisconnected(int clientId)
 {
-	this->logger->LogInfo("Client removed: " + std::to_string(clientId));
+	this->logger->LogInfo("Client disconnected: " + std::to_string(clientId));
 
 	auto iterator = this->connectedClients.find(clientId);
 
@@ -128,17 +128,33 @@ void MasterServer::OnClientAction(int clientId, std::shared_ptr<Event> clientAct
 
 	if (iterator != this->connectedClients.end())
 	{
+		auto client = iterator->second;
+
 		// Check for willing to disconnect.
 		if (clientAction->GetEventType() == DisconnectClientAction::DisconnectClientActionType)
 		{
-			// Remove client.
+			// Remove client, everything else will be handled by OnClientDisconnected.
 			this->socketManager->RemoveClient(clientId);
 		}
 		else
 		{
 			// Pass action to game.
-			auto client = iterator->second;
 			client->game->OnClientAction(clientAction);
+		}
+
+		// Check for game over.
+		if (client->game->IsGameOver())
+		{
+			auto gameClients = client->game->GetClients();
+
+			for (auto it = gameClients.begin(); it != gameClients.end(); ++it)
+			{
+				auto gameClient = *it;
+
+				// Remove clients, everything else will be handled by OnClientDisconnected.
+				this->logger->LogInfo("Game over, disconnecting client " + std::to_string(gameClient->clientId));
+				this->socketManager->RemoveClient(gameClient->clientId);
+			}
 		}
 	}
 }

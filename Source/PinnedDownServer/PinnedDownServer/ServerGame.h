@@ -28,8 +28,10 @@ namespace PinnedDownServer
 
 		void AddClient(PinnedDownClientData* client);
 		int GetClientCount();
+		std::list<PinnedDownClientData*>& GetClients();
 		int GetGameId();
 		std::shared_ptr<Game> GetGame();
+		bool IsGameOver();
 		void OnClientAction(std::shared_ptr<Event> clientAction);
 		void OnServerEvent(Event& serverEvent);
 		void StartGame();
@@ -37,6 +39,7 @@ namespace PinnedDownServer
     private:
 		MasterServer* masterServer;
 		int gameId;
+		bool gameOver;
 
 		std::list<PinnedDownClientData*> clients;
 

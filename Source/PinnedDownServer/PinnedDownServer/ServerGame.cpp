@@ -35,6 +35,7 @@ using namespace PinnedDownServer;
 ServerGame::ServerGame(MasterServer* masterServer, int gameId, std::shared_ptr<HTTPClient> httpClient, std::shared_ptr<ServerLogger> logger)
 	: masterServer(masterServer),
 	gameId(gameId),
+	gameOver(false),
 	httpClient(httpClient),
 	logger(logger),
 	game(std::make_shared<Game>())
@@ -77,6 +78,11 @@ int ServerGame::GetClientCount()
 	return this->clients.size();
 }
 
+std::list<PinnedDownClientData*>& ServerGame::GetClients()
+{
+	return this->clients;
+}
+
 int ServerGame::GetGameId()
 {
 	return this->gameId;
@@ -86,6 +92,12 @@ std::shared_ptr<Game> ServerGame::GetGame()
 {
 	return std::shared_ptr<Game>(this->game);
 }
+
+bool ServerGame::IsGameOver()
+{
+	return this->gameOver;
+}
+
 
 void ServerGame::OnClientAction(std::shared_ptr<Event> clientAction)
 {
@@ -100,6 +112,13 @@ void ServerGame::OnServerEvent(Event& serverEvent)
 		// Notify all clients.
 		auto client = *it;
 		this->masterServer->OnServerEvent(client->clientId, serverEvent);
+	}
+
+	// Check for game over.
+	if (serverEvent.GetEventType() == VictoryEvent::VictoryEventType ||
+		serverEvent.GetEventType() == DefeatEvent::DefeatEventType)
+	{
+		this->gameOver = true;
 	}
 }
 
