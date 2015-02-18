@@ -6,12 +6,12 @@
 
 #include "Data\TurnPhase.h"
 
-#include "Events\TurnPhaseChangedEvent.h"
-
 #include "..\Events\EnemyCardPlayedEvent.h"
 #include "EntityRemovedEvent.h"
 #include "..\Events\FlagshipPlayedEvent.h"
+#include "Events\GameStartedEvent.h"
 #include "Events\StarshipPlayedEvent.h"
+#include "Events\TurnPhaseChangedEvent.h"
 
 using namespace PinnedDownCore;
 using namespace PinnedDownNet::Events;
@@ -42,6 +42,7 @@ namespace PinnedDownGameplay
 			EVENT_HANDLER_DECLARATION(EnemyCardPlayedEvent);
 			EVENT_HANDLER_DECLARATION(EntityRemovedEvent);
 			EVENT_HANDLER_DECLARATION(FlagshipPlayedEvent);
+			EVENT_HANDLER_DECLARATION(GameStartedEvent);
 			EVENT_HANDLER_DECLARATION(StarshipPlayedEvent);
 			EVENT_HANDLER_DECLARATION(TurnPhaseChangedEvent);
 

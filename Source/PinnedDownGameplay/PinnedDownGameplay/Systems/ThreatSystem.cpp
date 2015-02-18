@@ -28,11 +28,9 @@ void ThreatSystem::InitSystem(Game* game)
 	this->game->eventManager->AddListener(this, EnemyCardPlayedEvent::EnemyCardPlayedEventType);
 	this->game->eventManager->AddListener(this, EntityRemovedEvent::EntityRemovedEventType);
 	this->game->eventManager->AddListener(this, FlagshipPlayedEvent::FlagshipPlayedEventType);
+	this->game->eventManager->AddListener(this, GameStartedEvent::GameStartedEventType);
 	this->game->eventManager->AddListener(this, StarshipPlayedEvent::StarshipPlayedEventType);
 	this->game->eventManager->AddListener(this, TurnPhaseChangedEvent::TurnPhaseChangedEventType);
-
-	// Set initial threat value.
-	this->SetThreat(initialThreat);
 }
 
 void ThreatSystem::OnEvent(Event & newEvent)
@@ -40,6 +38,7 @@ void ThreatSystem::OnEvent(Event & newEvent)
 	CALL_EVENT_HANDLER(EnemyCardPlayedEvent);
 	CALL_EVENT_HANDLER(EntityRemovedEvent);
 	CALL_EVENT_HANDLER(FlagshipPlayedEvent);
+	CALL_EVENT_HANDLER(GameStartedEvent);
 	CALL_EVENT_HANDLER(StarshipPlayedEvent);
 	CALL_EVENT_HANDLER(TurnPhaseChangedEvent);
 }
@@ -70,6 +69,12 @@ EVENT_HANDLER_DEFINITION(ThreatSystem, FlagshipPlayedEvent)
 {
 	// Count player ships.
 	++this->playerShips;
+}
+
+EVENT_HANDLER_DEFINITION(ThreatSystem, GameStartedEvent)
+{
+	// Set initial threat value.
+	this->SetThreat(initialThreat);
 }
 
 EVENT_HANDLER_DEFINITION(ThreatSystem, StarshipPlayedEvent)

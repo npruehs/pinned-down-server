@@ -4,6 +4,7 @@
 #include "GameSystem.h"
 #include "IEventListener.h"
 
+#include "Events\GameStartedEvent.h"
 #include "Events\TurnPhaseChangedEvent.h"
 
 using namespace PinnedDownCore;
@@ -26,8 +27,9 @@ namespace PinnedDownGameplay
 
 			void OnEvent(Event & event);
 
+			EVENT_HANDLER_DECLARATION(GameStartedEvent);
 			EVENT_HANDLER_DECLARATION(TurnPhaseChangedEvent);
-
+			
 			void SetDistanceCovered(int distanceCovered);
 		};
 	}
