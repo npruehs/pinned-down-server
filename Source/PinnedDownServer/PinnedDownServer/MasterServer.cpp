@@ -75,6 +75,7 @@ void MasterServer::OnClientConnected(int clientId)
 	{
 		// Start new game.
 		runningGame = std::make_shared<ServerGame>(this, ++this->nextGameId, this->httpClient, this->logger);
+		this->runningGames.push_back(runningGame);
 	}
 
 	// Assign client.
