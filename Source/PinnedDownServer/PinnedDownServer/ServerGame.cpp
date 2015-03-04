@@ -20,6 +20,7 @@
 #include "Systems\JumpEnemyRemovalSystem.h"
 #include "Systems\PlayerSystem.h"
 #include "Systems\PlayerDeckSystem.h"
+#include "Systems\PlayerReadySystem.h"
 #include "Systems\StarshipPlayingSystem.h"
 #include "Systems\TemporaryEffectSystem.h"
 #include "Systems\ThreatSystem.h"
@@ -62,7 +63,8 @@ ServerGame::ServerGame(MasterServer* masterServer, int gameId, std::shared_ptr<H
 	this->game->systemManager->AddSystem(std::make_shared<StarshipPlayingSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<EffectPlayingSystem>());
 	this->game->systemManager->AddSystem(std::make_shared<TemporaryEffectSystem>());
-	
+	this->game->systemManager->AddSystem(std::make_shared<PlayerReadySystem>());
+
 	this->game->systemManager->InitSystems();
 	this->Update();
 }

@@ -107,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="Actions\PlayStarshipAction.cpp" />
     <ClCompile Include="Actions\PlayEffectAction.cpp" />
+    <ClCompile Include="Systems\PlayerReadySystem.cpp" />
+    <ClCompile Include="Events\AllPlayersReadyEvent.cpp" />
+    <ClCompile Include="Events\TurnPhaseEndedEvent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\DistanceSystem.h">
@@ -201,5 +204,8 @@
     </ClInclude>
     <ClInclude Include="Actions\PlayStarshipAction.h" />
     <ClInclude Include="Actions\PlayEffectAction.h" />
+    <ClInclude Include="Systems\PlayerReadySystem.h" />
+    <ClInclude Include="Events\AllPlayersReadyEvent.h" />
+    <ClInclude Include="Events\TurnPhaseEndedEvent.h" />
   </ItemGroup>
 </Project>

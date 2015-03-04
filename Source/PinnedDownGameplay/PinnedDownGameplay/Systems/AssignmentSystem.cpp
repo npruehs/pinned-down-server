@@ -10,6 +10,8 @@
 #include "Events\CardUnassignedEvent.h"
 #include "Events\ErrorMessageEvent.h"
 #include "..\Events\FightStartedEvent.h"
+#include "Events\PlayerReadyStateResetEvent.h"
+#include "..\Events\TurnPhaseEndedEvent.h"
 
 using namespace PinnedDownNet::Components;
 using namespace PinnedDownNet::Data;
@@ -28,8 +30,8 @@ void AssignmentSystem::InitSystem(Game* game)
 
 	this->clientToPlayerEntityIdMap = std::make_shared<BidirectionalMap<int, Entity>>();
 
+	this->game->eventManager->AddListener(this, AllPlayersReadyEvent::AllPlayersReadyEventType);
 	this->game->eventManager->AddListener(this, AssignCardAction::AssignCardActionType);	
-	this->game->eventManager->AddListener(this, EndTurnAction::EndTurnActionType);
 	this->game->eventManager->AddListener(this, EnemyCardPlayedEvent::EnemyCardPlayedEventType);
 	this->game->eventManager->AddListener(this, EntityRemovedEvent::EntityRemovedEventType);
 	this->game->eventManager->AddListener(this, FightResolvedEvent::FightResolvedEventType);
@@ -42,8 +44,8 @@ void AssignmentSystem::InitSystem(Game* game)
 
 void AssignmentSystem::OnEvent(Event & newEvent)
 {
+	CALL_EVENT_HANDLER(AllPlayersReadyEvent);
 	CALL_EVENT_HANDLER(AssignCardAction);
-	CALL_EVENT_HANDLER(EndTurnAction);
 	CALL_EVENT_HANDLER(EnemyCardPlayedEvent);
 	CALL_EVENT_HANDLER(EntityRemovedEvent);
 	CALL_EVENT_HANDLER(FightResolvedEvent);
@@ -52,6 +54,37 @@ void AssignmentSystem::OnEvent(Event & newEvent)
 	CALL_EVENT_HANDLER(ResolveFightAction);
 	CALL_EVENT_HANDLER(StarshipPlayedEvent);
 	CALL_EVENT_HANDLER(TurnPhaseChangedEvent);
+}
+
+EVENT_HANDLER_DEFINITION(AssignmentSystem, AllPlayersReadyEvent)
+{
+	if (this->currentTurnPhase == TurnPhase::Assignment)
+	{
+		// Check if enough enemy ships assigned.
+		auto reqEnemyAssignments = enemyCards.size() < playerCards.size() ? enemyCards.size() : playerCards.size();
+
+		if (this->currentAssignments.size() < reqEnemyAssignments)
+		{
+			// Error: Enemy ship not assigned.
+			auto errorMessageEvent = std::make_shared<ErrorMessageEvent>("Error_NotAllEnemyShipsAssigned");
+			this->game->eventManager->QueueEvent(errorMessageEvent);
+
+			auto playerReadyStateResetEvent = std::make_shared<PlayerReadyStateResetEvent>();
+			this->game->eventManager->QueueEvent(playerReadyStateResetEvent);
+
+			return;
+		}
+
+		// Notify listeners.
+		auto turnPhaseEndedEvent = std::make_shared<TurnPhaseEndedEvent>();
+		this->game->eventManager->QueueEvent(turnPhaseEndedEvent);
+	}
+	else if (this->currentTurnPhase == TurnPhase::Fight)
+	{
+		// Fight phase is automatically ended in OnFightResolved.
+		auto errorMessageEvent = std::make_shared<ErrorMessageEvent>("Error_NotAllFightsResolved");
+		this->game->eventManager->QueueEvent(errorMessageEvent);
+	}
 }
 
 EVENT_HANDLER_DEFINITION(AssignmentSystem, AssignCardAction)
@@ -126,34 +159,6 @@ EVENT_HANDLER_DEFINITION(AssignmentSystem, AssignCardAction)
 	}
 }
 
-EVENT_HANDLER_DEFINITION(AssignmentSystem, EndTurnAction)
-{
-	if (this->currentTurnPhase == TurnPhase::Assignment)
-	{
-		// Check if enough enemy ships assigned.
-		auto reqEnemyAssignments = enemyCards.size() < playerCards.size() ? enemyCards.size() : playerCards.size();
-
-		if (this->currentAssignments.size() < reqEnemyAssignments)
-		{
-			// Error: Enemy ship not assigned.
-			auto errorMessageEvent = std::make_shared<ErrorMessageEvent>("Error_NotAllEnemyShipsAssigned");
-			this->game->eventManager->QueueEvent(errorMessageEvent);
-
-			return;
-		}
-
-		// Notify listeners.
-		auto turnPhaseChangedEvent = std::make_shared<TurnPhaseChangedEvent>(TurnPhase::Fight);
-		this->game->eventManager->QueueEvent(turnPhaseChangedEvent);
-	}
-	else if (this->currentTurnPhase == TurnPhase::Fight)
-	{
-		// Fight phase is automatically ended in OnFightResolved.
-		auto errorMessageEvent = std::make_shared<ErrorMessageEvent>("Error_NotAllFightsResolved");
-		this->game->eventManager->QueueEvent(errorMessageEvent);
-	}
-}
-
 EVENT_HANDLER_DEFINITION(AssignmentSystem, EnemyCardPlayedEvent)
 {
 	auto cardComponent = this->game->entityManager->GetComponent<CardComponent>(data.cardEntity, CardComponent::CardComponentType);
@@ -178,8 +183,8 @@ EVENT_HANDLER_DEFINITION(AssignmentSystem, FightResolvedEvent)
 	if (this->currentAssignments.empty())
 	{
 		// End fight phase.
-		auto turnPhaseChangedEvent = std::make_shared<TurnPhaseChangedEvent>(TurnPhase::Jump);
-		this->game->eventManager->QueueEvent(turnPhaseChangedEvent);
+		auto turnPhaseEndedEvent = std::make_shared<TurnPhaseEndedEvent>();
+		this->game->eventManager->QueueEvent(turnPhaseEndedEvent);
 	}
 }
 
@@ -263,8 +268,8 @@ EVENT_HANDLER_DEFINITION(AssignmentSystem, TurnPhaseChangedEvent)
 		if (this->enemyCards.empty())
 		{
 			// End fight phase.
-			auto turnPhaseChangedEvent = std::make_shared<TurnPhaseChangedEvent>(TurnPhase::Jump);
-			this->game->eventManager->QueueEvent(turnPhaseChangedEvent);
+			auto turnPhaseEndedEvent = std::make_shared<TurnPhaseEndedEvent>();
+			this->game->eventManager->QueueEvent(turnPhaseEndedEvent);
 		}
 	}
 }

@@ -8,6 +8,7 @@
 #include "Components\ThreatComponent.h"
 
 #include "Events\ThreatChangedEvent.h"
+#include "..\Events\TurnPhaseEndedEvent.h"
 
 using namespace PinnedDownNet::Components;
 using namespace PinnedDownNet::Events;
@@ -106,8 +107,8 @@ EVENT_HANDLER_DEFINITION(ThreatSystem, TurnPhaseChangedEvent)
 		this->SetThreat(newThreat);
 
 		// End jump phase.
-		auto turnPhaseChangedEvent = std::make_shared<TurnPhaseChangedEvent>(TurnPhase::Main);
-		this->game->eventManager->QueueEvent(turnPhaseChangedEvent);
+		auto turnPhaseEndedEvent = std::make_shared<TurnPhaseEndedEvent>();
+		this->game->eventManager->QueueEvent(turnPhaseEndedEvent);
 	}
 }
 

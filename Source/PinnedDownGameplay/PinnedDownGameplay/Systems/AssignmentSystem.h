@@ -9,11 +9,11 @@
 #include "IEventListener.h"
 
 #include "Actions\AssignCardAction.h"
-#include "Actions\EndTurnAction.h"
 #include "Actions\ResolveFightAction.h"
 
 #include "Data\TurnPhase.h"
 
+#include "..\Events\AllPlayersReadyEvent.h"
 #include "..\Events\EnemyCardPlayedEvent.h"
 #include "EntityRemovedEvent.h"
 #include "Events\FightResolvedEvent.h"
@@ -46,8 +46,8 @@ namespace PinnedDownGameplay
 
 			void OnEvent(Event & event);
 
+			EVENT_HANDLER_DECLARATION(AllPlayersReadyEvent);
 			EVENT_HANDLER_DECLARATION(AssignCardAction);
-			EVENT_HANDLER_DECLARATION(EndTurnAction);
 			EVENT_HANDLER_DECLARATION(EnemyCardPlayedEvent);
 			EVENT_HANDLER_DECLARATION(EntityRemovedEvent);
 			EVENT_HANDLER_DECLARATION(FlagshipPlayedEvent);

@@ -7,6 +7,7 @@
 #include "Components\ThreatComponent.h"
 
 #include "..\Events\EnemyCardPlayedEvent.h"
+#include "..\Events\TurnPhaseEndedEvent.h"
 
 using namespace PinnedDownNet::Components;
 using namespace PinnedDownNet::Events;
@@ -99,8 +100,8 @@ void EnemyAttackSystem::PlayEnemyCards()
 	}
 	
 	// End attack phase.
-	auto turnPhaseChangedEvent = std::make_shared<TurnPhaseChangedEvent>(TurnPhase::Assignment);
-	this->game->eventManager->QueueEvent(turnPhaseChangedEvent);
+	auto turnPhaseEndedEvent = std::make_shared<TurnPhaseEndedEvent>();
+	this->game->eventManager->QueueEvent(turnPhaseEndedEvent);
 }
 
 void EnemyAttackSystem::PrepareAttackDeck()

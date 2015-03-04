@@ -85,6 +85,7 @@
     <ClCompile Include="Actions\PlayStarshipAction.cpp" />
     <ClCompile Include="Components\PlayerDeckComponent.cpp" />
     <ClCompile Include="Data\Deck.cpp" />
+    <ClCompile Include="Events\AllPlayersReadyEvent.cpp" />
     <ClCompile Include="Events\BonusPowerChangedEvent.cpp" />
     <ClCompile Include="Events\ClientConnectedEvent.cpp" />
     <ClCompile Include="Events\EnemyCardPlayedEvent.cpp" />
@@ -92,6 +93,7 @@
     <ClCompile Include="Events\FlagshipPlayedEvent.cpp" />
     <ClCompile Include="Events\ShipDefeatedEvent.cpp" />
     <ClCompile Include="Events\ShipVictoriousEvent.cpp" />
+    <ClCompile Include="Events\TurnPhaseEndedEvent.cpp" />
     <ClCompile Include="Systems\AssignmentSystem.cpp" />
     <ClCompile Include="Systems\CardPlayingSystem.cpp" />
     <ClCompile Include="Systems\CardStateSystem.cpp" />
@@ -105,6 +107,7 @@
     <ClCompile Include="Systems\FlagshipSystem.cpp" />
     <ClCompile Include="Systems\JumpEnemyRemovalSystem.cpp" />
     <ClCompile Include="Systems\PlayerDeckSystem.cpp" />
+    <ClCompile Include="Systems\PlayerReadySystem.cpp" />
     <ClCompile Include="Systems\PlayerSystem.cpp" />
     <ClCompile Include="Systems\StarshipPlayingSystem.cpp" />
     <ClCompile Include="Systems\TemporaryEffectSystem.cpp" />
@@ -118,6 +121,7 @@
     <ClInclude Include="Components\PlayerDeckComponent.h" />
     <ClInclude Include="Data\CardData.h" />
     <ClInclude Include="Data\Deck.h" />
+    <ClInclude Include="Events\AllPlayersReadyEvent.h" />
     <ClInclude Include="Events\BonusPowerChangedEvent.h" />
     <ClInclude Include="Events\ClientConnectedEvent.h" />
     <ClInclude Include="Events\EnemyCardPlayedEvent.h" />
@@ -125,6 +129,7 @@
     <ClInclude Include="Events\FlagshipPlayedEvent.h" />
     <ClInclude Include="Events\ShipDefeatedEvent.h" />
     <ClInclude Include="Events\ShipVictoriousEvent.h" />
+    <ClInclude Include="Events\TurnPhaseEndedEvent.h" />
     <ClInclude Include="Systems\AssignmentSystem.h" />
     <ClInclude Include="Systems\CardPlayingSystem.h" />
     <ClInclude Include="Systems\CardStateSystem.h" />
@@ -139,6 +144,7 @@
     <ClInclude Include="Systems\FlagshipSystem.h" />
     <ClInclude Include="Systems\JumpEnemyRemovalSystem.h" />
     <ClInclude Include="Systems\PlayerDeckSystem.h" />
+    <ClInclude Include="Systems\PlayerReadySystem.h" />
     <ClInclude Include="Systems\PlayerSystem.h" />
     <ClInclude Include="Systems\StarshipPlayingSystem.h" />
     <ClInclude Include="Systems\TemporaryEffectSystem.h" />
