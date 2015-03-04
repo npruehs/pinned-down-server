@@ -140,6 +140,7 @@ void MasterServer::OnClientAction(int clientId, std::shared_ptr<Event> clientAct
 		else
 		{
 			// Pass action to game.
+			clientAction->sender = clientId;
 			client->game->OnClientAction(clientAction);
 		}
 
