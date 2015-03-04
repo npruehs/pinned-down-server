@@ -194,10 +194,23 @@ EVENT_HANDLER_DEFINITION(AssignmentSystem, PlayerAddedEvent)
 
 EVENT_HANDLER_DEFINITION(AssignmentSystem, ResolveFightAction)
 {
+	// Check owners.
+	if (data.sender == INVALID_SENDER_ID)
+	{
+		return;
+	}
+
+	auto playerEntity = this->clientToPlayerEntityIdMap->GetValueOrDefault(data.sender, INVALID_ENTITY_ID);
+
+	if (playerEntity == INVALID_ENTITY_ID)
+	{
+		return;
+	}
+
 	// Get assignment.
 	auto assignedCardOwner = this->game->entityManager->GetComponent<OwnerComponent>(data.assignedCard, OwnerComponent::OwnerComponentType);
 
-	if (assignedCardOwner != nullptr && assignedCardOwner->owner != INVALID_ENTITY_ID)
+	if (assignedCardOwner != nullptr && assignedCardOwner->owner == playerEntity)
 	{
 		auto assignment = this->currentAssignments.find(data.assignedCard);
 
