@@ -26,12 +26,16 @@ void CardPlayingSystem::InitSystem(Game* game)
 {
 	GameSystem::InitSystem(game);
 
+	this->clientToPlayerEntityIdMap = std::make_shared<BidirectionalMap<int, Entity>>();
+
 	this->game->eventManager->AddListener(this, PlayCardAction::PlayCardActionType);
+	this->game->eventManager->AddListener(this, PlayerAddedEvent::PlayerAddedEventType);
 }
 
 void CardPlayingSystem::OnEvent(Event & newEvent)
 {
 	CALL_EVENT_HANDLER(PlayCardAction);
+	CALL_EVENT_HANDLER(PlayerAddedEvent);
 }
 
 EVENT_HANDLER_DEFINITION(CardPlayingSystem, PlayCardAction)
@@ -47,7 +51,14 @@ EVENT_HANDLER_DEFINITION(CardPlayingSystem, PlayCardAction)
 	// Only play own cards.
 	auto ownerComponent = this->game->entityManager->GetComponent<OwnerComponent>(data.cardToPlay, OwnerComponent::OwnerComponentType);
 
-	if (ownerComponent == nullptr || ownerComponent->owner == INVALID_ENTITY_ID)
+	if (ownerComponent == nullptr || ownerComponent->owner == INVALID_ENTITY_ID || data.sender == INVALID_SENDER_ID)
+	{
+		return;
+	}
+
+	auto playerEntity = this->clientToPlayerEntityIdMap->GetValueOrDefault(data.sender, INVALID_ENTITY_ID);
+
+	if (playerEntity == INVALID_ENTITY_ID || ownerComponent->owner != playerEntity)
 	{
 		return;
 	}
@@ -67,4 +78,9 @@ EVENT_HANDLER_DEFINITION(CardPlayingSystem, PlayCardAction)
 		auto playEffectAction = std::make_shared<PlayEffectAction>(data.cardToPlay, data.targetCard);
 		this->game->eventManager->QueueEvent(playEffectAction);
 	}
+}
+
+EVENT_HANDLER_DEFINITION(CardPlayingSystem, PlayerAddedEvent)
+{
+	this->clientToPlayerEntityIdMap->Add(data.clientId, data.serverEntity);
 }

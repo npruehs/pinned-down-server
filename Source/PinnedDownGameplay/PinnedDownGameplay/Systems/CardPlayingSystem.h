@@ -1,10 +1,13 @@
 #pragma once
 
+#include "BidirectionalMap.h"
 #include "Game.h"
 #include "GameSystem.h"
 #include "IEventListener.h"
 
 #include "Actions\PlayCardAction.h"
+
+#include "Events\PlayerAddedEvent.h"
 
 using namespace PinnedDownCore;
 using namespace PinnedDownNet::Events;
@@ -24,6 +27,9 @@ namespace PinnedDownGameplay
 			void OnEvent(Event & event);
 
 			EVENT_HANDLER_DECLARATION(PlayCardAction);
+			EVENT_HANDLER_DECLARATION(PlayerAddedEvent);
+
+			std::shared_ptr<BidirectionalMap<int, Entity>> clientToPlayerEntityIdMap;
 		};
 	}
 }
