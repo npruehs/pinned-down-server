@@ -66,18 +66,19 @@ EVENT_HANDLER_DEFINITION(AssignmentSystem, AssignCardAction)
 		return;
 	}
 
-	auto playerEntity = this->clientToPlayerEntityIdMap->GetValueOrDefault(data.sender, INVALID_ENTITY_ID);
-
-	if (playerEntity == INVALID_ENTITY_ID)
-	{
-		return;
-	}
-
 	// Check owners.
+	auto playerEntity = this->clientToPlayerEntityIdMap->GetValueOrDefault(data.sender, INVALID_ENTITY_ID);
 	auto assignedCardOwner = this->game->entityManager->GetComponent<OwnerComponent>(data.assignedCard, OwnerComponent::OwnerComponentType);
 	auto targetCardOwner = this->game->entityManager->GetComponent<OwnerComponent>(data.targetCard, OwnerComponent::OwnerComponentType);
 
-	if (assignedCardOwner != nullptr && assignedCardOwner->owner == playerEntity && targetCardOwner != nullptr && targetCardOwner->owner == INVALID_ENTITY_ID)
+	if (playerEntity == INVALID_ENTITY_ID || assignedCardOwner == nullptr || assignedCardOwner->owner != playerEntity)
+	{
+		auto errorMessageEvent = std::make_shared<ErrorMessageEvent>("Error_CanOnlyAssignOwnCards");
+		this->game->eventManager->QueueEvent(errorMessageEvent);
+		return;
+	}
+
+	if (targetCardOwner != nullptr && targetCardOwner->owner == INVALID_ENTITY_ID)
 	{
 		// Check for previous assignment of source card.
 		auto assignment = this->currentAssignments.find(data.assignedCard);
@@ -201,25 +202,23 @@ EVENT_HANDLER_DEFINITION(AssignmentSystem, ResolveFightAction)
 	}
 
 	auto playerEntity = this->clientToPlayerEntityIdMap->GetValueOrDefault(data.sender, INVALID_ENTITY_ID);
+	auto assignedCardOwner = this->game->entityManager->GetComponent<OwnerComponent>(data.assignedCard, OwnerComponent::OwnerComponentType);
 
-	if (playerEntity == INVALID_ENTITY_ID)
+	if (playerEntity == INVALID_ENTITY_ID || assignedCardOwner == nullptr || assignedCardOwner->owner != playerEntity)
 	{
+		auto errorMessageEvent = std::make_shared<ErrorMessageEvent>("Error_CanOnlyResolveOwnFights");
+		this->game->eventManager->QueueEvent(errorMessageEvent);
 		return;
 	}
 
 	// Get assignment.
-	auto assignedCardOwner = this->game->entityManager->GetComponent<OwnerComponent>(data.assignedCard, OwnerComponent::OwnerComponentType);
+	auto assignment = this->currentAssignments.find(data.assignedCard);
 
-	if (assignedCardOwner != nullptr && assignedCardOwner->owner == playerEntity)
+	if (assignment != this->currentAssignments.end())
 	{
-		auto assignment = this->currentAssignments.find(data.assignedCard);
-
-		if (assignment != this->currentAssignments.end())
-		{
-			// Start fight.
-			auto fightStartedEvent = std::make_shared<FightStartedEvent>(assignment->first, assignment->second);
-			this->game->eventManager->QueueEvent(fightStartedEvent);
-		}
+		// Start fight.
+		auto fightStartedEvent = std::make_shared<FightStartedEvent>(assignment->first, assignment->second);
+		this->game->eventManager->QueueEvent(fightStartedEvent);
 	}
 }
 

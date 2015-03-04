@@ -10,6 +10,8 @@
 #include "..\Actions\PlayEffectAction.h"
 #include "..\Actions\PlayStarshipAction.h"
 
+#include "Events\ErrorMessageEvent.h"
+
 using namespace PinnedDownGameplay::Components;
 using namespace PinnedDownGameplay::Events;
 using namespace PinnedDownGameplay::Systems;
@@ -60,6 +62,8 @@ EVENT_HANDLER_DEFINITION(CardPlayingSystem, PlayCardAction)
 
 	if (playerEntity == INVALID_ENTITY_ID || ownerComponent->owner != playerEntity)
 	{
+		auto errorMessageEvent = std::make_shared<ErrorMessageEvent>("Error_CanOnlyPlayOwnCards");
+		this->game->eventManager->QueueEvent(errorMessageEvent);
 		return;
 	}
 
