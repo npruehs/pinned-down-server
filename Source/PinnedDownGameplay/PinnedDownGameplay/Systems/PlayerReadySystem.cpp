@@ -61,6 +61,10 @@ EVENT_HANDLER_DEFINITION(PlayerReadySystem, PlayerReadyStateResetEvent)
 EVENT_HANDLER_DEFINITION(PlayerReadySystem, TurnPhaseChangedEvent)
 {
 	this->ResetReadyState();
+
+	// Notify listeners.
+	auto playerReadyStateResetEvent = std::make_shared<PlayerReadyStateResetEvent>();
+	this->game->eventManager->QueueEvent(playerReadyStateResetEvent);
 }
 
 void PlayerReadySystem::ResetReadyState()
