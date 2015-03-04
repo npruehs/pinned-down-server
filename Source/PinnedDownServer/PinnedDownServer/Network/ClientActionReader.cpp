@@ -4,8 +4,8 @@
 
 #include "Actions\AssignCardAction.h"
 #include "Actions\DisconnectClientAction.h"
-#include "Actions\EndTurnAction.h"
 #include "Actions\PlayCardAction.h"
+#include "Actions\PlayerReadyAction.h"
 #include "Actions\ResolveFightAction.h"
 
 using namespace PinnedDownCore;
@@ -33,17 +33,17 @@ std::shared_ptr<Event> ClientActionReader::ReadClientAction(char* buffer)
 		disconnectClientAction->Deserialize(in);
 		return disconnectClientAction;
 	}
-	else if (hashedEventType == EndTurnAction::EndTurnActionType)
-	{
-		auto endTurnAction = std::make_shared<EndTurnAction>();
-		endTurnAction->Deserialize(in);
-		return endTurnAction;
-	}
 	else if (hashedEventType == PlayCardAction::PlayCardActionType)
 	{
 		auto playCardAction = std::make_shared<PlayCardAction>();
 		playCardAction->Deserialize(in);
 		return playCardAction;
+	}
+	else if (hashedEventType == PlayerReadyAction::PlayerReadyActionType)
+	{
+		auto playerReadyAction = std::make_shared<PlayerReadyAction>();
+		playerReadyAction->Deserialize(in);
+		return playerReadyAction;
 	}
 	else if (hashedEventType == ResolveFightAction::ResolveFightActionType)
 	{

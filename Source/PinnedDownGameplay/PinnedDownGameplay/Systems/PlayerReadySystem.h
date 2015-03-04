@@ -6,7 +6,7 @@
 #include "GameSystem.h"
 #include "IEventListener.h"
 
-#include "Actions\EndTurnAction.h"
+#include "Actions\PlayerReadyAction.h"
 
 #include "Events\PlayerAddedEvent.h"
 #include "Events\PlayerReadyStateResetEvent.h"
@@ -31,8 +31,8 @@ namespace PinnedDownGameplay
 
 			void OnEvent(Event & event);
 
-			EVENT_HANDLER_DECLARATION(EndTurnAction);
 			EVENT_HANDLER_DECLARATION(PlayerAddedEvent);
+			EVENT_HANDLER_DECLARATION(PlayerReadyAction);
 			EVENT_HANDLER_DECLARATION(PlayerReadyStateResetEvent);
 			EVENT_HANDLER_DECLARATION(TurnPhaseChangedEvent);
 

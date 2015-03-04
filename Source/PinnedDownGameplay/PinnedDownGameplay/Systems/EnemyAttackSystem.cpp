@@ -2,8 +2,6 @@
 #include "Event.h"
 #include "EnemyAttackSystem.h"
 
-#include "Actions\EndTurnAction.h"
-
 #include "Components\ThreatComponent.h"
 
 #include "..\Events\EnemyCardPlayedEvent.h"

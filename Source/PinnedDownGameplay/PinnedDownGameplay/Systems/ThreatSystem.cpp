@@ -1,8 +1,6 @@
 #include "Event.h"
 #include "ThreatSystem.h"
 
-#include "Actions\EndTurnAction.h"
-
 #include "Components\CardComponent.h"
 #include "Components\OwnerComponent.h"
 #include "Components\ThreatComponent.h"

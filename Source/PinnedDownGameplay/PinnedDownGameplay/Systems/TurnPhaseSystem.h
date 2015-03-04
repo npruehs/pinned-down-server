@@ -4,8 +4,6 @@
 #include "GameSystem.h"
 #include "IEventListener.h"
 
-#include "Actions\EndTurnAction.h"
-
 #include "Data\TurnPhase.h"
 
 #include "..\Events\AllPlayersReadyEvent.h"
