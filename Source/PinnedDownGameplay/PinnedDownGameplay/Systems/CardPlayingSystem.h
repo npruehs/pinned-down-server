@@ -24,12 +24,12 @@ namespace PinnedDownGameplay
 			void InitSystem(PinnedDownCore::Game* game);
 
 		private:
+			std::shared_ptr<BidirectionalMap<int, Entity>> clientToPlayerEntityIdMap;
+
 			void OnEvent(Event & event);
 
 			EVENT_HANDLER_DECLARATION(PlayCardAction);
 			EVENT_HANDLER_DECLARATION(PlayerAddedEvent);
-
-			std::shared_ptr<BidirectionalMap<int, Entity>> clientToPlayerEntityIdMap;
 		};
 	}
 }

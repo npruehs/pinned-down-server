@@ -26,12 +26,15 @@ void AssignmentSystem::InitSystem(Game* game)
 {
 	GameSystem::InitSystem(game);
 
+	this->clientToPlayerEntityIdMap = std::make_shared<BidirectionalMap<int, Entity>>();
+
 	this->game->eventManager->AddListener(this, AssignCardAction::AssignCardActionType);	
 	this->game->eventManager->AddListener(this, EndTurnAction::EndTurnActionType);
 	this->game->eventManager->AddListener(this, EnemyCardPlayedEvent::EnemyCardPlayedEventType);
 	this->game->eventManager->AddListener(this, EntityRemovedEvent::EntityRemovedEventType);
 	this->game->eventManager->AddListener(this, FightResolvedEvent::FightResolvedEventType);
 	this->game->eventManager->AddListener(this, FlagshipPlayedEvent::FlagshipPlayedEventType);
+	this->game->eventManager->AddListener(this, PlayerAddedEvent::PlayerAddedEventType);
 	this->game->eventManager->AddListener(this, ResolveFightAction::ResolveFightActionType);
 	this->game->eventManager->AddListener(this, StarshipPlayedEvent::StarshipPlayedEventType);	
 	this->game->eventManager->AddListener(this, TurnPhaseChangedEvent::TurnPhaseChangedEventType);
@@ -45,6 +48,7 @@ void AssignmentSystem::OnEvent(Event & newEvent)
 	CALL_EVENT_HANDLER(EntityRemovedEvent);
 	CALL_EVENT_HANDLER(FightResolvedEvent);
 	CALL_EVENT_HANDLER(FlagshipPlayedEvent);
+	CALL_EVENT_HANDLER(PlayerAddedEvent);
 	CALL_EVENT_HANDLER(ResolveFightAction);
 	CALL_EVENT_HANDLER(StarshipPlayedEvent);
 	CALL_EVENT_HANDLER(TurnPhaseChangedEvent);
@@ -57,11 +61,23 @@ EVENT_HANDLER_DEFINITION(AssignmentSystem, AssignCardAction)
 		return;
 	}
 
+	if (data.sender == INVALID_SENDER_ID)
+	{
+		return;
+	}
+
+	auto playerEntity = this->clientToPlayerEntityIdMap->GetValueOrDefault(data.sender, INVALID_ENTITY_ID);
+
+	if (playerEntity == INVALID_ENTITY_ID)
+	{
+		return;
+	}
+
 	// Check owners.
 	auto assignedCardOwner = this->game->entityManager->GetComponent<OwnerComponent>(data.assignedCard, OwnerComponent::OwnerComponentType);
 	auto targetCardOwner = this->game->entityManager->GetComponent<OwnerComponent>(data.targetCard, OwnerComponent::OwnerComponentType);
 
-	if (assignedCardOwner != nullptr && assignedCardOwner->owner != INVALID_ENTITY_ID && targetCardOwner != nullptr && targetCardOwner->owner == INVALID_ENTITY_ID)
+	if (assignedCardOwner != nullptr && assignedCardOwner->owner == playerEntity && targetCardOwner != nullptr && targetCardOwner->owner == INVALID_ENTITY_ID)
 	{
 		// Check for previous assignment of source card.
 		auto assignment = this->currentAssignments.find(data.assignedCard);
@@ -169,6 +185,11 @@ EVENT_HANDLER_DEFINITION(AssignmentSystem, FightResolvedEvent)
 EVENT_HANDLER_DEFINITION(AssignmentSystem, FlagshipPlayedEvent)
 {
 	this->playerCards.push_back(data.shipEntity);
+}
+
+EVENT_HANDLER_DEFINITION(AssignmentSystem, PlayerAddedEvent)
+{
+	this->clientToPlayerEntityIdMap->Add(data.clientId, data.serverEntity);
 }
 
 EVENT_HANDLER_DEFINITION(AssignmentSystem, ResolveFightAction)
