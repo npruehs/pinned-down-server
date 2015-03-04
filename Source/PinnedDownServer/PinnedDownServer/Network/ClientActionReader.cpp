@@ -7,6 +7,7 @@
 #include "Actions\PlayCardAction.h"
 #include "Actions\PlayerReadyAction.h"
 #include "Actions\ResolveFightAction.h"
+#include "Actions\VerifyClientVersionAction.h"
 
 using namespace PinnedDownCore;
 using namespace PinnedDownNet::Events;
@@ -50,6 +51,12 @@ std::shared_ptr<Event> ClientActionReader::ReadClientAction(char* buffer)
 		auto resolveFightAction = std::make_shared<ResolveFightAction>();
 		resolveFightAction->Deserialize(in);
 		return resolveFightAction;
+	}
+	else if (hashedEventType == VerifyClientVersionAction::VerifyClientVersionActionType)
+	{
+		auto verifyClientVersionAction = std::make_shared<VerifyClientVersionAction>();
+		verifyClientVersionAction->Deserialize(in);
+		return verifyClientVersionAction;
 	}
 
 	return nullptr;

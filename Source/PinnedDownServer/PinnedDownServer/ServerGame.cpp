@@ -80,6 +80,23 @@ int ServerGame::GetClientCount()
 	return this->clients.size();
 }
 
+int ServerGame::GetVerifiedClientCount()
+{
+	int verifiedClients = 0;
+
+	for (auto it = this->clients.begin(); it != this->clients.end(); ++it)
+	{
+		auto client = *it;
+
+		if (client->versionVerified)
+		{
+			++verifiedClients;
+		}
+	}
+
+	return verifiedClients;
+}
+
 std::list<PinnedDownClientData*>& ServerGame::GetClients()
 {
 	return this->clients;

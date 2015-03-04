@@ -6,7 +6,6 @@
 
 #include "SocketManager.h"
 #include "..\MasterServer.h"
-#include "Events\LoginSuccessEvent.h"
 
 #pragma comment(lib, "Ws2_32.lib")
 
@@ -170,10 +169,6 @@ void SocketManager::Select(int milliseconds)
 
 				std::string ipString(buffer);
 				this->logger->LogInfo("Client connected: " + ipString);
-
-				// Send login ACK.
-				auto serverEvent = std::make_shared<LoginSuccessEvent>(i);
-				this->SendServerEvent(i, *serverEvent);
 
 				if (clients[i] != INVALID_SOCKET)
 				{

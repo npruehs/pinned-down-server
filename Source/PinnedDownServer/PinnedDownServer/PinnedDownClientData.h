@@ -10,5 +10,6 @@ namespace PinnedDownServer
 		int clientId;
 		std::string clientGUID;
 		std::shared_ptr<ServerGame> game;
+		bool versionVerified;
 	};
 }

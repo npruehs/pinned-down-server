@@ -3,6 +3,10 @@
 #include "MasterServer.h"
 
 #include "Actions\DisconnectClientAction.h"
+#include "Actions\VerifyClientVersionAction.h"
+
+#include "Events\ClientVersionVerifiedEvent.h"
+#include "Events\LoginSuccessEvent.h"
 
 #include "Logger.h"
 
@@ -14,6 +18,12 @@
 using namespace PinnedDownCore;
 using namespace PinnedDownServer;
 using namespace PinnedDownServer::Util::GUID;
+
+
+#define REQUIRED_CLIENT_VERSION_MAJOR 0
+#define REQUIRED_CLIENT_VERSION_MINOR 1
+#define REQUIRED_CLIENT_VERSION_BUILD 0
+#define REQUIRED_CLIENT_VERSION_REVISION 6
 
 
 bool MasterServer::running = false;
@@ -53,10 +63,15 @@ void MasterServer::OnClientConnected(int clientId)
 {
 	this->logger->LogInfo("Client added: " + std::to_string(clientId));
 
+	// Send login ACK.
+	auto serverEvent = std::make_shared<LoginSuccessEvent>(clientId);
+	this->socketManager->SendServerEvent(clientId, *serverEvent);
+
 	// Create new client data object.
 	PinnedDownClientData* pinnedDownClient = new PinnedDownClientData();
 	pinnedDownClient->clientId = clientId;
 	pinnedDownClient->clientGUID = NewGUID();
+	pinnedDownClient->versionVerified = false;
 
 	// Check for running game.
 	std::shared_ptr<ServerGame> runningGame;
@@ -86,12 +101,6 @@ void MasterServer::OnClientConnected(int clientId)
 
 	// Add to client list.
 	this->connectedClients.insert(std::pair<int, PinnedDownClientData*>(clientId, pinnedDownClient));
-
-	// Check if game full.
-	if (runningGame->GetClientCount() == CLIENTS_PER_GAME)
-	{
-		runningGame->StartGame();
-	}
 }
 
 void MasterServer::OnClientDisconnected(int clientId)
@@ -131,8 +140,42 @@ void MasterServer::OnClientAction(int clientId, std::shared_ptr<Event> clientAct
 	{
 		auto client = iterator->second;
 
+		// Check for client version verification.
+		if (clientAction->GetEventType() == VerifyClientVersionAction::VerifyClientVersionActionType)
+		{
+			// Verify client version.
+			auto verifyClientVersionAction = std::static_pointer_cast<VerifyClientVersionAction>(clientAction);
+			auto clientUpToDate =
+				verifyClientVersionAction->major > REQUIRED_CLIENT_VERSION_MAJOR ||
+				(verifyClientVersionAction->major == REQUIRED_CLIENT_VERSION_MAJOR &&
+				(verifyClientVersionAction->minor > REQUIRED_CLIENT_VERSION_MINOR ||
+				(verifyClientVersionAction->minor == REQUIRED_CLIENT_VERSION_MINOR &&
+				(verifyClientVersionAction->build > REQUIRED_CLIENT_VERSION_BUILD ||
+				(verifyClientVersionAction->build == REQUIRED_CLIENT_VERSION_BUILD &&
+				(verifyClientVersionAction->revision >= REQUIRED_CLIENT_VERSION_REVISION))))));
+
+			auto clientVersionVerifiedEvent = std::make_shared<ClientVersionVerifiedEvent>(clientUpToDate);
+			this->socketManager->SendServerEvent(clientId, *clientVersionVerifiedEvent);
+
+			client->versionVerified = clientUpToDate;
+
+			if (clientUpToDate)
+			{
+				this->logger->LogDebug("Client " + std::to_string(clientId) + " is up-of-date.");
+
+				// Check if game full.
+				if (client->game->GetVerifiedClientCount() == CLIENTS_PER_GAME)
+				{
+					client->game->StartGame();
+				}
+			}
+			else
+			{
+				this->logger->LogDebug("Client " + std::to_string(clientId) + " is NOT up-of-date.");
+			}
+		}
 		// Check for willing to disconnect.
-		if (clientAction->GetEventType() == DisconnectClientAction::DisconnectClientActionType)
+		else if (clientAction->GetEventType() == DisconnectClientAction::DisconnectClientActionType)
 		{
 			// Remove client, everything else will be handled by OnClientDisconnected.
 			this->socketManager->RemoveClient(clientId);

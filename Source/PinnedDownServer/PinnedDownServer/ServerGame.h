@@ -28,6 +28,7 @@ namespace PinnedDownServer
 
 		void AddClient(PinnedDownClientData* client);
 		int GetClientCount();
+		int GetVerifiedClientCount();
 		std::list<PinnedDownClientData*>& GetClients();
 		int GetGameId();
 		std::shared_ptr<Game> GetGame();
