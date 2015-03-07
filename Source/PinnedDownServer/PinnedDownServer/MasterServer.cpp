@@ -1,9 +1,7 @@
 #include <stdio.h>
 
 #include "MasterServer.h"
-
 #include "Logger.h"
-
 #include "PinnedDownServerVersion.h"
 
 #include "Util/GUID/GUID.h"
@@ -70,13 +68,17 @@ void MasterServer::OnClientDisconnected(int clientId)
 
 	if (iterator != this->connectedClients.end())
 	{
-		// Remove from game.
 		auto client = iterator->second;
-		this->RemoveClientFromGame(client);
+
+		// Remove from lobby.
+		this->lobby->RemoveClient(client);
+
+		// Shut down game.
+		this->logger->LogInfo("Client disconnected, shutting down game " + std::to_string(client->game->GetGameId()));
+		this->ShutDownGame(client);
 
 		// Remove client.
 		delete client;
-		this->lobby->RemoveClient(client);
 		this->connectedClients.erase(iterator);
 	}
 }
@@ -107,16 +109,8 @@ void MasterServer::OnClientAction(int clientId, std::shared_ptr<Event> clientAct
 			// Check for game over.
 			if (client->game->IsGameOver())
 			{
-				auto gameClients = client->game->GetClients();
-
-				// Remove clients from game.
-				for (auto it = gameClients.begin(); it != gameClients.end(); ++it)
-				{
-					auto gameClient = *it;
-
-					this->logger->LogInfo("Game over, removing client " + std::to_string(gameClient->clientId) + " from game.");
-					this->RemoveClientFromGame(gameClient);
-				}
+				this->logger->LogInfo("Game over, shutting down game " + std::to_string(client->game->GetGameId()));
+				this->ShutDownGame(client);
 			}
 		}
 	}
@@ -177,7 +171,7 @@ void MasterServer::AddClientToGame(PinnedDownClientData* client)
 	runningGame->AddClient(client);
 	client->game = runningGame;
 
-	this->logger->LogInfo("Client added to game " + std::to_string(runningGame->GetGameId()));
+	this->logger->LogInfo("Client " + std::to_string(client->clientId) + " added to game " + std::to_string(runningGame->GetGameId()));
 
 	// Check if game full.
 	if (client->game->GetVerifiedClientCount() == CLIENTS_PER_GAME)
@@ -193,17 +187,29 @@ void MasterServer::RemoveClientFromGame(PinnedDownClientData* client)
 		return;
 	}
 
-	this->logger->LogInfo("Client removed from game " + std::to_string(client->game->GetGameId()));
+	this->logger->LogInfo("Client " + std::to_string(client->clientId) + " removed from game " + std::to_string(client->game->GetGameId()));
 
 	client->game->RemoveClient(client);
 
 	if (client->game->GetClientCount() == 0)
 	{
-		this->logger->LogInfo("Shutting down game " + std::to_string(client->game->GetGameId()));
-
 		// Stop game.
 		this->runningGames.remove(client->game);
+
+		this->logger->LogInfo("Game " + std::to_string(client->game->GetGameId()) + " shut down.");
 	}
 
 	client->game = nullptr;
+}
+
+void MasterServer::ShutDownGame(PinnedDownClientData* client)
+{
+	auto gameClients = client->game->GetClients();
+
+	// Remove clients from game.
+	for (auto it = gameClients.begin(); it != gameClients.end(); ++it)
+	{
+		auto gameClient = *it;
+		this->RemoveClientFromGame(gameClient);
+	}
 }

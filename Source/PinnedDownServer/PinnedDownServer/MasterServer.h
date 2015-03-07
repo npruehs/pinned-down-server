@@ -49,5 +49,6 @@ namespace PinnedDownServer
 
 		void AddClientToGame(PinnedDownClientData* client);
 		void RemoveClientFromGame(PinnedDownClientData* client);
+		void ShutDownGame(PinnedDownClientData* client);
 	};
 }

@@ -8,6 +8,7 @@ using namespace PinnedDownServer;
 #include "Events\ClientVersionVerifiedEvent.h"
 #include "Events\ClientVersionNotVerifiedEvent.h"
 #include "Events\LoginSuccessEvent.h"
+#include "Events\PlayerLeftEvent.h"
 
 
 ServerLobby::ServerLobby(MasterServer* masterServer, std::shared_ptr<ServerLogger> logger)
@@ -28,6 +29,15 @@ void ServerLobby::AddClient(PinnedDownClientData* client)
 void ServerLobby::RemoveClient(PinnedDownClientData* client)
 {
 	this->clients.remove(client);
+
+	// Notify other players.
+	for (auto it = this->clients.begin(); it != this->clients.end(); ++it)
+	{
+		auto otherClient = *it;
+
+		auto playerLeftEvent = std::make_shared<PlayerLeftEvent>();
+		this->masterServer->OnServerEvent(otherClient->clientId, *playerLeftEvent);
+	}
 }
 
 void ServerLobby::OnClientAction(PinnedDownClientData* client, std::shared_ptr<Event> clientAction)
