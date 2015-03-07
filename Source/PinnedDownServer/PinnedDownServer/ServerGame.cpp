@@ -33,11 +33,10 @@ using namespace PinnedDownGameplay::Systems;
 using namespace PinnedDownServer;
 
 
-ServerGame::ServerGame(MasterServer* masterServer, int gameId, std::shared_ptr<HTTPClient> httpClient, std::shared_ptr<ServerLogger> logger)
+ServerGame::ServerGame(MasterServer* masterServer, int gameId, std::shared_ptr<ServerLogger> logger)
 	: masterServer(masterServer),
 	gameId(gameId),
 	gameOver(false),
-	httpClient(httpClient),
 	logger(logger),
 	game(std::make_shared<Game>())
 {
@@ -73,6 +72,12 @@ void ServerGame::AddClient(PinnedDownClientData* client)
 {
 	// Add client.
 	this->clients.push_back(client);
+}
+
+void ServerGame::RemoveClient(PinnedDownClientData* client)
+{
+	// Add client.
+	this->clients.remove(client);
 }
 
 int ServerGame::GetClientCount()

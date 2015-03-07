@@ -7,13 +7,12 @@
 #include "PinnedDownNet.h"
 
 #include "PinnedDownClientData.h"
+#include "ServerLobby.h"
 
 #include "Diagnotics\ServerLogger.h"
 
-#include "Network\HTTPClient.h"
 #include "Network\SocketManager.h"
 
-#define CLIENTS_PER_GAME 1
 
 using namespace PinnedDownServer::Diagnostics;
 using namespace PinnedDownServer::Network;
@@ -29,6 +28,8 @@ namespace PinnedDownServer
 
 		void OnClientConnected(int clientId);
 		void OnClientDisconnected(int clientId);
+		void OnClientWantsToJoinGame(PinnedDownClientData* client);
+
 		void OnClientAction(int clientId, std::shared_ptr<Event> clientAction);
 		void OnServerEvent(int clientId, Event& serverEvent);
 
@@ -39,10 +40,14 @@ namespace PinnedDownServer
 		int nextGameId;
 
 		std::shared_ptr<ServerLogger> logger;
-		std::shared_ptr<HTTPClient> httpClient;
 		std::shared_ptr<SocketManager> socketManager;
-		
+
 		std::map<int, PinnedDownClientData*> connectedClients;
+
+		std::shared_ptr<ServerLobby> lobby;
 		std::list<std::shared_ptr<ServerGame>> runningGames;
+
+		void AddClientToGame(PinnedDownClientData* client);
+		void RemoveClientFromGame(PinnedDownClientData* client);
 	};
 }

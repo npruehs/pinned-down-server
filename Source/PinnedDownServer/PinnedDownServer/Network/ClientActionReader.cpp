@@ -3,7 +3,7 @@
 #include "ClientActionReader.h"
 
 #include "Actions\AssignCardAction.h"
-#include "Actions\DisconnectClientAction.h"
+#include "Actions\JoinGameAction.h"
 #include "Actions\PlayCardAction.h"
 #include "Actions\PlayerReadyAction.h"
 #include "Actions\ResolveFightAction.h"
@@ -28,11 +28,11 @@ std::shared_ptr<Event> ClientActionReader::ReadClientAction(char* buffer)
 		assignCardAction->Deserialize(in);
 		return assignCardAction;
 	}
-	else if (hashedEventType == DisconnectClientAction::DisconnectClientActionType)
+	else if (hashedEventType == JoinGameAction::JoinGameActionType)
 	{
-		auto disconnectClientAction = std::make_shared<DisconnectClientAction>();
-		disconnectClientAction->Deserialize(in);
-		return disconnectClientAction;
+		auto joinGameAction = std::make_shared<JoinGameAction>();
+		joinGameAction->Deserialize(in);
+		return joinGameAction;
 	}
 	else if (hashedEventType == PlayCardAction::PlayCardActionType)
 	{
