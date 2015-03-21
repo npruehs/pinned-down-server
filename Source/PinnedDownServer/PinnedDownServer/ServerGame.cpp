@@ -154,6 +154,10 @@ void ServerGame::StartGame()
 		auto client = *it;
 		auto clientConnectedEvent = std::make_shared<ClientConnectedEvent>(client->clientId);
 		this->game->eventManager->QueueEvent(clientConnectedEvent);
+
+		// Dummy client.
+		//clientConnectedEvent = std::make_shared<ClientConnectedEvent>(client->clientId + 1);
+		//this->game->eventManager->QueueEvent(clientConnectedEvent);
 	}
 
 	// Start game.
